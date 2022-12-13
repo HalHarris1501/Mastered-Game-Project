@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class FollowObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject objectToFollow;
 
     // Update is called once per frame
     void Update()
     {
-        
+        this.transform.position = new Vector3(objectToFollow.transform.position.x, objectToFollow.transform.position.y, -1f);
     }
 }
