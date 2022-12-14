@@ -36,11 +36,11 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(isFriendly == true)
+        if (isFriendly)
         {
-            if (collision.gameObject.tag == "Enemy")
+            if (collision.gameObject.CompareTag("Enemy"))
             {
                 collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1);
                 Destroy(gameObject);
@@ -48,7 +48,7 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.CompareTag("Player"))
             {
                 collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1);
                 Destroy(gameObject);
