@@ -45,6 +45,7 @@ public class Projectile : MonoBehaviour
                 collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1);
                 Destroy(gameObject);
             }
+            
         }
         else
         {
@@ -54,5 +55,11 @@ public class Projectile : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        
+        if(collision.gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(gameObject);
+        }
+
     }
 }
