@@ -2,21 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IPooledObject
 {
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private GameObject targetObject;
 
-    // Start is called before the first frame update
-    void Start()
+    public void OnObjectSpawn()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        targetObject = FindObjectOfType<Player>().gameObject;
     }
 
     private void FixedUpdate()
