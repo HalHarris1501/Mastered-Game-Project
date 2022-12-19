@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] private Slider healthBar;
     [SerializeField] private Text healthText;
+    [SerializeField] private Text moneyText;
 
     // Start is called before the first frame update
     void Start()
@@ -27,5 +28,10 @@ public class UIController : MonoBehaviour
         healthBar.value = currentHealth;
 
         healthText.text = currentHealth + "/" + maxHealth;
+    }
+
+    public void UpdateMoney(float money)
+    {
+        moneyText.text = "" + money;
     }
 }
