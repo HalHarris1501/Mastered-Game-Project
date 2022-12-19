@@ -116,6 +116,7 @@ MonoBehaviour:
   value: 1
   moneyManager: {fileID: 0}
   moveForce: 1
+  timer: 2
 --- !u!50 &-2258780956758587347
 Rigidbody2D:
   serializedVersion: 4

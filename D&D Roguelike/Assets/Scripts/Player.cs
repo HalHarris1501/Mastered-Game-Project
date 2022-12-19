@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Rigidbody2D rigidBody;
-    private Vector2 movement;
+    public Vector2 movement;
 
     [SerializeField] private GameObject weapon;
     [SerializeField] private GameObject shootPoint;
@@ -31,6 +31,6 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidBody.MovePosition(rigidBody.position + movement * moveSpeed * Time.fixedDeltaTime);
+        rigidBody.MovePosition(rigidBody.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
     }
 }

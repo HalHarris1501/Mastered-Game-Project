@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private bool isFriendly;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float duration;
     private Vector2 targetPosition;
 
     // Start is called before the first frame update
@@ -16,6 +17,7 @@ public class Projectile : MonoBehaviour
         //point projectile to the direction it's facing
         Vector2 direction = new Vector2(targetPosition.x - transform.position.x, targetPosition.y - transform.position.y);
         transform.up = direction;
+        //moveSpeed += FindObjectOfType<Player>().gameObject.GetComponent<Rigidbody2D>().velocity;
     }
 
     // Update is called once per frame
@@ -26,9 +28,10 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (transform.position.x != targetPosition.x && transform.position.y != targetPosition.y)
+        if (duration > 0)
         {
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
+            transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
+            duration -= Time.fixedDeltaTime;
         }
         else
         {

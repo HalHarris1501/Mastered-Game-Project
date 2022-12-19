@@ -2336,7 +2336,7 @@ GameObject:
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1144943011
 Transform:
   m_ObjectHideFlags: 0
@@ -5202,7 +5202,7 @@ MonoBehaviour:
   pools:
   - tag: Gold Piece
     prefab: {fileID: 8364242122702068335, guid: 04c9807ed7ac8bf4593b70bdd6cb80d4, type: 3}
-    size: 1000
+    size: 100
   - tag: Spider
     prefab: {fileID: 3013207106420092614, guid: eaff1ae4f73750546b373ee0522f347b, type: 3}
     size: 100
