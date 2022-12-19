@@ -32,6 +32,6 @@ public class UIController : MonoBehaviour
 
     public void UpdateMoney(float money)
     {
-        moneyText.text = "" + money;
+        moneyText.text = "" + money.ToString("F2");
     }
 }
