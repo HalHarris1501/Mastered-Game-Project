@@ -5,8 +5,12 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private bool isFriendly;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float duration;
+    [SerializeField] private bool isAmmo;
+    private bool isCollectable = false;
+    [SerializeField]private float moveSpeed;
+    [SerializeField]private float duration;
+    [SerializeField]private int damage;
+    [SerializeField]private string damageType;
     private Vector2 targetPosition;
 
     // Start is called before the first frame update
@@ -28,41 +32,107 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (duration > 0)
+        if (!isAmmo)
         {
-            transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
-            duration -= Time.fixedDeltaTime;
+            if (duration > 0)
+            {
+                transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
+                duration -= Time.fixedDeltaTime;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         else
         {
-            Destroy(gameObject);
+            if (duration > 0)
+            {
+                transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
+                duration -= Time.fixedDeltaTime;
+            }
+            else
+            {
+                moveSpeed = 0;
+                isCollectable = true;
+            }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isFriendly)
+        if (!isAmmo)
         {
-            if (collision.gameObject.CompareTag("Enemy"))
+            if (isFriendly)
             {
-                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1);
+                if (collision.gameObject.CompareTag("Enemy"))
+                {
+                    collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+                    Destroy(gameObject);
+                }
+
+            }
+            else
+            {
+                if (collision.gameObject.CompareTag("Player"))
+                {
+                    collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+                    Destroy(gameObject);
+                }
+            }
+
+            if (collision.gameObject.CompareTag("Obstacle"))
+            {
                 Destroy(gameObject);
             }
-            
         }
         else
         {
-            if (collision.gameObject.CompareTag("Player"))
+            if (!isCollectable)
             {
-                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1);
-                Destroy(gameObject);
-            }
-        }
-        
-        if(collision.gameObject.CompareTag("Obstacle"))
-        {
-            Destroy(gameObject);
-        }
+                if (isFriendly)
+                {
+                    if (collision.gameObject.CompareTag("Enemy"))
+                    {
+                        collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+                        moveSpeed = 0;
+                        isCollectable = true;
+                    }
 
+                }
+                else
+                {
+                    if (collision.gameObject.CompareTag("Player"))
+                    {
+                        collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+                        moveSpeed = 0;
+                        isCollectable = true;
+                    }
+                }
+
+                if (collision.gameObject.CompareTag("Obstacle"))
+                {
+                    moveSpeed = 0;
+                    isCollectable = true;
+                }
+            }
+            else
+            {
+                if (collision.gameObject.CompareTag("Player"))
+                {
+                    collision.gameObject.GetComponentInChildren<Weapon>().IncreaseAmmo(1); ;
+                    Destroy(gameObject);
+                }
+            }          
+        }
+    }
+
+    public void SetVariables(bool friendly, float speed, float range, int damageToDo, string damageTypeString)
+    {
+        isFriendly = friendly;
+        moveSpeed = speed;
+        duration = range;
+        damage = damageToDo;
+        damageType = damageTypeString;
     }
 }

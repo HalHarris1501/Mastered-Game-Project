@@ -8,8 +8,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody;
     public Vector2 movement;
 
-    [SerializeField] private GameObject weapon;
-    [SerializeField] private GameObject shootPoint;
+    [SerializeField] private Weapon currentWeapon;
+    [SerializeField] private float startTimeBetweenAttack;
+    [SerializeField] private float timeBetweenAttack;
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +24,24 @@ public class Player : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if(Input.GetMouseButtonDown(0))
+        if (timeBetweenAttack <= 0)
         {
-            Instantiate(weapon, new Vector3(shootPoint.transform.position.x, shootPoint.transform.position.y, 0), Quaternion.identity);
+            if (Input.GetMouseButton(0))
+            {
+                currentWeapon.Attack(0);
+
+                timeBetweenAttack = startTimeBetweenAttack;
+            }
+            else if(Input.GetMouseButton(1))
+            {
+                currentWeapon.Attack(1);
+
+                timeBetweenAttack = startTimeBetweenAttack;
+            }
+        }
+        else
+        {
+            timeBetweenAttack -= Time.deltaTime;
         }
     }
 

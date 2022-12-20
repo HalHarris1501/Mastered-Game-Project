@@ -14,14 +14,17 @@ public class Enemy : MonoBehaviour, IPooledObject
 
     private void FixedUpdate()
     {
-        transform.position = Vector2.MoveTowards(transform.position, targetObject.transform.position, moveSpeed * Time.fixedDeltaTime);
+        if (targetObject != null)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, targetObject.transform.position, moveSpeed * Time.fixedDeltaTime);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1);
+            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, "Piercing");
         }
     }
 }

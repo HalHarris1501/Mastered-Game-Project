@@ -25,7 +25,7 @@ public class HealthSystem : MonoBehaviour
         
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(int damageAmount, string damageType)
     {
         health -= damageAmount;
 
@@ -38,5 +38,6 @@ public class HealthSystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Debug.Log(damageAmount);
     }
 }
