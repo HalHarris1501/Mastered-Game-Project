@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private bool offHandEmpty;
 
     [SerializeField] private bool isMelee;
-    [SerializeField] private int damageDice, versatileBonus;
+    [SerializeField] private int damageDice, versatileDice;
     [SerializeField] private string damageType;
     [SerializeField] private float range;
     [SerializeField] private float weaponMoveSpeed;
@@ -52,7 +52,7 @@ public class Weapon : MonoBehaviour
 
     public void MeleeAttack()
     {
-        int damage = Random.Range(1, damageDice + 1);
+        int damage = calculateDamage();
 
         if (isThrown == true)
         {
@@ -86,7 +86,7 @@ public class Weapon : MonoBehaviour
         {
             GameObject editedProjectile = projectile;
 
-            int damage = Random.Range(1, damageDice + 1);
+            int damage = calculateDamage();
             editedProjectile.GetComponent<Projectile>().SetVariables(true, weaponMoveSpeed, range, damage, damageType);
 
             if(ammunition > 0)
@@ -129,5 +129,20 @@ public class Weapon : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRadius);
+    }
+
+    int calculateDamage()
+    {
+        int damage = 0;
+        if(offHandEmpty == true && versatileDice != 0)
+        {
+            damage = Random.Range(1, versatileDice + 1);
+        }
+        else
+        {
+            damage = Random.Range(1, damageDice + 1);
+        }
+
+        return damage;
     }
 }

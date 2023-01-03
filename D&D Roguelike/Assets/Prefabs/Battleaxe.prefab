@@ -177,9 +177,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 0}
+  offHandEmpty: 1
   isMelee: 1
   damageDice: 8
-  versatileBonus: 10
+  versatileDice: 10
   damageType: Slashing
   range: 0
   weaponMoveSpeed: 0

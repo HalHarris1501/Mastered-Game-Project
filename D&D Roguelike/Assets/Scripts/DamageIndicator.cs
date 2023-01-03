@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DamageIndicator : MonoBehaviour
+public class DamageIndicator : MonoBehaviour, IPooledObject
 {
     [SerializeField] private Text text;
     [SerializeField] private float lifetime;
     [SerializeField] private float minDist;
     [SerializeField] private float maxDist;
+    [SerializeField]private Color startColor;
 
     private Vector3 iniPos;
     private Vector3 targetPos;
     private float timer;
 
     // Start is called before the first frame update
-    void Start()
+    public void OnObjectSpawn()
     {
         float direction = Random.rotation.eulerAngles.z;
         iniPos = transform.position;
         float dist = Random.Range(minDist, maxDist);
         targetPos = iniPos + (Quaternion.Euler(0, 0, direction) * new Vector2(dist, dist));
         transform.localScale = Vector3.zero;
+        timer = 0;
+        text.color = startColor;
     }
 
     // Update is called once per frame
@@ -33,7 +36,7 @@ public class DamageIndicator : MonoBehaviour
 
         if(timer > lifetime)
         {
-            Destroy(gameObject);
+            this.gameObject.SetActive(false);
         }
         else if(timer > fraction) //check if the text has existed for half its lifetime to start fading out
         {

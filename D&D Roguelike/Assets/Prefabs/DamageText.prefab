@@ -162,7 +162,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &9038738909729576145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 9038738909330780248}
-  lifetime: 1.5
-  minDist: 1.5
-  maxDist: 2
+  lifetime: 1
+  minDist: 0.25
+  maxDist: 1
+  startColor: {r: 1, g: 0, b: 0, a: 1}

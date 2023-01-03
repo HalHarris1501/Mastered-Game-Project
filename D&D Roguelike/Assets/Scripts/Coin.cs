@@ -28,16 +28,16 @@ public class Coin : MonoBehaviour, IPooledObject
 
     private void FixedUpdate()
     {
-        if (moveTimer > 0)
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * moveTimer, GetComponent<Rigidbody2D>().velocity.y * moveTimer);
+        //if (moveTimer > 0)
+        //{
+        //    GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * moveTimer, GetComponent<Rigidbody2D>().velocity.y * moveTimer);
 
-            moveTimer -= 0.1f;
-        }
-        else
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-        }
+        //    moveTimer -= 0.1f;
+        //}
+        //else
+        //{
+        //    GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
