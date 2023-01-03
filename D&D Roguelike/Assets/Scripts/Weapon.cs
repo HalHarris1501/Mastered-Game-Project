@@ -5,6 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private GameObject projectile;
+    [SerializeField] private bool offHandEmpty;
 
     [SerializeField] private bool isMelee;
     [SerializeField] private int damageDice, versatileBonus;

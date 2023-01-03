@@ -6,8 +6,10 @@ public class HealthSystem : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private int health = 3;
+    [SerializeField] private bool unkillable = false;
 
     [SerializeField] private UIController uiManager = null;
+    [SerializeField] private GameObject damageText;
 
     // Start is called before the first frame update
     void Start()
@@ -34,10 +36,15 @@ public class HealthSystem : MonoBehaviour
             uiManager.UpdateHealth(maxHealth, health);
         }
 
-        if (health <= 0)
+        if (health <= 0 && !unkillable)
         {
             Destroy(gameObject);
         }
-        Debug.Log(damageAmount);
+
+        if (damageText != null)
+        {
+            DamageIndicator indicator = Instantiate(damageText, transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+            indicator.SetDamageText(damageAmount);
+        }
     }
 }
