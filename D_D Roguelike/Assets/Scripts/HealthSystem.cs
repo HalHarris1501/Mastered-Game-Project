@@ -9,13 +9,10 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private bool unkillable = false;
 
     [SerializeField] private UIController uiManager = null;
-    [SerializeField] private ObjectPooler objectPooler;
 
     // Start is called before the first frame update
     void Start()
-    {
-        objectPooler = ObjectPooler.Instance;
-
+    { 
         if(this.gameObject.CompareTag("Player"))
         {
             uiManager = FindObjectOfType<UIController>();
@@ -43,10 +40,7 @@ public class HealthSystem : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (objectPooler != null)
-        {
-            DamageIndicator indicator = objectPooler.SpawnFromPool("Damage Indicator", transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
-            indicator.SetDamageText(damageAmount);
-        }
+        DamageIndicator indicator = ObjectPooler.Instance.SpawnFromPool("Damage Indicator", transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+        indicator.SetDamageText(damageAmount);        
     }
 }

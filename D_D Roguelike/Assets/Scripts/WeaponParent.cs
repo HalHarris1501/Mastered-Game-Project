@@ -5,24 +5,19 @@ using UnityEngine;
 public class WeaponParent : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer characterRenderer, weaponRenderer;
-    [SerializeField] private Weapon currentWeapon;
 
     private void Start()
     {
-        currentWeapon = GetComponentInChildren<Weapon>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        FaceMouse();
+        //FaceMouse();
     }
 
-    private void FaceMouse()
-    {
-        if (currentWeapon.isAttacking)
-            return;
-
+    public void FaceMouse()
+    {        
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Vector2 direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y).normalized;
@@ -48,5 +43,10 @@ public class WeaponParent : MonoBehaviour
         {
             weaponRenderer.sortingOrder = characterRenderer.sortingOrder + 1;
         }
+    }
+
+    public void SetNewWeapon(SpriteRenderer newWeaponSprite)
+    {
+        weaponRenderer = newWeaponSprite;
     }
 }

@@ -9,7 +9,7 @@ public class DamageIndicator : MonoBehaviour, IPooledObject
     [SerializeField] private float lifetime;
     [SerializeField] private float minDist;
     [SerializeField] private float maxDist;
-    [SerializeField]private Color startColor;
+    [SerializeField] private Color startColor;
 
     private Vector3 iniPos;
     private Vector3 targetPos;
