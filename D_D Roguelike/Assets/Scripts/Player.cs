@@ -13,6 +13,17 @@ public class Player : MonoBehaviour
     [SerializeField] private float startTimeBetweenAttack;
     [SerializeField] private float timeBetweenAttack;
 
+    #region Singleton
+
+    public static Player Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {

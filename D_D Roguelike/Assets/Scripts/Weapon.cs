@@ -125,13 +125,13 @@ public class Weapon : MonoBehaviour
         ammunition += increase;
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRadius);
     }
 
-    int calculateDamage()
+    private int calculateDamage()
     {
         int damage = 0;
         if(offHandEmpty == true && versatileDice != 0)
