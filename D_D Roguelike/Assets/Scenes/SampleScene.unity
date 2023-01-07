@@ -635,6 +635,7 @@ MonoBehaviour:
   rigidBody: {fileID: 173173295}
   movement: {x: 0, y: 0}
   currentWeapon: {fileID: 1565176492}
+  weaponParent: {fileID: 0}
   startTimeBetweenAttack: 0.3
   timeBetweenAttack: 0
 --- !u!50 &173173295
@@ -700,7 +701,6 @@ MonoBehaviour:
   health: 3
   unkillable: 0
   uiManager: {fileID: 0}
-  objectPooler: {fileID: 0}
 --- !u!114 &173173298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2083,7 +2083,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterRenderer: {fileID: 173173292}
   weaponRenderer: {fileID: 1565176495}
-  currentWeapon: {fileID: 1565176492}
 --- !u!1 &907214733
 GameObject:
   m_ObjectHideFlags: 0
