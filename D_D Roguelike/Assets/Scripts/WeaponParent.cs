@@ -13,7 +13,7 @@ public class WeaponParent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //FaceMouse();
+        
     }
 
     public void FaceMouse()
@@ -34,7 +34,7 @@ public class WeaponParent : MonoBehaviour
             scale.y = 1;
         }
         transform.localScale = scale;
-
+        
         if (transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180) //makes the weapon sprite go to a lower layer when held above the player's head 
         {
             weaponRenderer.sortingOrder = characterRenderer.sortingOrder - 1;
@@ -42,7 +42,7 @@ public class WeaponParent : MonoBehaviour
         else
         {
             weaponRenderer.sortingOrder = characterRenderer.sortingOrder + 1;
-        }
+        }        
     }
 
     public void SetNewWeapon(SpriteRenderer newWeaponSprite)

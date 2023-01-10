@@ -47,8 +47,13 @@ public class Player : MonoBehaviour
 
     public void SetWeapon(Weapon newWeapon, SpriteRenderer newWeaponSprite)
     {
+        currentWeapon.gameObject.SetActive(false);
         currentWeapon = newWeapon;
-        weaponParent.SetNewWeapon(newWeaponSprite);
+        currentWeapon.gameObject.SetActive(true);
+        if (weaponParent != null)
+        {
+            weaponParent.SetNewWeapon(newWeaponSprite);
+        }
     }
 
     private void GetInput()
