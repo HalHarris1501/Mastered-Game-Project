@@ -15,6 +15,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private string[] properties = new string[0];
     [SerializeField] private bool isThrown;
     [SerializeField] private int ammunition;
+    [SerializeField] private float duration;
 
     [SerializeField] private Transform attackPos;
     [SerializeField] private float attackRadius;
@@ -84,17 +85,15 @@ public class Weapon : MonoBehaviour
     {
         if (ammunition > 0 || ammunition == -1)
         {
-            GameObject editedProjectile = projectile;
-
             int damage = calculateDamage();
-            editedProjectile.GetComponent<Projectile>().SetVariables(true, weaponMoveSpeed, range, damage, damageType);
+            
+            GameObject editedProjectile = ObjectPooler.Instance.SpawnFromPool(projectile.name, this.transform.position, Quaternion.identity);                       
+            editedProjectile.GetComponent<Projectile>().SetVariables(true, weaponMoveSpeed, range, damage, damageType, duration);
 
             if(ammunition > 0)
             {
                 ammunition--;
             }
-
-            Instantiate(editedProjectile, this.transform.position, Quaternion.identity);
         }
     }
 

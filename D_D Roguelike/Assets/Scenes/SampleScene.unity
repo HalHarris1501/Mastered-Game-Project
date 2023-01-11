@@ -5636,9 +5636,12 @@ MonoBehaviour:
     size: 100
   - tag: Spider
     prefab: {fileID: 3013207106420092614, guid: eaff1ae4f73750546b373ee0522f347b, type: 3}
-    size: 100
+    size: 0
   - tag: Damage Indicator
     prefab: {fileID: 9038738909729576144, guid: cabfdf4c8f4883b4cba5bbeca6a74c64, type: 3}
+    size: 10
+  - tag: DaggerProj
+    prefab: {fileID: 8778696501724869811, guid: 4ad9a8947bd865c419b05afd75da0f84, type: 3}
     size: 10
 --- !u!1 &1518901874
 GameObject:

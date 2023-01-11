@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IPooledObject
 {
     [SerializeField] private bool isFriendly;
     [SerializeField] private bool isAmmo;
     private bool isCollectable = false;
-    [SerializeField]private float moveSpeed;
-    [SerializeField]private float duration;
-    [SerializeField]private int damage;
-    [SerializeField]private string damageType;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float duration;
+    [SerializeField]  int damage;
+    [SerializeField] private string damageType;
     private Vector2 targetPosition;
 
     // Start is called before the first frame update
-    void Start()
+    public void OnObjectSpawn()
     {
         targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -22,6 +22,7 @@ public class Projectile : MonoBehaviour
         Vector2 direction = new Vector2(targetPosition.x - transform.position.x, targetPosition.y - transform.position.y);
         transform.up = direction;
         //moveSpeed += FindObjectOfType<Player>().gameObject.GetComponent<Rigidbody2D>().velocity;
+        isCollectable = false;
     }
 
     // Update is called once per frame
@@ -41,7 +42,7 @@ public class Projectile : MonoBehaviour
             }
             else
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
         else
@@ -68,7 +69,7 @@ public class Projectile : MonoBehaviour
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
                     collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                 }
 
             }
@@ -77,13 +78,13 @@ public class Projectile : MonoBehaviour
                 if (collision.gameObject.CompareTag("Player"))
                 {
                     collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                 }
             }
 
             if (collision.gameObject.CompareTag("Obstacle"))
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
         else
@@ -121,18 +122,19 @@ public class Projectile : MonoBehaviour
                 if (collision.gameObject.CompareTag("Player"))
                 {
                     collision.gameObject.GetComponentInChildren<Weapon>().IncreaseAmmo(1); ;
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                 }
             }          
         }
     }
 
-    public void SetVariables(bool friendly, float speed, float range, int damageToDo, string damageTypeString)
+    public void SetVariables(bool friendly, float speed, float range, int damageToDo, string damageTypeString, float durationLength)
     {
         isFriendly = friendly;
         moveSpeed = speed;
         duration = range;
         damage = damageToDo;
         damageType = damageTypeString;
+        duration = durationLength;
     }
 }

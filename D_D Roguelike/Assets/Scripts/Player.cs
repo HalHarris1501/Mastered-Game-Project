@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
                 timeBetweenAttack = startTimeBetweenAttack;
             }
         }
-        else
+        else if (!currentWeapon.isAttacking)
         {
             timeBetweenAttack -= Time.deltaTime;
         }
