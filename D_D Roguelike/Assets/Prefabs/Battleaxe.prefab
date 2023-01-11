@@ -187,6 +187,8 @@ MonoBehaviour:
   properties: []
   isThrown: 0
   ammunition: 0
+  duration: 0
+  weaponCollider: {fileID: 8771904521392881469}
   attackPos: {fileID: 8852411429774294802}
   attackRadius: 0.6
   whatIsEnemy:

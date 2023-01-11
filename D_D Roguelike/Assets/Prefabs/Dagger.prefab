@@ -160,6 +160,7 @@ MonoBehaviour:
   isThrown: 1
   ammunition: 1
   duration: 1
+  weaponCollider: {fileID: 897426209432629836}
   attackPos: {fileID: 3660084424978057101}
   attackRadius: 0
   whatIsEnemy:

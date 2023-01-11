@@ -17,6 +17,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private int ammunition;
     [SerializeField] private float duration;
     private bool canDealDamage;
+    [SerializeField] private Collider2D weaponCollider;
 
     [SerializeField] private Transform attackPos;
     [SerializeField] private float attackRadius;
@@ -28,12 +29,13 @@ public class Weapon : MonoBehaviour
     public void ResetIsAttacking()
     {
         isAttacking = false;
+        weaponCollider.enabled = false;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        weaponCollider.enabled = false;
     }
 
     // Update is called once per frame
@@ -55,7 +57,7 @@ public class Weapon : MonoBehaviour
     public void MeleeAttack()
     {
         canDealDamage = true;
-        int damage = calculateDamage();
+        weaponCollider.enabled = true;
 
         if (isThrown == true)
         {
