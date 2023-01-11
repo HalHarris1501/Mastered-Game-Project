@@ -16,6 +16,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private bool isThrown;
     [SerializeField] private int ammunition;
     [SerializeField] private float duration;
+    private bool canDealDamage;
 
     [SerializeField] private Transform attackPos;
     [SerializeField] private float attackRadius;
@@ -53,28 +54,29 @@ public class Weapon : MonoBehaviour
 
     public void MeleeAttack()
     {
+        canDealDamage = true;
         int damage = calculateDamage();
 
         if (isThrown == true)
         {
             if (ammunition > 0)
             {
-                Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
-                for(int i = 0; i < enemiesToDamage.Length; i++)
-                {
-                    enemiesToDamage[i].GetComponent<HealthSystem>().TakeDamage(damage, damageType);
-                }
+                //Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+                //for(int i = 0; i < enemiesToDamage.Length; i++)
+                //{
+                //    enemiesToDamage[i].GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+                //}
                 animator.SetTrigger("Attack");
                 isAttacking = true;
             }
         }
         else
         {
-            Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
-            for (int i = 0; i < enemiesToDamage.Length; i++)
-            {
-                enemiesToDamage[i].GetComponent<HealthSystem>().TakeDamage(damage, damageType);
-            }
+            //Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRadius, whatIsEnemy);
+            //for (int i = 0; i < enemiesToDamage.Length; i++)
+            //{
+            //    enemiesToDamage[i].GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+            //}
             animator.SetTrigger("Attack");
             isAttacking = true;
         }
@@ -124,11 +126,11 @@ public class Weapon : MonoBehaviour
         ammunition += increase;
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPos.position, attackRadius);
-    }
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(attackPos.position, attackRadius);
+    //}
 
     private int calculateDamage()
     {
@@ -143,5 +145,18 @@ public class Weapon : MonoBehaviour
         }
 
         return damage;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(isAttacking && canDealDamage)
+        {
+            int damage = calculateDamage();
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+                canDealDamage = false;
+            }
+        }
     }
 }
