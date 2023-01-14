@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float startTimeBetweenAttack;
     [SerializeField] private float timeBetweenAttack;
 
+    private WeaponStruct _currentWeapon;
+
     #region Singleton
 
     public static Player Instance;
@@ -27,6 +29,10 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _currentWeapon = new WeaponStruct();
+        _currentWeapon.Type = WeaponType.Dagger;
+        //get weapon from weaponManager
+
         weaponParent = GetComponentInChildren<WeaponParent>();
         if(weaponParent is null)
         {
@@ -45,14 +51,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetWeapon(Weapon newWeapon, SpriteRenderer newWeaponSprite)
+    public void SetWeapon(GameObject newWeapon)
     {
         currentWeapon.gameObject.SetActive(false);
-        currentWeapon = newWeapon;
+        currentWeapon = newWeapon.GetComponent<Weapon>();
         currentWeapon.gameObject.SetActive(true);
         if (weaponParent != null)
         {
-            weaponParent.SetNewWeapon(newWeaponSprite);
+            weaponParent.SetNewWeapon(newWeapon.GetComponent<SpriteRenderer>());
         }
     }
 

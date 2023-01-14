@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectPooler : MonoBehaviour
 {
     [System.Serializable]
-    public class Pool
+    public struct Pool
     {
         public string tag;
         public GameObject prefab;
@@ -13,18 +13,27 @@ public class ObjectPooler : MonoBehaviour
     }
 
     #region Singleton
-
-    public static ObjectPooler Instance;
-
-    private void Awake()
+    private static ObjectPooler _instance;
+    public static ObjectPooler Instance
     {
-        Instance = this;
+        get //making sure that a weapon manager always exists
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<ObjectPooler>();
+            }
+            if (_instance == null)
+            {
+                GameObject go = new GameObject("ObjectPooler");
+                _instance = go.AddComponent<ObjectPooler>();
+            }
+            return _instance;
+        }
     }
-
     #endregion
 
-    public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> poolDictionary;
+    [SerializeField] private List<Pool> pools;
+    private Dictionary<string, Queue<GameObject>> poolDictionary;
 
     // Start is called before the first frame update
     void Start()
