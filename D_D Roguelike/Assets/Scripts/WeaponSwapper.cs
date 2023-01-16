@@ -30,8 +30,9 @@ public class WeaponSwapper : MonoBehaviour, IObserver
     {
         //create new button for the weapon
         Button newButton = Instantiate(_weaponButtonTemplate, _weaponContainer);
+        newButton.name = weaponType.ToString() + " button";
         //get icon from the weapons locker which is a singleton
-        newButton.GetComponentInChildren<Image>().sprite = WeaponsLocker.Instance.GetWeaponIcon(weaponType);
+        newButton.GetComponent<WeaponButton>().SetIcon(weaponType);
         //create an event for when the button is clicked
         newButton.onClick.AddListener(() => OnWeaponSelected(weaponType));
         newButton.gameObject.SetActive(true);
