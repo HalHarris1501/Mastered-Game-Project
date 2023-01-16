@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
         _currentWeapon = new WeaponStruct();
         _currentWeapon.Type = weaponType;
         _currentWeapon.WeaponObject = WeaponsLocker.Instance.GetWeaponObject(_currentWeapon.Type);
-        SetWeapon(_currentWeapon.WeaponObject);
         WeaponManager.Instance.AddWeaponToInventory(_currentWeapon.Type, _currentWeapon.WeaponObject);
+        SetWeapon(_currentWeapon.WeaponObject);  
     }
 }

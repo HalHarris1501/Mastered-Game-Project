@@ -57,11 +57,12 @@ public class WeaponsLocker : MonoBehaviour
         {
             if (_weapons[i].Type == weaponType)
             {
+                Debug.Log("sprite found");
                 return _weapons[i].WeaponObject.GetComponent<Sprite>();
             }            
         }
-        return null;
         Debug.LogError("Weapon not in locker");
+        return null;        
     }
 
     public GameObject GetWeaponObject(WeaponType weaponType)
@@ -73,8 +74,8 @@ public class WeaponsLocker : MonoBehaviour
                 return _weapons[i].WeaponObject;
             }
         }
-        return null;
         Debug.LogError("Weapon not in locker");
+        return null;        
     }
 
 }

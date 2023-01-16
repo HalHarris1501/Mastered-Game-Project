@@ -7,6 +7,7 @@ public class WeaponSwapper : MonoBehaviour, IObserver
 {
     [SerializeField] private RectTransform _weaponContainer; //The container that holds all the weapon buttons and has a grid layout for automatically ordering children
     [SerializeField] private Button _weaponButtonTemplate; //template button that will be instantiate for each weapon in player's inventory
+    [SerializeField] private Image _currentWeaponImage;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,7 @@ public class WeaponSwapper : MonoBehaviour, IObserver
         //deactivate the template button
         _weaponButtonTemplate.gameObject.SetActive(false);
         Player.Instance.SetStartingWeapon(WeaponType.Dagger);
+        _currentWeaponImage.sprite = WeaponsLocker.Instance.GetWeaponIcon(WeaponType.Dagger);
     }
 
     // Update is called once per frame
@@ -42,6 +44,6 @@ public class WeaponSwapper : MonoBehaviour, IObserver
         GameObject weaponObject = WeaponManager.Instance.GetWeapon(weaponType);
         //Equips the weapon
         Player.Instance.SetWeapon(weaponObject);
-        Debug.Log("bingul");
+        _currentWeaponImage.sprite = WeaponsLocker.Instance.GetWeaponIcon(weaponType);
     }
 }

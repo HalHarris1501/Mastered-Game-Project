@@ -61,7 +61,6 @@ public class WeaponManager : MonoBehaviour, ISubject
         {
             observer.NewWeaponAdded(weaponType);
         }
-        Debug.Log("bongos");
     }
 
     //called when the player picks up a weapon so the weapon manager can notify the observers
