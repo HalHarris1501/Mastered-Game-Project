@@ -42,7 +42,11 @@ public class WeaponManager : MonoBehaviour, ISubject
     //implement ISubject Interface
     public void RegisterObserver(IObserver o)
     {
-        if (_observers.Contains(o)) return; //check that o doesn't already exist in the list to avoid duplicates
+        Debug.Log(_observers.Count);
+        if (_observers.Count > 0)
+        {
+            if (_observers.Contains(o)) return; //check that o doesn't already exist in the list to avoid duplicates
+        }
         _observers.Add(o);
     }
 

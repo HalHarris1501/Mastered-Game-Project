@@ -27,6 +27,18 @@ public class WeaponsLocker : MonoBehaviour
     }
     #endregion
 
+    private void Awake()
+    {
+        if (_instance == null) //if there's no instance of the weapon locker, make this the weapons locker, ortherwise delete this to avoid duplicates
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
