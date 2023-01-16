@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class WeaponsLocker : MonoBehaviour
 {
-
-
     //Singleton pattern
     #region Singleton
     private static WeaponsLocker _instance;
@@ -27,6 +25,8 @@ public class WeaponsLocker : MonoBehaviour
     }
     #endregion
 
+    [SerializeField] private WeaponStruct[] _weapons = new WeaponStruct[0];
+    
     private void Awake()
     {
         if (_instance == null) //if there's no instance of the weapon locker, make this the weapons locker, ortherwise delete this to avoid duplicates
@@ -42,20 +42,39 @@ public class WeaponsLocker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public Sprite GetWeaponIcon(WeaponType weaponType)
     {
-
-
+        for (int i = 0; i < _weapons.Length; i++)
+        {
+            if (_weapons[i].Type == weaponType)
+            {
+                return _weapons[i].WeaponObject.GetComponent<Sprite>();
+            }            
+        }
         return null;
+        Debug.LogError("Weapon not in locker");
+    }
+
+    public GameObject GetWeaponObject(WeaponType weaponType)
+    {
+        for(int i = 0; i < _weapons.Length; i++)
+        {
+            if(_weapons[i].Type == weaponType)
+            {
+                return _weapons[i].WeaponObject;
+            }
+        }
+        return null;
+        Debug.LogError("Weapon not in locker");
     }
 
 }

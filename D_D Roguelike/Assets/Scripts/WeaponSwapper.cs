@@ -15,6 +15,7 @@ public class WeaponSwapper : MonoBehaviour, IObserver
         WeaponManager.Instance.RegisterObserver(this);
         //deactivate the template button
         _weaponButtonTemplate.gameObject.SetActive(false);
+        Player.Instance.SetStartingWeapon(WeaponType.Dagger);
     }
 
     // Update is called once per frame
@@ -28,9 +29,10 @@ public class WeaponSwapper : MonoBehaviour, IObserver
         //create new button for the weapon
         Button newButton = Instantiate(_weaponButtonTemplate, _weaponContainer);
         //get icon from the weapons locker which is a singleton
-        newButton.image.sprite = WeaponsLocker.Instance.GetWeaponIcon(weaponType);
+        newButton.GetComponentInChildren<Image>().sprite = WeaponsLocker.Instance.GetWeaponIcon(weaponType);
         //create an event for when the button is clicked
         newButton.onClick.AddListener(() => OnWeaponSelected(weaponType));
+        newButton.gameObject.SetActive(true);
     }
 
     //called when player clicks on the weapon button in the UI
@@ -40,5 +42,6 @@ public class WeaponSwapper : MonoBehaviour, IObserver
         GameObject weaponObject = WeaponManager.Instance.GetWeapon(weaponType);
         //Equips the weapon
         Player.Instance.SetWeapon(weaponObject);
+        Debug.Log("bingul");
     }
 }

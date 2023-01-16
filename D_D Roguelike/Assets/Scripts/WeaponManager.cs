@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour, ISubject
 {
-    private Dictionary<WeaponType, GameObject> _weapons;
-    private List<IObserver> _observers;
+    private Dictionary<WeaponType, GameObject> _weapons = new Dictionary<WeaponType, GameObject>();
+    private List<IObserver> _observers = new List<IObserver>();
     //Singleton pattern
     #region Singleton
     private static WeaponManager _instance;
@@ -42,7 +42,6 @@ public class WeaponManager : MonoBehaviour, ISubject
     //implement ISubject Interface
     public void RegisterObserver(IObserver o)
     {
-        Debug.Log(_observers.Count);
         if (_observers.Count > 0)
         {
             if (_observers.Contains(o)) return; //check that o doesn't already exist in the list to avoid duplicates
@@ -62,6 +61,7 @@ public class WeaponManager : MonoBehaviour, ISubject
         {
             observer.NewWeaponAdded(weaponType);
         }
+        Debug.Log("bongos");
     }
 
     //called when the player picks up a weapon so the weapon manager can notify the observers
