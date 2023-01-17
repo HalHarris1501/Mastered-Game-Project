@@ -38,13 +38,14 @@ public class UIController : MonoBehaviour
 
     private void ShowWeaponSwapper()
     {
-        if(Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && !Player.Instance.currentWeapon.isAttacking)
         {
-            weaponSelectorUI.SetActive(true);
+            weaponSelectorUI.SetActive(true);            
         }
         else
         {
             weaponSelectorUI.SetActive(false);
         }
+        
     }
 }

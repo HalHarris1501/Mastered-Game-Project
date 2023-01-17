@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody;
     public Vector2 movement;
 
-    [SerializeField] private Weapon currentWeapon;
+    public Weapon currentWeapon;
     [SerializeField] private WeaponParent weaponParent;
     [SerializeField] private float startTimeBetweenAttack;
     [SerializeField] private float timeBetweenAttack;
