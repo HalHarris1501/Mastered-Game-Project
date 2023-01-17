@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponCollectable : MonoBehaviour, ICollectable<WeaponType>
+public class PotionCollectable : MonoBehaviour, ICollectable<PotionEnum>
 {
-    [SerializeField] private WeaponType weaponType;
-
+    [SerializeField] private PotionEnum potionType;
 
     // Start is called before the first frame update
     void Start()
@@ -19,9 +18,9 @@ public class WeaponCollectable : MonoBehaviour, ICollectable<WeaponType>
         
     }
 
-    public WeaponType Pickup()
+    public PotionEnum Pickup()
     {
         Destroy(gameObject);
-        return weaponType;
+        return potionType;
     }
 }

@@ -9,6 +9,9 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private bool unkillable = false;
 
     [SerializeField] private UIController uiManager = null;
+    [SerializeField] private List<DamageType> immunities;
+    [SerializeField] private List<DamageType> resistances;
+    [SerializeField] private List<DamageType> vulnerabilities;
 
     // Start is called before the first frame update
     void Start()
@@ -28,9 +31,44 @@ public class HealthSystem : MonoBehaviour
 
     public void TakeDamage(int damageAmount, DamageType damageType)
     {
+        DamageIndicator indicator = ObjectPooler.Instance.SpawnFromPool("Damage Indicator", transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+        if (immunities.Contains(damageType))
+        {
+            damageAmount = 0;
+            indicator.SetDamageText(damageAmount, Color.black);
+        }
+        else if (resistances.Contains(damageType))
+        {
+            damageAmount = Mathf.FloorToInt(damageAmount / 2);
+            if(damageAmount == 0)
+            {
+                damageAmount = 1;
+            }
+            indicator.SetDamageText(damageAmount, Color.grey);
+        }
+        else if(vulnerabilities.Contains(damageType))
+        {
+            damageAmount = (damageAmount * 2);
+            indicator.SetDamageText(damageAmount, Color.yellow);
+        }
+        else if(damageType == DamageType.Healing)
+        {
+            damageAmount = -damageAmount;
+            indicator.SetDamageText(-damageAmount, Color.green);
+        }
+        else
+        {
+            indicator.SetDamageText(damageAmount, Color.red);
+        }
+
         health -= damageAmount;
 
-        if(this.gameObject.CompareTag("Player"))
+        if(health > maxHealth)
+        {
+            health = maxHealth;
+        }
+
+        if (this.gameObject.CompareTag("Player"))
         {
             uiManager.UpdateHealth(maxHealth, health);
         }
@@ -38,9 +76,6 @@ public class HealthSystem : MonoBehaviour
         if (health <= 0 && !unkillable)
         {
             Destroy(gameObject);
-        }
-
-        DamageIndicator indicator = ObjectPooler.Instance.SpawnFromPool("Damage Indicator", transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
-        indicator.SetDamageText(damageAmount);        
+        }            
     }
 }

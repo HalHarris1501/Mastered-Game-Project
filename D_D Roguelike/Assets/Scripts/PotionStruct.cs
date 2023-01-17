@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public struct PotionStruct
 {
-    PotionEnum potionType;
-    IPotion potion;
+    public PotionEnum PotionType;
+    public GameObject Potion;
 }

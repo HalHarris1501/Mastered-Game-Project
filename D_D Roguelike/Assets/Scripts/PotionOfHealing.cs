@@ -18,6 +18,14 @@ public class PotionOfHealing : MonoBehaviour, IPotion
 
     public void PotionEffect()
     {
-        
+        int healing = 0;
+
+        for(int i = 0; i < 2; i++)
+        {
+            healing += Random.Range(1, 4);
+        }
+        healing += 4;
+
+        Player.Instance.GetComponentInChildren<HealthSystem>().TakeDamage(healing, DamageType.Healing);
     }
 }

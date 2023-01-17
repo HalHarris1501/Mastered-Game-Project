@@ -21,6 +21,7 @@ public class UIController : MonoBehaviour
     void Update()
     {
         ShowWeaponSwapper();
+        ShowPotionUI();
     }
 
     public void UpdateHealth(int maxHealth, int currentHealth)
@@ -48,5 +49,18 @@ public class UIController : MonoBehaviour
             weaponSelectorUI.SetActive(false);
         }
         
+    }
+
+    private void ShowPotionUI()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            potionSelectorUI.SetActive(true);
+        }
+        else
+        {
+            potionSelectorUI.SetActive(false);
+        }
+
     }
 }

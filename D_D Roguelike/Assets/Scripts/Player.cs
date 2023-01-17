@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float timeBetweenAttack;
 
     private WeaponStruct _currentWeapon;
+    private GameObject collectableNearby;
 
     #region Singleton
 
@@ -64,6 +65,14 @@ public class Player : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
+        if(collectableNearby != null)
+        {
+            if(Input.GetKeyDown(KeyCode.F))
+            {
+                PickupCollectable();
+            }
+        }
+
         if (timeBetweenAttack <= 0)
         {
             if (Input.GetMouseButton(0))
@@ -97,5 +106,61 @@ public class Player : MonoBehaviour
         _currentWeapon.WeaponObject = WeaponsLocker.Instance.GetWeaponObject(_currentWeapon.Type);
         WeaponManager.Instance.AddWeaponToInventory(_currentWeapon.Type, _currentWeapon.WeaponObject);
         SetWeapon(_currentWeapon.WeaponObject);  
+    }
+
+    public void PickupCollectable()
+    {
+        if(collectableNearby.GetComponent<ICollectable<WeaponType>>() != null)
+        {
+            WeaponStruct newWeapon = new WeaponStruct();
+            newWeapon.Type = collectableNearby.GetComponent<ICollectable<WeaponType>>().Pickup();
+            newWeapon.WeaponObject = WeaponsLocker.Instance.GetWeaponObject(newWeapon.Type);
+            WeaponManager.Instance.AddWeaponToInventory(newWeapon.Type, newWeapon.WeaponObject);
+        }
+        else if(collectableNearby.GetComponent<ICollectable<PotionEnum>>() != null)
+        {
+            PotionStruct newPotion = new PotionStruct();
+            newPotion.PotionType = collectableNearby.GetComponent<ICollectable<PotionEnum>>().Pickup();
+            newPotion.Potion = PotionLocker.Instance.GetPotionObject(newPotion.PotionType);
+            PotionManager.Instance.AddPotionToInventory(newPotion.PotionType, newPotion.Potion);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Collectable"))
+        {
+            WeaponCollectable weaponCollectable = collision.GetComponent<WeaponCollectable>();
+            PotionCollectable potionCollectable = collision.GetComponent<PotionCollectable>();
+            if (weaponCollectable != null)
+            {
+                collectableNearby = weaponCollectable.gameObject;
+                Debug.Log(collectableNearby);
+            }
+            else if (potionCollectable != null)
+            {
+                collectableNearby = potionCollectable.gameObject;
+                Debug.Log(collectableNearby);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Collectable"))
+        {
+            WeaponCollectable weaponCollectable = collision.GetComponent<WeaponCollectable>();
+            PotionCollectable potionCollectable = collision.GetComponent<PotionCollectable>();
+            if (weaponCollectable != null)
+            {
+                collectableNearby = null;
+                Debug.Log(collectableNearby);
+            }
+            else if(potionCollectable != null)
+            {
+                collectableNearby = null;
+                Debug.Log(collectableNearby);
+            }
+        }
     }
 }

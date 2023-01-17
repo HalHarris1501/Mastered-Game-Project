@@ -9,7 +9,6 @@ public class DamageIndicator : MonoBehaviour, IPooledObject
     [SerializeField] private float lifetime;
     [SerializeField] private float minDist;
     [SerializeField] private float maxDist;
-    [SerializeField] private Color startColor;
 
     private Vector3 iniPos;
     private Vector3 targetPos;
@@ -24,7 +23,6 @@ public class DamageIndicator : MonoBehaviour, IPooledObject
         targetPos = iniPos + (Quaternion.Euler(0, 0, direction) * new Vector2(dist, dist));
         transform.localScale = Vector3.zero;
         timer = 0;
-        text.color = startColor;
     }
 
     // Update is called once per frame
@@ -47,8 +45,9 @@ public class DamageIndicator : MonoBehaviour, IPooledObject
         transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, Mathf.Sin(timer / lifetime));
     }
 
-    public void SetDamageText(int damage)
+    public void SetDamageText(int damage, Color colour)
     {
         text.text = damage.ToString();
+        text.color = colour;
     }
 }

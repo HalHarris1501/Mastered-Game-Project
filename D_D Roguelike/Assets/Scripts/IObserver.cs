@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IObserver
+public interface IObserver<in T>
 {
-    void NewWeaponAdded(WeaponType weapon);
+    void NewItemAdded(T type);
 
-    void WeaponRemoved(WeaponType weaponType);
+    void ItemRemoved(T type);
 }

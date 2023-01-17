@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2873135765369733925
+--- !u!1 &1629290439608945497
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,28 +8,28 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2873135765369733924}
-  - component: {fileID: 2873135765369733926}
-  - component: {fileID: 2873135765369733927}
+  - component: {fileID: 1629290439608945496}
+  - component: {fileID: 1629290439608945498}
+  - component: {fileID: 1629290439608945499}
   m_Layer: 5
-  m_Name: Weapon Image
+  m_Name: Potion Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &2873135765369733924
+--- !u!224 &1629290439608945496
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873135765369733925}
+  m_GameObject: {fileID: 1629290439608945497}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2873135765929845927}
+  m_Father: {fileID: 1629290440152214747}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -37,21 +37,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2873135765369733926
+--- !u!222 &1629290439608945498
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873135765369733925}
+  m_GameObject: {fileID: 1629290439608945497}
   m_CullTransparentMesh: 1
---- !u!114 &2873135765369733927
+--- !u!114 &1629290439608945499
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873135765369733925}
+  m_GameObject: {fileID: 1629290439608945497}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &2873135765929845924
+--- !u!1 &1629290440152214744
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -83,30 +83,30 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2873135765929845927}
-  - component: {fileID: 2873135765929845928}
-  - component: {fileID: 2873135765929845929}
-  - component: {fileID: 2873135765929845926}
-  - component: {fileID: 2873135765929845931}
+  - component: {fileID: 1629290440152214747}
+  - component: {fileID: 1629290440152214740}
+  - component: {fileID: 1629290440152214741}
+  - component: {fileID: 1629290440152214746}
+  - component: {fileID: 8691974891350944753}
   m_Layer: 5
-  m_Name: Template Button
+  m_Name: Template Potion Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!224 &2873135765929845927
+--- !u!224 &1629290440152214747
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873135765929845924}
+  m_GameObject: {fileID: 1629290440152214744}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2873135765369733924}
+  - {fileID: 1629290439608945496}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -115,21 +115,21 @@ RectTransform:
   m_AnchoredPosition: {x: 60, y: -60}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2873135765929845928
+--- !u!222 &1629290440152214740
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873135765929845924}
+  m_GameObject: {fileID: 1629290440152214744}
   m_CullTransparentMesh: 1
---- !u!114 &2873135765929845929
+--- !u!114 &1629290440152214741
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873135765929845924}
+  m_GameObject: {fileID: 1629290440152214744}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -153,13 +153,13 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2873135765929845926
+--- !u!114 &1629290440152214746
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873135765929845924}
+  m_GameObject: {fileID: 1629290440152214744}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -193,20 +193,20 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2873135765929845929}
+  m_TargetGraphic: {fileID: 1629290440152214741}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2873135765929845931
+--- !u!114 &8691974891350944753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2873135765929845924}
+  m_GameObject: {fileID: 1629290440152214744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a821b04c10b37c447ae99400ec2a74f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c588831c22e32740a1f866b0437913a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponImage: {fileID: 2873135765369733927}
+  potionImage: {fileID: 1629290439608945499}

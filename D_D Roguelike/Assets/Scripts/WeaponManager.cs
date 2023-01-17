@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponManager : MonoBehaviour, ISubject
+public class WeaponManager : MonoBehaviour, ISubject<WeaponType>
 {
     private Dictionary<WeaponType, GameObject> _weapons = new Dictionary<WeaponType, GameObject>();
     private Dictionary<WeaponType, int> _weaponCount = new Dictionary<WeaponType, int>();
-    private List<IObserver> _observers = new List<IObserver>();
+    private List<IObserver<WeaponType>> _observers = new List<IObserver<WeaponType>>();
     private bool addingWeapon;
 
     //Singleton pattern
@@ -43,7 +43,7 @@ public class WeaponManager : MonoBehaviour, ISubject
     }
 
     //implement ISubject Interface
-    public void RegisterObserver(IObserver o)
+    public void RegisterObserver(IObserver<WeaponType> o)
     {
         if (_observers.Count > 0)
         {
@@ -52,7 +52,7 @@ public class WeaponManager : MonoBehaviour, ISubject
         _observers.Add(o);
     }
 
-    public void RemoveObserver(IObserver o)
+    public void RemoveObserver(IObserver<WeaponType> o)
     {
         _observers.Remove(o);
     }
@@ -64,11 +64,11 @@ public class WeaponManager : MonoBehaviour, ISubject
         {
             if (addingWeapon)
             {
-                observer.NewWeaponAdded(weaponType);
+                observer.NewItemAdded(weaponType);
             }
             else
             {
-                observer.WeaponRemoved(weaponType);
+                observer.ItemRemoved(weaponType);
             }
         }
     }

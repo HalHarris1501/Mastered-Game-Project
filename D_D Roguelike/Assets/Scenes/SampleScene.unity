@@ -546,6 +546,7 @@ GameObject:
   - component: {fileID: 173173298}
   - component: {fileID: 173173295}
   - component: {fileID: 173173296}
+  - component: {fileID: 173173299}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -701,6 +702,9 @@ MonoBehaviour:
   health: 3
   unkillable: 0
   uiManager: {fileID: 0}
+  immunities: 
+  resistances: 
+  vulnerabilities: 
 --- !u!114 &173173298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -714,6 +718,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIController: {fileID: 0}
+--- !u!61 &173173299
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173173291}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 0.16, y: 0.16}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2}
+  m_EdgeRadius: 0
 --- !u!1 &197830523
 GameObject:
   m_ObjectHideFlags: 0
@@ -1824,8 +1854,8 @@ GameObject:
   m_Component:
   - component: {fileID: 677457807}
   - component: {fileID: 677457806}
-  - component: {fileID: 677457808}
   - component: {fileID: 677457809}
+  - component: {fileID: 677457808}
   m_Layer: 0
   m_Name: BattleaxeCollectable
   m_TagString: Collectable
@@ -1922,7 +1952,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &677457809
 MonoBehaviour:
@@ -5390,6 +5420,7 @@ GameObject:
   - component: {fileID: 1309014257}
   - component: {fileID: 1309014261}
   - component: {fileID: 1309014262}
+  - component: {fileID: 1309014263}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5513,6 +5544,20 @@ MonoBehaviour:
   _weaponContainer: {fileID: 1025881138}
   _weaponButtonTemplate: {fileID: 2873135765929845926, guid: cbc7052cd66feef4c9fb6bcf250fe8f9, type: 3}
   _currentWeaponImage: {fileID: 810627545}
+--- !u!114 &1309014263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309014256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408327fc9df178444b30bcec4683b519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _potionContainer: {fileID: 860236942}
+  _potionButtonTemplate: {fileID: 1629290440152214746, guid: 4f15e78641b5d56419efbac004eb4e10, type: 3}
 --- !u!1001 &1354944563
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5630,6 +5675,52 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 700, y: 200}
   m_Pivot: {x: 1, y: 0}
+--- !u!1 &1481628914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1481628915}
+  - component: {fileID: 1481628916}
+  m_Layer: 0
+  m_Name: PotionLocker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1481628915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481628914}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 882.6247, y: 430.6801, z: -35.01644}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1481628916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481628914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb87ee0ddb605d4685b4dc85c382b0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _potions:
+  - PotionType: 0
+    Potion: {fileID: 3416003121952572333, guid: eac2417788380544ab025e78ce4596cb, type: 3}
 --- !u!1 &1509965871
 GameObject:
   m_ObjectHideFlags: 0
@@ -11532,6 +11623,68 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 400}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &3416003122942755301
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3416003121952572329, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572333, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_Name
+      value: PotionOfHealing
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
+  m_SourcePrefab: {fileID: 100100000, guid: eac2417788380544ab025e78ce4596cb, type: 3}
 --- !u!1001 &7005628582255020383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11587,6 +11740,22 @@ PrefabInstance:
       propertyPath: damageText
       value: 
       objectReference: {fileID: 9038738909729576144, guid: cabfdf4c8f4883b4cba5bbeca6a74c64, type: 3}
+    - target: {fileID: 7005628582956441006, guid: 308b60dac0846c0459ad20fc77b6d4b2, type: 3}
+      propertyPath: immunities.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7005628582956441006, guid: 308b60dac0846c0459ad20fc77b6d4b2, type: 3}
+      propertyPath: resistances.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7005628582956441006, guid: 308b60dac0846c0459ad20fc77b6d4b2, type: 3}
+      propertyPath: immunities.Array.data[0]
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7005628582956441006, guid: 308b60dac0846c0459ad20fc77b6d4b2, type: 3}
+      propertyPath: resistances.Array.data[0]
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7005628582956441007, guid: 308b60dac0846c0459ad20fc77b6d4b2, type: 3}
       propertyPath: m_Name
       value: Dummy

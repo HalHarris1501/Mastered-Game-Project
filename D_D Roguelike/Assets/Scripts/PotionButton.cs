@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class WeaponCollectable : MonoBehaviour, ICollectable<WeaponType>
+public class PotionButton : MonoBehaviour
 {
-    [SerializeField] private WeaponType weaponType;
-
+    [SerializeField] private Image potionImage;
 
     // Start is called before the first frame update
     void Start()
@@ -19,9 +19,8 @@ public class WeaponCollectable : MonoBehaviour, ICollectable<WeaponType>
         
     }
 
-    public WeaponType Pickup()
+    public void SetIcon(PotionEnum potionType)
     {
-        Destroy(gameObject);
-        return weaponType;
+        potionImage.sprite = PotionLocker.Instance.GetPotionIcon(potionType);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponSwapper : MonoBehaviour, IObserver
+public class WeaponSwapper : MonoBehaviour, IObserver<WeaponType>
 {
     [SerializeField] private RectTransform _weaponContainer; //The container that holds all the weapon buttons and has a grid layout for automatically ordering children
     [SerializeField] private Button _weaponButtonTemplate; //template button that will be instantiate for each weapon in player's inventory
@@ -28,7 +28,7 @@ public class WeaponSwapper : MonoBehaviour, IObserver
         
     }
 
-    public void NewWeaponAdded(WeaponType weaponType)
+    public void NewItemAdded(WeaponType weaponType)
     {
         //create new button for the weapon
         Button newButton = Instantiate(_weaponButtonTemplate, _weaponContainer);
@@ -41,7 +41,7 @@ public class WeaponSwapper : MonoBehaviour, IObserver
         _buttons.Add(weaponType, newButton);
     }
 
-    public void WeaponRemoved(WeaponType weaponType)
+    public void ItemRemoved(WeaponType weaponType)
     {
         if(_buttons.ContainsKey(weaponType))
         {

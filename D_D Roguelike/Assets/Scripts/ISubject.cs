@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISubject
+public interface ISubject<T>
 {
-    void RegisterObserver(IObserver o);
-    void RemoveObserver(IObserver o);
-    void NotifyObservers(WeaponType weapon);
+    void RegisterObserver(IObserver<T> o);
+    void RemoveObserver(IObserver<T> o);
+    void NotifyObservers(T type);
 
 }
