@@ -5,4 +5,6 @@ using UnityEngine;
 public interface IObserver
 {
     void NewWeaponAdded(WeaponType weapon);
+
+    void WeaponRemoved(WeaponType weaponType);
 }

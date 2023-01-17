@@ -9,6 +9,8 @@ public class WeaponSwapper : MonoBehaviour, IObserver
     [SerializeField] private Button _weaponButtonTemplate; //template button that will be instantiate for each weapon in player's inventory
     [SerializeField] private Image _currentWeaponImage;
 
+    private Dictionary<WeaponType, Button> _buttons = new Dictionary<WeaponType, Button>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,17 @@ public class WeaponSwapper : MonoBehaviour, IObserver
         //create an event for when the button is clicked
         newButton.onClick.AddListener(() => OnWeaponSelected(weaponType));
         newButton.gameObject.SetActive(true);
+        _buttons.Add(weaponType, newButton);
+    }
+
+    public void WeaponRemoved(WeaponType weaponType)
+    {
+        if(_buttons.ContainsKey(weaponType))
+        {
+            GameObject tempButton = _buttons[weaponType].gameObject;
+            _buttons.Remove(weaponType);
+            Destroy(tempButton);
+        }
     }
 
     //called when player clicks on the weapon button in the UI

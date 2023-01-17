@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private Text healthText;
     [SerializeField] private Text moneyText;
     [SerializeField] private GameObject weaponSelectorUI;
+    [SerializeField] private GameObject potionSelectorUI;
 
     // Start is called before the first frame update
     void Start()

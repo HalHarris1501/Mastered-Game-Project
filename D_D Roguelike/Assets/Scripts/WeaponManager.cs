@@ -5,7 +5,10 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour, ISubject
 {
     private Dictionary<WeaponType, GameObject> _weapons = new Dictionary<WeaponType, GameObject>();
+    private Dictionary<WeaponType, int> _weaponCount = new Dictionary<WeaponType, int>();
     private List<IObserver> _observers = new List<IObserver>();
+    private bool addingWeapon;
+
     //Singleton pattern
     #region Singleton
     private static WeaponManager _instance;
@@ -59,16 +62,60 @@ public class WeaponManager : MonoBehaviour, ISubject
         //notify all observers that a new weapon has been added
         foreach(var observer in _observers)
         {
-            observer.NewWeaponAdded(weaponType);
+            if (addingWeapon)
+            {
+                observer.NewWeaponAdded(weaponType);
+            }
+            else
+            {
+                observer.WeaponRemoved(weaponType);
+            }
         }
     }
 
     //called when the player picks up a weapon so the weapon manager can notify the observers
     public void AddWeaponToInventory(WeaponType weaponType, GameObject weaponObject)
     {
-        if (_weapons.ContainsKey(weaponType)) return; //check for weapon to prevent duplicates
-        _weapons.Add(weaponType, weaponObject);
-        NotifyObservers(weaponType);
+        if (_weapons.ContainsKey(weaponType))
+        {
+            _weaponCount[weaponType]++;
+        }
+        else
+        {
+            _weaponCount.Add(weaponType, 1);
+            _weapons.Add(weaponType, weaponObject);
+            addingWeapon = true;
+            NotifyObservers(weaponType);
+        }
+    }
+
+    public void RemoveWeaponFromInventory(WeaponType weaponType)
+    {
+        if (!_weapons.ContainsKey(weaponType)) return;
+        _weaponCount.Remove(weaponType);
+        _weapons.Remove(weaponType);
+        addingWeapon = false;
+        NotifyObservers(weaponType);       
+    }
+
+    public void AlterWeaponCount(WeaponType weaponType, int numToAlterBy, bool increasingCount)
+    {
+        if (!_weaponCount.ContainsKey(weaponType)) return;
+        if (!increasingCount)
+        {
+            if (_weaponCount[weaponType] > 0)
+            {
+                _weaponCount[weaponType] -= numToAlterBy;
+            }
+            else if (_weaponCount[weaponType] <= 0)
+            {
+                Debug.LogError("No " + weaponType + "s left in inventory");
+            }
+        }
+        else if (increasingCount)
+        {
+            _weaponCount[weaponType] += numToAlterBy;
+        }         
     }
 
     public GameObject GetWeapon(WeaponType weaponType)
@@ -80,6 +127,31 @@ public class WeaponManager : MonoBehaviour, ISubject
         }
 
         return _weapons[weaponType];        
+    }
+
+    public bool CheckWeaponInInventory(WeaponType weaponType)
+    {
+        if(_weapons.ContainsKey(weaponType))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public int CheckWeaponCount(WeaponType weaponType)
+    {
+        if (!_weaponCount.ContainsKey(weaponType))
+        {
+            Debug.LogError(weaponType + " not found in dictionary");
+            return 0;
+        }
+        else
+        {
+            return _weaponCount[weaponType];
+        }        
     }
 
     // Start is called before the first frame update

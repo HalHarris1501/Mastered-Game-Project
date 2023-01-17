@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour, IPooledObject
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, "Piercing");
+                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, DamageType.Piercing);
                 damageTimer = 1f;
             }
         }
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour, IPooledObject
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, "Piercing");
+                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, DamageType.Piercing);
                 damageTimer = 1f;
             }
         }

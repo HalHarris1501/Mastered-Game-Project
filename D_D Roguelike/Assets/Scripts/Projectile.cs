@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour, IPooledObject
     [SerializeField] private float moveSpeed;
     [SerializeField] private float duration;
     [SerializeField]  int damage;
-    [SerializeField] private string damageType;
+    [SerializeField] private DamageType damageType;
     private Vector2 targetPosition;
 
     // Start is called before the first frame update
@@ -128,13 +128,13 @@ public class Projectile : MonoBehaviour, IPooledObject
         }
     }
 
-    public void SetVariables(bool friendly, float speed, float range, int damageToDo, string damageTypeString, float durationLength)
+    public void SetVariables(bool friendly, float speed, float range, int damageToDo, DamageType damageTyping, float durationLength)
     {
         isFriendly = friendly;
         moveSpeed = speed;
         duration = range;
         damage = damageToDo;
-        damageType = damageTypeString;
+        damageType = damageTyping;
         duration = durationLength;
     }
 }

@@ -26,7 +26,7 @@ public class HealthSystem : MonoBehaviour
         
     }
 
-    public void TakeDamage(int damageAmount, string damageType)
+    public void TakeDamage(int damageAmount, DamageType damageType)
     {
         health -= damageAmount;
 
