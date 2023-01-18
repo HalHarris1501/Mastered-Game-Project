@@ -546,7 +546,6 @@ GameObject:
   - component: {fileID: 173173298}
   - component: {fileID: 173173295}
   - component: {fileID: 173173296}
-  - component: {fileID: 173173299}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -637,7 +636,7 @@ MonoBehaviour:
   movement: {x: 0, y: 0}
   currentWeapon: {fileID: 1565176492}
   weaponParent: {fileID: 0}
-  startTimeBetweenAttack: 0.1
+  startTimeBetweenAttack: 0.3
   timeBetweenAttack: 0
 --- !u!50 &173173295
 Rigidbody2D:
@@ -718,32 +717,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIController: {fileID: 0}
---- !u!61 &173173299
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 173173291}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 0.16, y: 0.16}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!1 &197830523
 GameObject:
   m_ObjectHideFlags: 0
@@ -5777,6 +5750,12 @@ MonoBehaviour:
   - tag: DaggerProj
     prefab: {fileID: 8778696501724869811, guid: 4ad9a8947bd865c419b05afd75da0f84, type: 3}
     size: 10
+  - tag: Copper Piece
+    prefab: {fileID: 1675421751283266032, guid: 806a3e68a6a8e9b49a2aace81ba65966, type: 3}
+    size: 100
+  - tag: Silver Piece
+    prefab: {fileID: 880773518636260722, guid: 75556e13ae1b91146bc97c85ea004b93, type: 3}
+    size: 100
 --- !u!1 &1518901874
 GameObject:
   m_ObjectHideFlags: 0
@@ -11644,11 +11623,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.76
+      value: -3.28
       objectReference: {fileID: 0}
     - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.14
+      value: -5.15
       objectReference: {fileID: 0}
     - target: {fileID: 3416003121952572334, guid: eac2417788380544ab025e78ce4596cb, type: 3}
       propertyPath: m_LocalPosition.z

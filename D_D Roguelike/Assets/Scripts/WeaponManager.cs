@@ -105,7 +105,7 @@ public class WeaponManager : MonoBehaviour, ISubject<WeaponType>
         {
             if (_weaponCount[weaponType] > 0)
             {
-                _weaponCount[weaponType] -= numToAlterBy;
+                _weaponCount[weaponType] -= numToAlterBy;                
             }
             else if (_weaponCount[weaponType] <= 0)
             {
@@ -115,7 +115,7 @@ public class WeaponManager : MonoBehaviour, ISubject<WeaponType>
         else if (increasingCount)
         {
             _weaponCount[weaponType] += numToAlterBy;
-        }         
+        }
     }
 
     public GameObject GetWeapon(WeaponType weaponType)

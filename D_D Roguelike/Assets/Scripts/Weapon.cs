@@ -124,7 +124,7 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            WeaponManager.Instance.AlterWeaponCount(weaponType, 1, true);
+            WeaponManager.Instance.AlterWeaponCount(weaponType, increase, true);
         }
     }
 

@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour, IPooledObject
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private GameObject targetObject;
     [SerializeField] private float damageTimer = 1f;
+    [SerializeField] private float challengeRating;
 
     public void OnObjectSpawn()
     {
@@ -50,5 +51,39 @@ public class Enemy : MonoBehaviour, IPooledObject
                 damageTimer = 1f;
             }
         }
+    }
+
+    public void Death()
+    {
+        GenerateCoins();
+
+        gameObject.SetActive(false);
+    }
+
+    private void GenerateCoins()
+    {
+        int coinsToSpawn = Random.Range(0, (100 + Mathf.RoundToInt(100 * challengeRating)));
+
+        for (int i = coinsToSpawn; i > 0; i--)
+        {            
+            if (i > 100)
+            {
+                i++;
+                ObjectPooler.Instance.SpawnFromPool("Gold Piece", transform.position, Quaternion.identity);
+                i -= 100;
+            }
+            else if(i > 10)
+            {
+                i++;
+                ObjectPooler.Instance.SpawnFromPool("Silver Piece", transform.position, Quaternion.identity);
+                i -= 10;
+            }
+            else
+            {
+                ObjectPooler.Instance.SpawnFromPool("Copper Piece", transform.position, Quaternion.identity);
+            }
+        }
+        
+        
     }
 }

@@ -8,8 +8,9 @@ public class Coin : MonoBehaviour, IPooledObject
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private float moveForce = 3f;
     [SerializeField] private float duration;
-    [SerializeField] private Vector2 startPosition;
-    [SerializeField] private Vector2 endPosition;
+    
+    private Vector2 startPosition;
+    private Vector2 endPosition;
     private float moveTimer;
     private float percentageComplete;
 

@@ -32,32 +32,7 @@ public class HealthSystem : MonoBehaviour
     public void TakeDamage(int damageAmount, DamageType damageType)
     {
         DamageIndicator indicator = ObjectPooler.Instance.SpawnFromPool("Damage Indicator", transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
-        if (immunities.Contains(damageType))
-        {
-            damageAmount = 0;
-            indicator.SetDamageText(damageAmount, Color.black);
-        }
-        else if (resistances.Contains(damageType))
-        {
-            damageAmount = Mathf.FloorToInt(damageAmount / 2);
-            indicator.SetDamageText(damageAmount, Color.grey);
-        }
-        else if(vulnerabilities.Contains(damageType))
-        {
-            damageAmount = (damageAmount * 2);
-            indicator.SetDamageText(damageAmount, Color.yellow);
-        }
-        else if(damageType == DamageType.Healing)
-        {
-            damageAmount = -damageAmount;
-            indicator.SetDamageText(-damageAmount, Color.green);
-        }
-        else
-        {
-            indicator.SetDamageText(damageAmount, Color.red);
-        }
-
-        health -= damageAmount;
+        health -= CalculateDamage(damageAmount, damageType, indicator);
 
         if(health > maxHealth)
         {
@@ -71,7 +46,36 @@ public class HealthSystem : MonoBehaviour
 
         if (health <= 0 && !unkillable)
         {
-            Destroy(gameObject);
+            this.GetComponent<Enemy>().Death();
         }            
+    }
+
+    private int CalculateDamage(int damageAmount, DamageType damageType, DamageIndicator indicator)
+    {
+        if (immunities.Contains(damageType))
+        {
+            damageAmount = 0;
+            indicator.SetDamageText(damageAmount, Color.black);
+        }
+        else if (resistances.Contains(damageType))
+        {
+            damageAmount = Mathf.FloorToInt(damageAmount / 2);
+            indicator.SetDamageText(damageAmount, Color.grey);
+        }
+        else if (vulnerabilities.Contains(damageType))
+        {
+            damageAmount = (damageAmount * 2);
+            indicator.SetDamageText(damageAmount, Color.yellow);
+        }
+        else if (damageType == DamageType.Healing)
+        {
+            damageAmount = -damageAmount;
+            indicator.SetDamageText(-damageAmount, Color.green);
+        }
+        else
+        {
+            indicator.SetDamageText(damageAmount, Color.red);
+        }
+        return damageAmount;
     }
 }

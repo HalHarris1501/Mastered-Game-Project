@@ -121,7 +121,7 @@ public class Projectile : MonoBehaviour, IPooledObject
             {
                 if (collision.gameObject.CompareTag("Player"))
                 {
-                    collision.gameObject.GetComponentInChildren<Weapon>().IncreaseAmmo(1); ;
+                    collision.gameObject.GetComponentInChildren<Weapon>().IncreaseAmmo(1);
                     gameObject.SetActive(false);
                 }
             }          

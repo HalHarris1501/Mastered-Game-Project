@@ -115,10 +115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   value: 1
   moneyManager: {fileID: 0}
-  moveForce: 3
+  moveForce: 1
   duration: 1
-  startPosition: {x: 0, y: 0}
-  endPosition: {x: 0, y: 0}
   curve:
     serializedVersion: 2
     m_Curve:
