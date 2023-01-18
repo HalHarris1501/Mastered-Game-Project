@@ -5,39 +5,35 @@ using UnityEngine;
 public class Coin : MonoBehaviour, IPooledObject
 {
     [SerializeField] private float value;
-
     [SerializeField] private MoneyManager moneyManager;
-
-    [SerializeField] private float moveForce = 1f;
-
-    [SerializeField] private float timer;
+    [SerializeField] private float moveForce = 3f;
+    [SerializeField] private float duration;
+    [SerializeField] private Vector2 startPosition;
+    [SerializeField] private Vector2 endPosition;
     private float moveTimer;
+    private float percentageComplete;
+
+    [SerializeField] private AnimationCurve curve;
+
 
     public void OnObjectSpawn()
     {
-        moveTimer = timer;
+        startPosition = transform.position;
         moneyManager = FindObjectOfType<MoneyManager>();
 
         float xForce = Random.Range(-moveForce, moveForce);
         float yForce = Random.Range(-moveForce, moveForce);
+        moveTimer = 0;
 
-        Vector2 force = new Vector2(xForce, yForce);
-
-        GetComponent<Rigidbody2D>().velocity = force;
+        endPosition = new Vector2(transform.position.x + xForce, transform.position.y + yForce);
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        //if (moveTimer > 0)
-        //{
-        //    GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * moveTimer, GetComponent<Rigidbody2D>().velocity.y * moveTimer);
+        moveTimer += Time.deltaTime;
+        percentageComplete = moveTimer / duration;
 
-        //    moveTimer -= 0.1f;
-        //}
-        //else
-        //{
-        //    GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-        //}
+        transform.position = Vector2.Lerp(startPosition, endPosition, curve.Evaluate(percentageComplete));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -50,7 +46,7 @@ public class Coin : MonoBehaviour, IPooledObject
         if(collision.gameObject.CompareTag("Obstacle"))
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-            moveTimer = 0f;
+            endPosition = transform.position;
         }
     }
 }

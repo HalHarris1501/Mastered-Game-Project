@@ -40,10 +40,6 @@ public class HealthSystem : MonoBehaviour
         else if (resistances.Contains(damageType))
         {
             damageAmount = Mathf.FloorToInt(damageAmount / 2);
-            if(damageAmount == 0)
-            {
-                damageAmount = 1;
-            }
             indicator.SetDamageText(damageAmount, Color.grey);
         }
         else if(vulnerabilities.Contains(damageType))

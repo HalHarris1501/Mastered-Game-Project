@@ -134,13 +134,11 @@ public class Player : MonoBehaviour
             PotionCollectable potionCollectable = collision.GetComponent<PotionCollectable>();
             if (weaponCollectable != null)
             {
-                collectableNearby = weaponCollectable.gameObject;
-                Debug.Log(collectableNearby);
+                collectableNearby = weaponCollectable.gameObject;                
             }
             else if (potionCollectable != null)
             {
                 collectableNearby = potionCollectable.gameObject;
-                Debug.Log(collectableNearby);
             }
         }
     }
@@ -153,13 +151,11 @@ public class Player : MonoBehaviour
             PotionCollectable potionCollectable = collision.GetComponent<PotionCollectable>();
             if (weaponCollectable != null)
             {
-                collectableNearby = null;
-                Debug.Log(collectableNearby);
+                collectableNearby = null;                
             }
             else if(potionCollectable != null)
             {
                 collectableNearby = null;
-                Debug.Log(collectableNearby);
             }
         }
     }
