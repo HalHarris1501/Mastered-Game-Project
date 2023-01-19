@@ -11,7 +11,7 @@ public class MoneyManager : MonoBehaviour
     void Start()
     {
         uIController = FindObjectOfType<UIController>();
-        uIController.UpdateMoney(money);
+        uIController.UpdateMoney(money);    
     }
 
     // Update is called once per frame

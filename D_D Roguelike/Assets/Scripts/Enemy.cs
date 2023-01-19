@@ -11,7 +11,14 @@ public class Enemy : MonoBehaviour, IPooledObject
 
     public void OnObjectSpawn()
     {
-        targetObject = FindObjectOfType<Player>().gameObject;
+        targetObject = Player.Instance.gameObject;
+        damageTimer = 1f;
+    }
+
+    private void Start()
+    {
+        targetObject = Player.Instance.gameObject;
+        damageTimer = 1f;
     }
 
     private void FixedUpdate()
