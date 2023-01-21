@@ -159,4 +159,9 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public void SetTimeBetweenAttack(float timeToSet)
+    {
+        timeBetweenAttack = timeToSet;
+    }
 }

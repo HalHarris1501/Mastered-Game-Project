@@ -40,9 +40,10 @@ public class UIController : MonoBehaviour
 
     private void ShowWeaponSwapper()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && !Player.Instance.currentWeapon.isAttacking)
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            weaponSelectorUI.SetActive(true);            
+            weaponSelectorUI.SetActive(true);
+            Player.Instance.SetTimeBetweenAttack(0.1f);
         }
         else
         {

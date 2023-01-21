@@ -81,7 +81,7 @@ public class Weapon : MonoBehaviour
             int damage = calculateDamage();
             
             GameObject editedProjectile = ObjectPooler.Instance.SpawnFromPool(projectile.name, this.transform.position, Quaternion.identity);                       
-            editedProjectile.GetComponent<Projectile>().SetVariables(true, weaponMoveSpeed, range, damage, damageType, duration);
+            editedProjectile.GetComponent<Projectile>().SetVariables(true, weaponMoveSpeed, range, damage, damageType, duration, weaponType);
 
             if(!infiniteAmmo && isThrown)
             {

@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour, IPooledObject
     [SerializeField] private float duration;
     [SerializeField]  int damage;
     [SerializeField] private DamageType damageType;
+    [SerializeField] private WeaponType weaponType;
     private Vector2 targetPosition;
 
     // Start is called before the first frame update
@@ -121,14 +122,14 @@ public class Projectile : MonoBehaviour, IPooledObject
             {
                 if (collision.gameObject.CompareTag("Player"))
                 {
-                    collision.gameObject.GetComponentInChildren<Weapon>().IncreaseAmmo(1);
+                    WeaponManager.Instance.AlterWeaponCount(weaponType, 1, true);
                     gameObject.SetActive(false);
                 }
             }          
         }
     }
 
-    public void SetVariables(bool friendly, float speed, float range, int damageToDo, DamageType damageTyping, float durationLength)
+    public void SetVariables(bool friendly, float speed, float range, int damageToDo, DamageType damageTyping, float durationLength, WeaponType thisWeaponType)
     {
         isFriendly = friendly;
         moveSpeed = speed;
@@ -136,5 +137,6 @@ public class Projectile : MonoBehaviour, IPooledObject
         damage = damageToDo;
         damageType = damageTyping;
         duration = durationLength;
+        weaponType = thisWeaponType;
     }
 }

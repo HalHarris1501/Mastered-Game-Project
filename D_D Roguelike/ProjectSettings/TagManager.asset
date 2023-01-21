@@ -53,6 +53,12 @@ TagManager:
   - name: Obstacles
     uniqueID: 4277151599
     locked: 0
-  - name: Foreground
+  - name: AbovePlayer
     uniqueID: 1750046369
+    locked: 0
+  - name: Walls
+    uniqueID: 1398004297
+    locked: 0
+  - name: Foreground
+    uniqueID: 3879922443
     locked: 0

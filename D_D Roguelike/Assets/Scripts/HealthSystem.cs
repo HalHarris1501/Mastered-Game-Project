@@ -42,6 +42,10 @@ public class HealthSystem : MonoBehaviour
         if (this.gameObject.CompareTag("Player"))
         {
             uiManager.UpdateHealth(maxHealth, health);
+            if (health <= 0 && !unkillable)
+            {
+                this.gameObject.SetActive(false);
+            }
         }
 
         if (health <= 0 && !unkillable)
