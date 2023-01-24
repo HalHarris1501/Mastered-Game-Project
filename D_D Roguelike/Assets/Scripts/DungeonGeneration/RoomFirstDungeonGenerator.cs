@@ -40,8 +40,21 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         floor.UnionWith(corridors);
         // add random elements to rooms using floor copy
 
-        tilemapVisualizer.PaintFloorTiles(floor);
+        
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
+        HashSet<Vector2Int> floorBottoms = AddBottomToRooms(floor);
+        floor.UnionWith(floorBottoms);
+        tilemapVisualizer.PaintFloorTiles(floor);
+    }
+
+    private HashSet<Vector2Int> AddBottomToRooms(HashSet<Vector2Int> floor)
+    {
+        HashSet<Vector2Int> floorBottoms = new HashSet<Vector2Int>();
+        foreach (var position in floor)
+        {
+            floorBottoms.Add(position + Vector2Int.down);
+        }
+        return floorBottoms;
     }
 
     private HashSet<Vector2Int> CreateRoomsRandomly(List<BoundsInt> roomsList)

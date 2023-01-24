@@ -29,8 +29,20 @@ public class CorridorFirstDungeonGenerator : SimpleRandomWalkMapGenerator
 
         floorPositions.UnionWith(roomPositions);
 
-        tilemapVisualizer.PaintFloorTiles(floorPositions);
         WallGenerator.CreateWalls(floorPositions, tilemapVisualizer);
+        HashSet<Vector2Int> floorBottoms = AddBottomToRooms(floorPositions);
+        floorPositions.UnionWith(floorBottoms);
+        tilemapVisualizer.PaintFloorTiles(floorPositions);
+    }
+
+    private HashSet<Vector2Int> AddBottomToRooms(HashSet<Vector2Int> floor)
+    {
+        HashSet<Vector2Int> floorBottoms = new HashSet<Vector2Int>();
+        foreach (var position in floor)
+        {
+            floorBottoms.Add(position + Vector2Int.down);
+        }
+        return floorBottoms;
     }
 
     private void CreateRoomsAtDeadEnd(List<Vector2Int> deadEnds, HashSet<Vector2Int> roomFloors)
