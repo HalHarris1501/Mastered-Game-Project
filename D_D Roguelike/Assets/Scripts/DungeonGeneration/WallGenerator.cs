@@ -50,7 +50,6 @@ public static class WallGenerator
             }
         }
         maxPosition = new Vector2Int(maxPosition.x + 15, maxPosition.y + 15);
-        Debug.Log(maxPosition);
         return maxPosition;
     }
 
