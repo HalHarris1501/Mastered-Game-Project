@@ -9,6 +9,7 @@ public class Room : MonoBehaviour
 
     public List<Vector2Int> GetRoomCoordinates()
     {
+        roomCoordinates.Clear();
         int counter = 0;
         for (int x = minPosition.x; x < maxPosition.x; x++)
         {
