@@ -34,32 +34,33 @@ public class Room : MonoBehaviour
         return roomCoordinates;     
     }
 
+    public void SetDoorCoordinates(List<Vector2Int> doorPositions)
+    {
+        doorCoordinates.Clear();
+        doorCoordinates = doorPositions;
+    }
+
     public List<Vector2Int> GetDoorCoordinates()
     {
-        if(doorCoordinates.Count > 0)
-        {
-            return doorCoordinates;
-        }
-        else
+        if(!(doorCoordinates.Count > 0))
         {
             foreach (var position in roomCoordinates)
             {
                 int neighbours = 0;
-                foreach (var direction in Direction2D.diagonalDirectionsList)
+                foreach (var direction in Direction2D.cardinalDirectionsList)
                 {
                     if(roomCoordinates.Contains(position + direction))
                     {
                         neighbours++;
                     }
                 }
-                if(neighbours <= 3)
+                if(neighbours == 3)
                 {
                     doorCoordinates.Add(position);
                 }
             }
-
-            return doorCoordinates;
         }
+        return doorCoordinates;
     }
 
 

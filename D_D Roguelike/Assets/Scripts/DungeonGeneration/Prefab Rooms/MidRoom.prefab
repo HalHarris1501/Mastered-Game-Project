@@ -47,3 +47,5 @@ MonoBehaviour:
   maxPosition: {x: 12, y: 5}
   roomCoordinates: []
   doorCoordinates: []
+  minDoors: 2
+  maxDoors: 4

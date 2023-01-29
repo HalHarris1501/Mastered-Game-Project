@@ -46,6 +46,5 @@ MonoBehaviour:
   minPosition: {x: 0, y: 0}
   maxPosition: {x: 5, y: 5}
   roomCoordinates: []
-  doorCoordinates: []
-  minDoors: 1
-  maxDoors: 1
+  doorCoordinates:
+  - {x: 0, y: 3}
