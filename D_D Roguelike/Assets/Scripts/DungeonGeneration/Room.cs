@@ -63,5 +63,9 @@ public class Room : MonoBehaviour
         return doorCoordinates;
     }
 
+    void Update()
+    {
+        Destroy(gameObject);
+    }
 
 }

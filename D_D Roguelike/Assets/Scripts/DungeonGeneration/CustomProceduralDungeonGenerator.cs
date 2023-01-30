@@ -11,7 +11,6 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
     [SerializeField] private Room[] rooms;
     [SerializeField] [Min(0)] private int roomOffset;
     [SerializeField] private int roomGenerationAttemps;
-    [SerializeField] [Min(1)] int minimumRooms;
 
 
     protected override void RunProceduralGeneration()
