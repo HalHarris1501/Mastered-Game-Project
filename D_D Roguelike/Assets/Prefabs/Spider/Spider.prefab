@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3013207106420092608}
   - component: {fileID: 3013207106420092615}
   - component: {fileID: 3013207106420092611}
+  - component: {fileID: 4356522080994986382}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Enemy
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -335668845
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d5d1075507cb61e4bbed3871511ac339, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -100,6 +101,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   targetObject: {fileID: 0}
+  damageTimer: 1
+  challengeRating: 0
 --- !u!114 &3013207106420092608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +117,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   health: 1
+  unkillable: 0
   uiManager: {fileID: 0}
+  immunities: 
+  resistances: 
+  vulnerabilities: 
 --- !u!61 &3013207106420092615
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -162,3 +169,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &4356522080994986382
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3013207106420092614}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e24e0e95ea80fd44888762c9596482fd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

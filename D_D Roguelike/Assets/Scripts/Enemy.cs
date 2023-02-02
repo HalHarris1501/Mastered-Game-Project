@@ -23,12 +23,12 @@ public class Enemy : MonoBehaviour, IPooledObject
 
     private void FixedUpdate()
     {
-        if (targetObject != null)
+        /*if (targetObject != null)
         {
             var step = moveSpeed * Time.fixedDeltaTime;
             var position = Vector2.MoveTowards(transform.position, targetObject.transform.position, step);
             transform.position = position;
-        }
+        }*/
 
         if(damageTimer > 0f)
         {
@@ -92,5 +92,10 @@ public class Enemy : MonoBehaviour, IPooledObject
         }
         
         
+    }
+
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
     }
 }
