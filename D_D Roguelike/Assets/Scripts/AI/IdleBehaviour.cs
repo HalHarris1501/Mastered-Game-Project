@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class IdleBehaviour : StateMachineBehaviour
 {
+    private float idleTimer;
+    [SerializeField] private float startIdleTimer;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        
+        startIdleTimer = Random.Range(0, 10);
+        idleTimer = startIdleTimer;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
+    {        
+        if (idleTimer <= 0f)
         {
-            animator.SetBool("isChasing", true);
+            animator.SetBool("isPatrolling", true);
+        }
+        else
+        {
+            idleTimer -= Time.deltaTime;
         }
     }
 

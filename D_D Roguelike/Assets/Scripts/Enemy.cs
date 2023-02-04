@@ -5,20 +5,25 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IPooledObject
 {
     [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private GameObject targetObject;
-    [SerializeField] private float damageTimer = 1f;
+    //[SerializeField] private GameObject targetObject;
+    [SerializeField] private float damageTimer;
+    [SerializeField] private float startDamageTimer = 1f;
     [SerializeField] private float challengeRating;
+    [SerializeField] private Animator myAnimator;
+    private float sleepTimer;
 
     public void OnObjectSpawn()
     {
-        targetObject = Player.Instance.gameObject;
-        damageTimer = 1f;
+        //targetObject = Player.Instance.gameObject;
+        damageTimer = startDamageTimer;
+        myAnimator = GetComponent<Animator>();
     }
 
     private void Start()
     {
-        targetObject = Player.Instance.gameObject;
-        damageTimer = 1f;
+        //targetObject = Player.Instance.gameObject;
+        damageTimer = startDamageTimer;
+        myAnimator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -28,9 +33,21 @@ public class Enemy : MonoBehaviour, IPooledObject
             var step = moveSpeed * Time.fixedDeltaTime;
             var position = Vector2.MoveTowards(transform.position, targetObject.transform.position, step);
             transform.position = position;
-        }*/
+        }*/             
+    }
 
-        if(damageTimer > 0f)
+    private void Update()
+    {
+        if(sleepTimer > 0)
+        {
+            sleepTimer -= Time.deltaTime;
+        }
+        else
+        {
+            myAnimator.SetBool("isAsleep", true);
+        }
+
+        if (damageTimer > 0f)
         {
             damageTimer -= Time.deltaTime;
         }
@@ -43,7 +60,7 @@ public class Enemy : MonoBehaviour, IPooledObject
             if (collision.gameObject.CompareTag("Player"))
             {
                 collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, DamageType.Piercing);
-                damageTimer = 1f;
+                damageTimer = startDamageTimer;
             }
         }
     }
@@ -55,7 +72,7 @@ public class Enemy : MonoBehaviour, IPooledObject
             if (collision.gameObject.CompareTag("Player"))
             {
                 collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, DamageType.Piercing);
-                damageTimer = 1f;
+                damageTimer = startDamageTimer;
             }
         }
     }
@@ -89,13 +106,22 @@ public class Enemy : MonoBehaviour, IPooledObject
             {
                 ObjectPooler.Instance.SpawnFromPool("Copper Piece", transform.position, Quaternion.identity);
             }
-        }
-        
-        
+        }              
     }
 
     public float GetMoveSpeed()
     {
         return moveSpeed;
+    }
+
+    public void CanSeePlayer()
+    {
+        myAnimator.SetBool("canSeeEnemy", true);
+    }
+
+    public void AwakenEnemy()
+    {
+        sleepTimer = 5f;
+        myAnimator.SetBool("isAsleep", false);        
     }
 }

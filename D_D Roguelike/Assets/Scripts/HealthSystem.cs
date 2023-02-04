@@ -7,6 +7,7 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private int health = 3;
     [SerializeField] private bool unkillable = false;
+    [SerializeField] private int hitDie, numOfHitDie;
 
     [SerializeField] private UIController uiManager = null;
     [SerializeField] private List<DamageType> immunities;
@@ -15,7 +16,10 @@ public class HealthSystem : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        maxHealth = hitDie;
+        health = maxHealth;
+
         if(this.gameObject.CompareTag("Player"))
         {
             uiManager = FindObjectOfType<UIController>();

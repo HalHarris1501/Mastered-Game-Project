@@ -26,7 +26,8 @@ public class ChaseBehaviour : StateMachineBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            animator.SetBool("isChasing", false);
+            animator.SetBool("canSeeEnemy", false);
+            animator.SetBool("isIdle", true);
         }
     }
 
