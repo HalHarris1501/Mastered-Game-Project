@@ -17,8 +17,11 @@ public class HealthSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        maxHealth = hitDie;
-        health = maxHealth;
+        if (hitDie > 0 && numOfHitDie > 0)
+        {
+            maxHealth = hitDie;
+            health = maxHealth;
+        }
 
         if(this.gameObject.CompareTag("Player"))
         {

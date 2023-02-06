@@ -4,26 +4,18 @@ using UnityEngine;
 
 public class ChaseBehaviour : StateMachineBehaviour
 {
-    private Transform playerPos;
     private float moveSpeed;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        playerPos = Player.Instance.transform;
         moveSpeed = animator.GetComponent<Enemy>().GetMoveSpeed();
+        animator.GetComponent<EnemyPathfinding>().ChasePlayer();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (playerPos != null)
-        {
-            var step =  moveSpeed * Time.deltaTime;
-            var position = Vector2.MoveTowards(animator.transform.position, playerPos.transform.position, step);
-            animator.transform.position = position;
-        }
-
+    { 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             animator.SetBool("canSeeEnemy", false);
