@@ -7,10 +7,11 @@ public class EnemyPathfinding : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private Vector2 targetPosition;
+    [SerializeField] private Rigidbody2D rb;
     bool usingTarget;
 
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float nextWaypointDistance = 3f;
+    [SerializeField] private float nextWaypointDistance = 0.3f;
 
     private Path path;
     private int currentWaypoint = 0;
@@ -23,6 +24,7 @@ public class EnemyPathfinding : MonoBehaviour
     {
         moveSpeed = GetComponent<Enemy>().GetMoveSpeed();
         seeker = GetComponent<Seeker>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public void ChasePlayer()
@@ -94,31 +96,34 @@ public class EnemyPathfinding : MonoBehaviour
         {
             if (Vector2.Distance(transform.position, target.position) > 3)
             {
-                var step = moveSpeed * Time.deltaTime;
-                var position = Vector2.MoveTowards(transform.position, path.vectorPath[currentWaypoint], step);
-                transform.position = position;
-
                 float distance = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
 
                 if (distance < nextWaypointDistance)
                 {
                     currentWaypoint++;
                 }
+
+
+                distance = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
+                var step = Mathf.Clamp(moveSpeed * Time.deltaTime, 0, distance);
+                var position = Vector2.MoveTowards(transform.position, path.vectorPath[currentWaypoint], step);
+                rb.MovePosition(position);
+
+                
             }
             else
             {
-                var step = moveSpeed * Time.deltaTime;
+                float distance = Vector2.Distance(transform.position, target.position);
+                var step = Mathf.Clamp(moveSpeed * Time.deltaTime, 0, distance);
                 var position = Vector2.MoveTowards(transform.position, target.position, step);
-                transform.position = position;
+                rb.MovePosition(position);
             }
         }
         else
         {
             if (Vector2.Distance(transform.position, targetPosition) > 3)
             {
-                var step = moveSpeed * Time.deltaTime;
-                var position = Vector2.MoveTowards(transform.position, path.vectorPath[currentWaypoint], step);
-                transform.position = position;
+                Debug.Log("long distance");
 
                 float distance = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
 
@@ -126,12 +131,22 @@ public class EnemyPathfinding : MonoBehaviour
                 {
                     currentWaypoint++;
                 }
+
+                distance = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
+                var step = Mathf.Clamp(moveSpeed * Time.deltaTime, 0, distance);
+                var position = Vector2.MoveTowards(transform.position, path.vectorPath[currentWaypoint], step);
+                rb.MovePosition(position);
+
+                
             }
             else
             {
-                var step = moveSpeed * Time.deltaTime;
+                Debug.Log("short distance");
+
+                float distance = Vector2.Distance(transform.position, targetPosition);
+                var step = Mathf.Clamp(moveSpeed * Time.deltaTime, 0, distance);
                 var position = Vector2.MoveTowards(transform.position, targetPosition, step);
-                transform.position = position;
+                rb.MovePosition(position);
             }
         }
     }

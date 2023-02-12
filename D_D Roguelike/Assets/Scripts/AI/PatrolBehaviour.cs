@@ -23,6 +23,8 @@ public class PatrolBehaviour : StateMachineBehaviour
         maxY = animator.transform.position.y + 5;
 
         moveSpot = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), 0);
+        moveSpot.x = Mathf.Floor(moveSpot.x) + 0.5f;
+        moveSpot.y = Mathf.Floor(moveSpot.y) + 0.5f;
         animator.GetComponent<EnemyPathfinding>().MoveToTarget(moveSpot);
     }
 
@@ -39,6 +41,8 @@ public class PatrolBehaviour : StateMachineBehaviour
                 maxY = animator.transform.position.y + 5;
 
                 moveSpot = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), 0);
+                moveSpot.x = Mathf.Floor(moveSpot.x) + 0.5f;
+                moveSpot.y = Mathf.Floor(moveSpot.y) + 0.5f;
                 waitTime = startWaitTime;
                 animator.GetComponent<EnemyPathfinding>().MoveToTarget(moveSpot);
             }
