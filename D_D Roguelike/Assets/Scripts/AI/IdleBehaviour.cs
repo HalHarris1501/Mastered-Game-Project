@@ -6,11 +6,12 @@ public class IdleBehaviour : StateMachineBehaviour
 {
     private float idleTimer;
     [SerializeField] private float startIdleTimer;
+    [SerializeField] private const float maxIdleTime = 5;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        startIdleTimer = Random.Range(0, 10);
+        startIdleTimer = Random.Range(0, maxIdleTime);
         idleTimer = startIdleTimer;
     }
 

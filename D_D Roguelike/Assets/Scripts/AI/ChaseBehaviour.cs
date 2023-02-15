@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class ChaseBehaviour : StateMachineBehaviour
 {
-    private float moveSpeed;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        moveSpeed = animator.GetComponent<Enemy>().GetMoveSpeed();
         animator.GetComponent<EnemyPathfinding>().ChasePlayer();
     }
 
