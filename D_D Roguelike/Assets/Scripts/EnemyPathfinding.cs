@@ -16,6 +16,9 @@ public class EnemyPathfinding : MonoBehaviour
     private Path path;
     private int currentWaypoint = 0;
     private bool reachedEndOfPath = false;
+    public bool isStopped { get { return reachedEndOfPath; } }
+    private bool _isAwake = true;
+    public bool IsAwake(bool awakeState)=> _isAwake; 
 
     [SerializeField] private Seeker seeker;
 
@@ -77,10 +80,8 @@ public class EnemyPathfinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(path == null)
-        {
-            return;
-        }
+        if(path is null || !_isAwake) return;
+        
 
         if(currentWaypoint >= path.vectorPath.Count)
         {

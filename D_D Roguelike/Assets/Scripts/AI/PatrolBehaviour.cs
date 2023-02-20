@@ -11,8 +11,8 @@ public class PatrolBehaviour : StateMachineBehaviour
     [SerializeField] private float startTimePatrolling;
     [SerializeField] private Tilemap walkable;
 
-    private Vector3Int moveSpot;
-    private int minX, maxX, minY, maxY;
+    private Vector3 moveSpot;
+    private float minX, maxX, minY, maxY;
     private const float patrolRange = 5f;
     private EnemyPathfinding pathfinder = null;
 
@@ -21,7 +21,7 @@ public class PatrolBehaviour : StateMachineBehaviour
     {
         waitTime = startWaitTime;
         timePatrolling = startTimePatrolling;
-        if (GetPathfinder(animator) == false) return;
+        if (!GetPathfinder(animator)) return;
         Patrol(animator);
     }
 
@@ -32,7 +32,7 @@ public class PatrolBehaviour : StateMachineBehaviour
             pathfinder = animator.GetComponent<EnemyPathfinding>();
         }
 
-        return pathfinder;
+        return pathfinder is not null;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -74,15 +74,19 @@ public class PatrolBehaviour : StateMachineBehaviour
 
     public void Patrol(Animator animator)
     {
-        if (waitTime <= 0)
+        //decrease wait time
+        waitTime -= Time.deltaTime;
+
+        //if close enough, get new path position
+        if(Vector2.Distance(animator.transform.position, moveSpot) < 0.2f)
         {
             GetPatrolPoint(animator);
-            pathfinder.MoveToTarget(moveSpot);
         }
-        else
-        {
-            waitTime -= Time.deltaTime;
-        }
+        bool isStopped = pathfinder.isStopped;
+
+        //update animator states
+        animator.SetBool("isPatrolling", !isStopped);
+        animator.SetBool("isIdle", isStopped);
     }
 
     public void GetPatrolPoint(Animator animator)
@@ -96,8 +100,12 @@ public class PatrolBehaviour : StateMachineBehaviour
             maxX = Mathf.RoundToInt(animator.transform.position.x + patrolRange);
             maxY = Mathf.RoundToInt(animator.transform.position.y + patrolRange);
 
-            moveSpot = new Vector3Int(Random.Range(minX, maxX), Random.Range(minY, maxY), Mathf.RoundToInt(walkable.transform.position.z));
-            validSpot = walkable.GetTile(moveSpot);
+            moveSpot = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), 0);
+            moveSpot.z = walkable.gameObject.transform.position.z;
+            moveSpot.x = Mathf.Floor(moveSpot.x) + 0.5f;
+            moveSpot.y = Mathf.Floor(moveSpot.y) + 0.5f;
+            Vector3Int testSpot = new Vector3Int(Mathf.FloorToInt(moveSpot.x), Mathf.FloorToInt(moveSpot.y), Mathf.FloorToInt(moveSpot.z));
+            validSpot = walkable.GetTile(testSpot);
         }
     }
 }

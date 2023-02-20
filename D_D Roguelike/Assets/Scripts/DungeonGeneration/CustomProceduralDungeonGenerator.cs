@@ -11,21 +11,32 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
     [SerializeField] private Room[] rooms;
     [SerializeField] [Min(0)] private int roomOffset;
     [SerializeField] private int roomGenerationAttemps;
-
+    private List<Vector2Int> borders = new List<Vector2Int>();
 
     protected override void RunProceduralGeneration()
     {
+        GenerateBorders();
         CreateDungeon();
+    }
+    
+    private void GenerateBorders()
+    {
+        borders.Add(new Vector2Int(0, -1)); //down
+        borders.Add(new Vector2Int(1, -1)); //right-down
+        borders.Add(new Vector2Int(-1, -1)); //left down
+        borders.Add(new Vector2Int(0, 1)); //up
+        borders.Add(new Vector2Int(1, 1)); //right up
+        borders.Add(new Vector2Int(-1, 1)); //left up
     }
 
     private void CreateDungeon()
     {
         HashSet<Vector2Int> dungeonArea = new HashSet<Vector2Int>();
-        for (int i = startPosition.x; i < maxSize.x; i++)
+        for (int col = startPosition.x; col < maxSize.x; col++)
         {
-            for (int j = startPosition.y; j < maxSize.y; j++)
+            for (int row = startPosition.y; row < maxSize.y; row++)
             {
-                dungeonArea.Add(new Vector2Int(i, j));
+                dungeonArea.Add(new Vector2Int(col, row));
             }
         }
         CreateRooms(dungeonArea);
@@ -33,11 +44,11 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
 
     private void CreateRooms(HashSet<Vector2Int> dungeonArea)
     {
-        HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
+        
         HashSet<Vector2Int> borderTiles = new HashSet<Vector2Int>();
         List<Room> roomsInDungeon = new List<Room>();
 
-        floor = CreateStartAndEndRooms(dungeonArea, borderTiles, roomsInDungeon);
+        HashSet<Vector2Int> floor = CreateStartAndEndRooms(dungeonArea, borderTiles, roomsInDungeon);
         floor.UnionWith(AttemptOtherRooms(dungeonArea, floor, borderTiles, roomsInDungeon));
 
         HashSet<Vector2Int> corridors = ConnectRooms(dungeonArea, floor, borderTiles, roomsInDungeon);
@@ -64,7 +75,6 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
         HashSet<Vector2Int> walkableArea = GetWalkableArea(floor, dungeonArea, offsetTiles);
         HashSet<Vector2Int> corridors = new HashSet<Vector2Int>();
         corridors = CreateCorridors(walkableArea, roomsList, dungeonArea);
-
 
         HashSet<Vector2Int> wide = new HashSet<Vector2Int>();
         foreach (var tile in corridors)
@@ -134,17 +144,7 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
         {
             foreach (var direction in Direction2D.eightDirectionsList)
             {
-                if (!endRoom.GetRoomCoordinates().Contains(position + direction))
-                {
-                    for (int i = 1; i <= roomOffset; i++)
-                    {
-                        newBorderTiles.Add((position + (direction * i)));
-                        if (direction == new Vector2Int(0, -1) /*down*/ || direction == new Vector2Int(1, -1) /*right - down*/ || direction == new Vector2Int(-1, -1)/*left - down*/ || direction == new Vector2Int(0, 1) /*up*/ || direction == new Vector2Int(1, 1) /*right - up*/ || direction == new Vector2Int(-1, 1)/*left - up*/)
-                        {
-                            newBorderTiles.Add((position + (direction * (i + 1))));
-                        }
-                    }
-                }
+                AddBorderWalls(endRoom, position, direction, newBorderTiles);                
             }
             newBorderTiles.Add(position);
         }
@@ -160,6 +160,20 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
         return newWalkableArea;
     }
 
+    private void AddBorderWalls(Room endRoom, Vector2Int position, Vector2Int direction, HashSet<Vector2Int> newBorderTiles)
+    {
+        if (endRoom.GetRoomCoordinates().Contains(position + direction)) return;
+
+        for (int i = 1; i <= roomOffset; i++)
+        {
+            newBorderTiles.Add((position + (direction * i)));
+            if (borders.Contains(direction))
+            {
+                newBorderTiles.Add((position + (direction * (i + 1))));
+            }
+        }
+    }
+
     private HashSet<Vector2Int> CreateCorridor(Vector2Int startPosition, Vector2Int goalPosition, HashSet<Vector2Int> walkableArea, HashSet<Vector2Int> backupArea, List<Room> roomsConnected, List<Room> roomsToConnect)
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
@@ -170,28 +184,32 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
 
         if (currentPosition == startPosition)
         {
-
             corridor.UnionWith( CreateCorridor(startPosition, goalPosition, backupArea, backupArea, roomsConnected, roomsToConnect));
         }            
         else if (currentPosition == goalPosition)            
-        {                
-            for (int i = 0; i < roomsToConnect.Count; i++)
-            {
-                if(roomsToConnect[i].GetDoorCoordinates().Contains(currentPosition))
-                {
-                    roomsConnected.Add(roomsToConnect[0]);
-                    roomsToConnect.Remove(roomsToConnect[0]);
-                }
-            }
-            while (currentPosition != startPosition)                
-            {                    
-                corridor.Add(currentPosition);                    
-                currentPosition = tileParents[currentPosition];                
-            }                       
+        {
+            AddCorridor(roomsConnected, roomsToConnect,  currentPosition,  startPosition,  corridor, tileParents);                
         }
         
 
         return corridor;
+    }
+
+    private void AddCorridor(List<Room> roomsConnected, List<Room> roomsToConnect, Vector2Int currentPosition, Vector2Int startPosition, HashSet<Vector2Int> corridor, Dictionary<Vector2Int, Vector2Int> tileParents)
+    {
+        for (int i = 0; i < roomsToConnect.Count; i++)
+        {
+            if (roomsToConnect[i].GetDoorCoordinates().Contains(currentPosition))
+            {
+                roomsConnected.Add(roomsToConnect[0]);
+                roomsToConnect.Remove(roomsToConnect[0]);
+            }
+        }
+        while (currentPosition != startPosition)
+        {
+            corridor.Add(currentPosition);
+            currentPosition = tileParents[currentPosition];
+        }
     }
 
     private Vector2Int FindShortestPathBFS(Vector2Int startPosition, Vector2Int goalPosition, Dictionary<Vector2Int, Vector2Int> tileParents, HashSet<Vector2Int> walkableArea)
@@ -213,21 +231,26 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
 
             foreach (var tile in tiles)
             {
-                if(!exploredTiles.Contains(tile))
-                {
-                    //mark tile as explored
-                    exploredTiles.Add(tile);
-
-                    //store a reference of the previous tile
-                    tileParents.Add(tile, currentTile);
-
-                    //add this to the queue of tiles to examine
-                    tileQueue.Enqueue(tile);
-                }
+                CheckExploredTiles(exploredTiles, tile, tileParents, currentTile, tileQueue);                
             }
         }
 
         return startPosition;
+    }
+
+    private void CheckExploredTiles(HashSet<Vector2Int> exploredTiles, Vector2Int tile, Dictionary<Vector2Int, Vector2Int> tileParents, Vector2Int currentTile, Queue<Vector2Int> tileQueue)
+    {
+        if (!exploredTiles.Contains(tile))
+        {
+            //mark tile as explored
+            exploredTiles.Add(tile);
+
+            //store a reference of the previous tile
+            tileParents.Add(tile, currentTile);
+
+            //add this to the queue of tiles to examine
+            tileQueue.Enqueue(tile);
+        }
     }
 
     private IList<Vector2Int> GetNeighbours(Vector2Int currentTile, HashSet<Vector2Int> walkableArea)
@@ -245,41 +268,33 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
     }
 
     private void AddAreaAroundDoors(HashSet<Vector2Int> walkableArea, Room startRoom, Vector2Int startDoor, Room targetRoom, Vector2Int goalDoor)
-    {
-        
-
-                foreach (var direction in Direction2D.cardinalDirectionsList)
-                {
-                    if (!startRoom.GetRoomCoordinates().Contains(startDoor + direction))
-                    {
-                        for (int i = 0; i < roomOffset * 3; i++)
-                        {
-                            if (!walkableArea.Contains(startDoor + (direction * i)))
-                            {
-                                walkableArea.Add(startDoor + (direction * i));
-                            }
-                        }
-                    }
-                }
-
-        
-
-
-            foreach (var direction in Direction2D.cardinalDirectionsList)
+    {      
+        foreach (var direction in Direction2D.cardinalDirectionsList)
+        {
+            if (!startRoom.GetRoomCoordinates().Contains(startDoor + direction))
             {
-                if (!targetRoom.GetRoomCoordinates().Contains(goalDoor + direction))
-                {
-                    for (int i = 0; i < roomOffset * 3; i++)
-                    {
-                        if (!walkableArea.Contains(goalDoor + (direction * i)))
-                        {
-                            walkableArea.Add(goalDoor + (direction * i));
-                        }
-                    }
-                }
+                AddToWalkableArea(walkableArea, startDoor, direction);                
             }
-        
+        }      
 
+        foreach (var direction in Direction2D.cardinalDirectionsList)
+        {
+            if (!targetRoom.GetRoomCoordinates().Contains(goalDoor + direction))
+            {
+                AddToWalkableArea(walkableArea, goalDoor, direction);
+            }
+        }       
+    }
+
+    private void AddToWalkableArea(HashSet<Vector2Int> walkableArea, Vector2Int startDoor, Vector2Int direction)
+    {
+        for (int i = 0; i < roomOffset * 3; i++)
+        {
+            if (!walkableArea.Contains(startDoor + (direction * i)))
+            {
+                walkableArea.Add(startDoor + (direction * i));
+            }
+        }
     }
 
     private HashSet<Vector2Int> GetWalkableArea(HashSet<Vector2Int> floor, HashSet<Vector2Int> dungeonArea, HashSet<Vector2Int> offsetTiles)
@@ -288,34 +303,7 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
         walkableArea.UnionWith(dungeonArea);
         foreach (var position in dungeonArea)
         {
-            if (position.x == 0 )
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    walkableArea.Add(position + (new Vector2Int(-1, 0) * i));      
-                }                 
-            }
-            else if(position.x == maxSize.x)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    walkableArea.Add(position + (new Vector2Int(1, 0) * i));
-                }
-            }
-            else if(position.y == 0)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    walkableArea.Add(position + (new Vector2Int(0, -1) * i));
-                }
-            }
-            else if (position.y == maxSize.y)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    walkableArea.Add(position + (new Vector2Int(0, 1) * i));
-                }
-            }
+            AddEdgeToWalkableArea(position, walkableArea);
         }
         foreach (var position in floor)
         {
@@ -333,6 +321,38 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
         }
 
         return walkableArea;
+    }
+
+    private void AddEdgeToWalkableArea(Vector2Int position, HashSet<Vector2Int> walkableArea)
+    {
+        if (position.x == 0)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                walkableArea.Add(position + (new Vector2Int(-1, 0) * i));
+            }
+        }
+        else if (position.x == maxSize.x)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                walkableArea.Add(position + (new Vector2Int(1, 0) * i));
+            }
+        }
+        else if (position.y == 0)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                walkableArea.Add(position + (new Vector2Int(0, -1) * i));
+            }
+        }
+        else if (position.y == maxSize.y)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                walkableArea.Add(position + (new Vector2Int(0, 1) * i));
+            }
+        }
     }
 
     private Vector2Int FindClosestPointTo(Vector2Int startPoint, List<Room> rooms)
@@ -357,24 +377,24 @@ public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
     private HashSet<Vector2Int> AttemptOtherRooms(HashSet<Vector2Int> dungeonArea, HashSet<Vector2Int> currentFloor, HashSet<Vector2Int> borderTiles, List<Room> roomsList)
     {
         HashSet<Vector2Int> roomsSet = currentFloor;
-            for (int i = 0; i < roomGenerationAttemps; i++)
+        for (int i = 0; i < roomGenerationAttemps; i++)
+        {
+            bool placeable = true;
+            Vector2Int originAttempt;
+            int random = Random.Range(0, rooms.Length);
+            originAttempt = new Vector2Int(Random.Range(GetMinX(dungeonArea), GetMaxX(dungeonArea)), Random.Range(GetMinY(dungeonArea), GetMaxY(dungeonArea)));
+            foreach (var position in rooms[random].GetRoomCoordinates())
             {
-                bool placeable = true;
-                Vector2Int originAttempt;
-                int random = Random.Range(0, rooms.Length);
-                originAttempt = new Vector2Int(Random.Range(GetMinX(dungeonArea), GetMaxX(dungeonArea)), Random.Range(GetMinY(dungeonArea), GetMaxY(dungeonArea)));
-                foreach (var position in rooms[random].GetRoomCoordinates())
+                if (!dungeonArea.Contains(originAttempt + position) || roomsSet.Contains(originAttempt + position) || borderTiles.Contains(originAttempt + position))
                 {
-                    if (!dungeonArea.Contains(originAttempt + position) || roomsSet.Contains(originAttempt + position) || borderTiles.Contains(originAttempt + position))
-                    {
-                        placeable = false;
-                    }
-                }
-                if (placeable)
-                {
-                    roomsSet.UnionWith(AddRoom(rooms[random], originAttempt, borderTiles, roomsList));
+                    placeable = false;
                 }
             }
+            if (placeable)
+            {
+                roomsSet.UnionWith(AddRoom(rooms[random], originAttempt, borderTiles, roomsList));
+            }
+        }
         return roomsSet;
     }
 
