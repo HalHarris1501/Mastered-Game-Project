@@ -12,18 +12,31 @@ public class Projectile : MonoBehaviour, IPooledObject
     [SerializeField]  int damage;
     [SerializeField] private DamageType damageType;
     [SerializeField] private WeaponType weaponType;
-    private Vector2 targetPosition;
+    private Vector2 mousePosition;
+    private float offset = -90f;
+    private float spread = 0.3f;
 
     // Start is called before the first frame update
     public void OnObjectSpawn()
     {
-        targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        //point projectile to the direction it's facing
-        Vector2 direction = new Vector2(targetPosition.x - transform.position.x, targetPosition.y - transform.position.y);
-        transform.up = direction;
+        GetTargetDirection();   
         //moveSpeed += FindObjectOfType<Player>().gameObject.GetComponent<Rigidbody2D>().velocity;
         isCollectable = false;
+    }
+
+    private void GetTargetDirection()
+    {
+        //get mouse position
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        //calculate spread for projectile
+        float angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        Vector2 dir = transform.rotation * Vector2.up;
+        Vector2 pdir = Vector2.Perpendicular(dir) * Random.Range(-spread, spread);
+
+        //point projectile to the direction it's facing
+        transform.up = dir + pdir;
     }
 
     // Update is called once per frame

@@ -27,12 +27,12 @@ public class PatrolBehaviour : StateMachineBehaviour
 
     private bool GetPathfinder(Animator animator)
     {
-        if(pathfinder is null)
+        if(pathfinder == null)
         {
-            pathfinder = animator.GetComponent<EnemyPathfinding>();
+            pathfinder = animator.gameObject.GetComponent<EnemyPathfinding>();
         }
 
-        return pathfinder is not null;
+        return pathfinder != null;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

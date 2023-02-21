@@ -20,21 +20,21 @@ public class SleepBehaviour : StateMachineBehaviour
 
     private bool GetSpriteRenderer(Animator animator)
     {
-        if(spriteRenderer is null)
+        if(spriteRenderer == null)
         {
             spriteRenderer = animator.gameObject.GetComponent<SpriteRenderer>();
         }
 
-        return spriteRenderer is not null;
+        return spriteRenderer != null;
     }
     private bool GetPathfinder(Animator animator)
     {
-        if (pathfinder is null)
+        if (pathfinder == null)
         {
-            pathfinder = animator.GetComponent<EnemyPathfinding>();
+            pathfinder = animator.gameObject.GetComponent<EnemyPathfinding>();
         }
 
-        return pathfinder is not null;
+        return pathfinder != null;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
