@@ -20,7 +20,6 @@ public class Projectile : MonoBehaviour, IPooledObject
     public void OnObjectSpawn()
     {
         GetTargetDirection();   
-        //moveSpeed += FindObjectOfType<Player>().gameObject.GetComponent<Rigidbody2D>().velocity;
         isCollectable = false;
     }
 
@@ -29,14 +28,14 @@ public class Projectile : MonoBehaviour, IPooledObject
         //get mouse position
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+        Vector2 direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y).normalized;
         //calculate spread for projectile
-        float angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        Vector2 dir = transform.rotation * Vector2.up;
-        Vector2 pdir = Vector2.Perpendicular(dir) * Random.Range(-spread, spread);
+        Vector2 pdir = Vector2.Perpendicular(direction);
+
+        Vector2 newDirection = direction + (pdir * Random.Range(-spread, spread));
 
         //point projectile to the direction it's facing
-        transform.up = dir + pdir;
+        transform.up = newDirection;
     }
 
     // Update is called once per frame

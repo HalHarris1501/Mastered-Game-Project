@@ -25,7 +25,7 @@ public class SleepBehaviour : StateMachineBehaviour
             spriteRenderer = animator.gameObject.GetComponent<SpriteRenderer>();
         }
 
-        return spriteRenderer != null;
+        return spriteRenderer;
     }
     private bool GetPathfinder(Animator animator)
     {
@@ -34,7 +34,7 @@ public class SleepBehaviour : StateMachineBehaviour
             pathfinder = animator.gameObject.GetComponent<EnemyPathfinding>();
         }
 
-        return pathfinder != null;
+        return pathfinder;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -49,8 +49,8 @@ public class SleepBehaviour : StateMachineBehaviour
         if (!GetSpriteRenderer(animator)) return;
         if (!GetPathfinder(animator)) return;
 
-        spriteRenderer.enabled = false;
-        pathfinder.IsAwake(false);
+        spriteRenderer.enabled = true;
+        pathfinder.IsAwake(true);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

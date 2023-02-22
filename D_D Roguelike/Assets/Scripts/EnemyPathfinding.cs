@@ -18,7 +18,7 @@ public class EnemyPathfinding : MonoBehaviour
     private bool reachedEndOfPath = false;
     public bool isStopped { get { return reachedEndOfPath; } }
     private bool _isAwake = true;
-    public bool IsAwake(bool awakeState)=> _isAwake; 
+    public bool IsAwake(bool awakeState) => _isAwake;
 
     [SerializeField] private Seeker seeker;
 
@@ -80,10 +80,15 @@ public class EnemyPathfinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(path is null || !_isAwake) return;
-        
+        Move();
+    }
 
-        if(currentWaypoint >= path.vectorPath.Count)
+    private void Move()
+    {
+        if (path == null || !_isAwake) return;
+
+
+        if (currentWaypoint >= path.vectorPath.Count)
         {
             reachedEndOfPath = true;
             return;
@@ -109,8 +114,6 @@ public class EnemyPathfinding : MonoBehaviour
                 var step = Mathf.Clamp(moveSpeed * Time.deltaTime, 0, distance);
                 var position = Vector2.MoveTowards(transform.position, path.vectorPath[currentWaypoint], step);
                 rb.MovePosition(position);
-
-                
             }
             else
             {
@@ -137,8 +140,6 @@ public class EnemyPathfinding : MonoBehaviour
                 var step = Mathf.Clamp(moveSpeed * Time.deltaTime, 0, distance);
                 var position = Vector2.MoveTowards(transform.position, path.vectorPath[currentWaypoint], step);
                 rb.MovePosition(position);
-
-                
             }
             else
             {

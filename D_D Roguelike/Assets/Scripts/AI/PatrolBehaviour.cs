@@ -19,10 +19,29 @@ public class PatrolBehaviour : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (!GetWalkableTilemap(animator)) return;
+        if (!GetPathfinder(animator)) return;
         waitTime = startWaitTime;
         timePatrolling = startTimePatrolling;
-        if (!GetPathfinder(animator)) return;
-        Patrol(animator);
+        
+        GetPatrolPoint(animator);
+    }
+
+    private bool GetWalkableTilemap(Animator animator)
+    {
+        if (walkable == null)
+        {
+            Tilemap[] tilemaps = FindObjectsOfType<Tilemap>();
+            foreach (Tilemap tilemap in tilemaps)
+            {
+                if (tilemap.name == "Background")
+                {
+                    walkable = tilemap;
+                }
+            }
+        }
+
+        return walkable;
     }
 
     private bool GetPathfinder(Animator animator)
@@ -32,16 +51,13 @@ public class PatrolBehaviour : StateMachineBehaviour
             pathfinder = animator.gameObject.GetComponent<EnemyPathfinding>();
         }
 
-        return pathfinder != null;
+        return pathfinder;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(Vector2.Distance(animator.transform.position, new Vector2(moveSpot.x, moveSpot.y)) < 0.2f)
-        {
-            Patrol(animator);
-        }
+        Patrol(animator);        
 
         if (timePatrolling <= 0f)
         {
@@ -72,15 +88,12 @@ public class PatrolBehaviour : StateMachineBehaviour
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
 
-    public void Patrol(Animator animator)
-    {
-        //decrease wait time
-        waitTime -= Time.deltaTime;
-
+    private void Patrol(Animator animator)
+    {        
         //if close enough, get new path position
         if(Vector2.Distance(animator.transform.position, moveSpot) < 0.2f)
         {
-            GetPatrolPoint(animator);
+            WaitAtPoint(animator);
         }
         bool isStopped = pathfinder.isStopped;
 
@@ -89,11 +102,21 @@ public class PatrolBehaviour : StateMachineBehaviour
         animator.SetBool("isIdle", isStopped);
     }
 
-    public void GetPatrolPoint(Animator animator)
+    private void WaitAtPoint(Animator animator)
     {
-        TileBase validSpot = null;
+        waitTime -= Time.deltaTime;
 
-        while (validSpot is null)
+        if(waitTime <= 0)
+        {
+            GetPatrolPoint(animator);
+        }
+    }
+
+    private void GetPatrolPoint(Animator animator)
+    {
+        bool validSpot = false;
+
+        while (validSpot == false)
         {
             minX = Mathf.RoundToInt(animator.transform.position.x - patrolRange);
             minY = Mathf.RoundToInt(animator.transform.position.y - patrolRange);
@@ -105,7 +128,11 @@ public class PatrolBehaviour : StateMachineBehaviour
             moveSpot.x = Mathf.Floor(moveSpot.x) + 0.5f;
             moveSpot.y = Mathf.Floor(moveSpot.y) + 0.5f;
             Vector3Int testSpot = new Vector3Int(Mathf.FloorToInt(moveSpot.x), Mathf.FloorToInt(moveSpot.y), Mathf.FloorToInt(moveSpot.z));
-            validSpot = walkable.GetTile(testSpot);
+            validSpot = walkable.HasTile(testSpot);
         }
+
+        waitTime = startWaitTime;
+
+        pathfinder.MoveToTarget(moveSpot);
     }
 }

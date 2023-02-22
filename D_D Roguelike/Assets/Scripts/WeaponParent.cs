@@ -49,4 +49,25 @@ public class WeaponParent : MonoBehaviour
     {
         weaponRenderer = newWeaponSprite;
     }
+
+    private void OnDrawGizmos()
+    {
+        float spread = 0.3f;
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Vector2 direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y).normalized;
+        //calculate spread for projectile
+        //float angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+        //transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        //Vector2 dir = transform.rotation * Vector2.up;
+        direction = direction * 10f;
+        Vector2 pdir = Vector2.Perpendicular(direction);
+
+        Vector2 minDirection = direction + (pdir * -spread);
+        Vector2 maxDirection = direction + (pdir * spread);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, (new Vector2( transform.position.x, transform.position.y) + minDirection));
+        Gizmos.DrawLine(transform.position, (new Vector2(transform.position.x, transform.position.y) + maxDirection));
+    }
 }

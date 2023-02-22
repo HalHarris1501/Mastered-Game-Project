@@ -472,27 +472,27 @@ namespace Pathfinding {
 
 		/// <summary>Draws gizmos for the Seeker</summary>
 		public void OnDrawGizmos () {
-			if (lastCompletedNodePath == null || !drawGizmos) {
-				return;
-			}
+			//if (lastCompletedNodePath == null || !drawGizmos) {
+			//	return;
+			//}
 
-			if (detailedGizmos) {
-				Gizmos.color = new Color(0.7F, 0.5F, 0.1F, 0.5F);
+			//if (detailedGizmos) {
+			//	Gizmos.color = new Color(0.7F, 0.5F, 0.1F, 0.5F);
 
-				if (lastCompletedNodePath != null) {
-					for (int i = 0; i < lastCompletedNodePath.Count-1; i++) {
-						Gizmos.DrawLine((Vector3)lastCompletedNodePath[i].position, (Vector3)lastCompletedNodePath[i+1].position);
-					}
-				}
-			}
+			//	if (lastCompletedNodePath != null) {
+			//		for (int i = 0; i < lastCompletedNodePath.Count-1; i++) {
+			//			Gizmos.DrawLine((Vector3)lastCompletedNodePath[i].position, (Vector3)lastCompletedNodePath[i+1].position);
+			//		}
+			//	}
+			//}
 
-			Gizmos.color = new Color(0, 1F, 0, 1F);
+			//Gizmos.color = new Color(0, 1F, 0, 1F);
 
-			if (lastCompletedVectorPath != null) {
-				for (int i = 0; i < lastCompletedVectorPath.Count-1; i++) {
-					Gizmos.DrawLine(lastCompletedVectorPath[i], lastCompletedVectorPath[i+1]);
-				}
-			}
+			//if (lastCompletedVectorPath != null) {
+			//	for (int i = 0; i < lastCompletedVectorPath.Count-1; i++) {
+			//		Gizmos.DrawLine(lastCompletedVectorPath[i], lastCompletedVectorPath[i+1]);
+			//	}
+			//}
 		}
 
 		protected override int OnUpgradeSerializedData (int version, bool unityThread) {
