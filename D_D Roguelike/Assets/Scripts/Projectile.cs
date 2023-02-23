@@ -13,7 +13,6 @@ public class Projectile : MonoBehaviour, IPooledObject
     [SerializeField] private DamageType damageType;
     [SerializeField] private WeaponType weaponType;
     private Vector2 mousePosition;
-    private float offset = -90f;
     private float spread = 0.3f;
 
     // Start is called before the first frame update

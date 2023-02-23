@@ -2,67 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using CodeMonkey;
 
 public class Testing : MonoBehaviour
 {
-    private CustomGrid<HeatmapGridObject> grid;
+    private Pathfinding pathfinding;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        grid = new CustomGrid<HeatmapGridObject>(150, 100, 1f, new Vector3(-10, -10), (CustomGrid<HeatmapGridObject> g, int x, int y) => new HeatmapGridObject(g, x, y));
+        pathfinding = new Pathfinding(10, 10);
     }
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            Vector3 position = UtilsClass.GetMouseWorldPosition();
-            HeatmapGridObject heatmapGridObject = grid.GetGridObject(position);
-            if(heatmapGridObject != null)
+            Vector3 mouseWordlPosition = UtilsClass.GetMouseWorldPosition();
+            pathfinding.GetGrid().GetXY(mouseWordlPosition, out int x, out int y);
+            List<PathNode> path = pathfinding.FindPath(0, 0, x, y);
+            if(path != null)
             {
-                heatmapGridObject.AddValue(5);
+                for (int i = 0; i < path.Count - 1; i++)
+                { 
+                    Debug.DrawLine(new Vector3(path[i].x, path[i].y) * 10f + Vector3.one * 5f, new Vector3(path[i + 1].x, path[i + 1].y) * 10f + Vector3.one * 5f, Color.green);
+                }
+                    
             }
         }
-
-        if(Input.GetMouseButtonDown(1))
-        {
-            Debug.Log(grid.GetGridObject(UtilsClass.GetMouseWorldPosition())); 
-        }
     }
 }
 
-public class HeatmapGridObject
-{
-    private const int MIN = 0;
-    private const int MAX = 100;
 
-    private CustomGrid<HeatmapGridObject> grid;
-    private int x;
-    private int y;
-    private int value;
-
-    public HeatmapGridObject(CustomGrid<HeatmapGridObject> grid, int x, int y)
-    {
-        this.grid = grid;
-        this.x = x;
-        this.y = y;
-    }
-
-    public void AddValue(int addValue)
-    {
-        value += addValue;
-        value = Mathf.Clamp(value, MIN, MAX);
-        grid.TriggerGridObjectChanged(x, y);
-    }
-
-    public float GetNormalizedValue()
-    {
-        return (float)value / MAX;
-    }
-
-    public override string ToString()
-    {
-        return value.ToString();
-    }
-}

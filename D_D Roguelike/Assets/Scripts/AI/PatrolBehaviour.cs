@@ -14,13 +14,13 @@ public class PatrolBehaviour : StateMachineBehaviour
     private Vector3 moveSpot;
     private float minX, maxX, minY, maxY;
     private const float patrolRange = 5f;
-    private EnemyPathfinding pathfinder = null;
+    //private EnemyPathfinding pathfinder = null;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!GetWalkableTilemap(animator)) return;
-        if (!GetPathfinder(animator)) return;
+        //if (!GetPathfinder(animator)) return;
         waitTime = startWaitTime;
         timePatrolling = startTimePatrolling;
         
@@ -44,15 +44,15 @@ public class PatrolBehaviour : StateMachineBehaviour
         return walkable;
     }
 
-    private bool GetPathfinder(Animator animator)
-    {
-        if(pathfinder == null)
-        {
-            pathfinder = animator.gameObject.GetComponent<EnemyPathfinding>();
-        }
+    //private bool GetPathfinder(Animator animator)
+    //{
+    //    if(pathfinder == null)
+    //    {
+    //        pathfinder = animator.gameObject.GetComponent<EnemyPathfinding>();
+    //    }
 
-        return pathfinder;
-    }
+    //    return pathfinder;
+    //}
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -95,11 +95,11 @@ public class PatrolBehaviour : StateMachineBehaviour
         {
             WaitAtPoint(animator);
         }
-        bool isStopped = pathfinder.isStopped;
+        //bool isStopped = pathfinder.isStopped;
 
         //update animator states
-        animator.SetBool("isPatrolling", !isStopped);
-        animator.SetBool("isIdle", isStopped);
+        //animator.SetBool("isPatrolling", !isStopped);
+        //animator.SetBool("isIdle", isStopped);
     }
 
     private void WaitAtPoint(Animator animator)
@@ -133,6 +133,6 @@ public class PatrolBehaviour : StateMachineBehaviour
 
         waitTime = startWaitTime;
 
-        pathfinder.MoveToTarget(moveSpot);
+        //pathfinder.MoveToTarget(moveSpot);
     }
 }
