@@ -30,7 +30,7 @@ public class Pathfinding : MonoBehaviour
         Node startNode = grid.GetNodeFromWorldPoint(startPosition);
         Node targetNode = grid.GetNodeFromWorldPoint(targetPosition);
 
-        if (startNode.walkable && targetNode.walkable)
+        if (startNode.walkable && targetNode.walkable && startNode != targetNode)
         {
             Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
             HashSet<Node> closedSet = new HashSet<Node>();
@@ -61,6 +61,10 @@ public class Pathfinding : MonoBehaviour
                         if (!openSet.Contains(neighbour))
                         {
                             openSet.Add(neighbour);
+                        }
+                        else
+                        {
+                            openSet.UpdateItem(neighbour);
                         }
                     }
                 }
