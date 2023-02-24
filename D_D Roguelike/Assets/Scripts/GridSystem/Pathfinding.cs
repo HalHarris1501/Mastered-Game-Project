@@ -1,155 +1,120 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
+using System;
 
-public class Pathfinding 
+public class Pathfinding : MonoBehaviour
 {
-    private const int MOVE_STRAIGHT_COST = 10;
-    private const int MOVE_DIAGONAL_COST = 14;
+    private const int STRAIGHT_DISTANCE_COST = 10;
+    private const int DIAGONAL_DISTANCE_COST = 14;
+    PathRequestManager requestManager;
+    CustomGrid grid;
 
-    private CustomGrid<PathNode> grid;
-    private List<PathNode> openList;
-    private HashSet<PathNode> closedList;
-
-    public Pathfinding(int width, int height)
+    void Awake()
     {
-        grid = new CustomGrid<PathNode>(width, height, 10, Vector3.zero, (CustomGrid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+        requestManager = GetComponent<PathRequestManager>();
+        grid = GetComponent<CustomGrid>();
     }
 
-    public CustomGrid<PathNode> GetGrid()
+    public void StartFindPath(Vector3 startPosition, Vector3 targetPosition)
     {
-        return grid;
+        StartCoroutine(FindPath(startPosition, targetPosition));
     }
 
-    public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
+    IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition)
     {
-        PathNode startnode = grid.GetGridObject(startX, startY);
-        PathNode endNode = grid.GetGridObject(endX, endY);
+        Vector3[] waypoints = new Vector3[0];
+        bool pathSuccess = false;
 
-        openList = new List<PathNode> { startnode };
-        closedList = new HashSet<PathNode>();
+        Node startNode = grid.GetNodeFromWorldPoint(startPosition);
+        Node targetNode = grid.GetNodeFromWorldPoint(targetPosition);
 
-        for (int x = 0; x < grid.GetWidth(); x++)
+        if (startNode.walkable && targetNode.walkable)
         {
-            for (int y = 0; y < grid.GetHeight(); y++)
+            Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
+            HashSet<Node> closedSet = new HashSet<Node>();
+
+            openSet.Add(startNode);
+
+            while (openSet.Count > 0)
             {
-                PathNode pathNode = grid.GetGridObject(x, y);
-                pathNode.gCost = int.MaxValue;
-                pathNode.CalculateFCost();
-                pathNode.cameFromNode = null;
-            }
-        }
+                Node currentNode = openSet.RemoveFirst();
+                closedSet.Add(currentNode);
 
-        startnode.gCost = 0;
-        startnode.hCost = CalculateDistanceCost(startnode, endNode);
-        startnode.CalculateFCost();
-
-        while(openList.Count > 0)
-        {
-            PathNode currentNode = GetLowestFCostNode(openList);
-            if(currentNode == endNode)
-            {
-                //reached final node
-                return CalculatePath(endNode);
-            }
-
-            openList.Remove(currentNode);
-            closedList.Add(currentNode);
-
-            foreach(PathNode neighbourNode in GetNeightboursList(currentNode))
-            {
-                if (closedList.Contains(neighbourNode)) continue;
-
-                int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
-                if (tentativeGCost < neighbourNode.gCost)
+                if (currentNode == targetNode)
                 {
-                    neighbourNode.cameFromNode = currentNode;
-                    neighbourNode.gCost = tentativeGCost;
-                    neighbourNode.hCost = CalculateDistanceCost(neighbourNode, endNode);
-                    neighbourNode.CalculateFCost();
+                    pathSuccess = true;
+                    break;
+                }
 
-                    if(!openList.Contains(neighbourNode))
+                foreach (Node neighbour in grid.GetNeighbours(currentNode))
+                {
+                    if (!neighbour.walkable || closedSet.Contains(neighbour)) continue;
+
+                    int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+                    if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                     {
-                        openList.Add(neighbourNode);
+                        neighbour.gCost = newMovementCostToNeighbour;
+                        neighbour.hCost = GetDistance(neighbour, targetNode);
+                        neighbour.parent = currentNode;
+                        if (!openSet.Contains(neighbour))
+                        {
+                            openSet.Add(neighbour);
+                        }
                     }
                 }
             }
         }
-
-        //out of nodes on the open list
-        Debug.LogError("Path Impossible");
-        return null;
-    }
-
-    private List<PathNode> GetNeightboursList(PathNode currentNode)
-    {
-        List<PathNode> neighboursList = new List<PathNode>();
-
-        if(currentNode.x - 1 >= 0)
+        yield return null;
+        if(pathSuccess)
         {
-            //left
-            neighboursList.Add(GetNode(currentNode.x - 1, currentNode.y));
-            //leftDown
-            if (currentNode.y - 1 >= 0) neighboursList.Add(GetNode(currentNode.x - 1, currentNode.y - 1));
-            //leftUp
-            if (currentNode.y + 1 < grid.GetHeight()) neighboursList.Add(GetNode(currentNode.x - 1, currentNode.y + 1));
+            waypoints = RetracePath(startNode, targetNode);
         }
+        requestManager.FinishedProcessingPath(waypoints, pathSuccess);
+    }
 
-        if (currentNode.x + 1 < grid.GetWidth())
+    Vector3[] RetracePath(Node startNode, Node endNode)
+    {
+        List<Node> path = new List<Node>();
+        Node currentNode = endNode;
+
+        while(currentNode != startNode)
         {
-            //right
-            neighboursList.Add(GetNode(currentNode.x + 1, currentNode.y));
-            //rightDown
-            if (currentNode.y - 1 >= 0) neighboursList.Add(GetNode(currentNode.x + 1, currentNode.y - 1));
-            //leftUp
-            if (currentNode.y + 1 < grid.GetHeight()) neighboursList.Add(GetNode(currentNode.x + 1, currentNode.y + 1));
+            path.Add(currentNode);
+            currentNode = currentNode.parent;
         }
-        //down
-        if (currentNode.y - 1 >= 0) neighboursList.Add(GetNode(currentNode.x, currentNode.y - 1));
-        //up
-        if (currentNode.y + 1 < grid.GetHeight()) neighboursList.Add(GetNode(currentNode.x, currentNode.y + 1));
-
-        return neighboursList;
+        Vector3[] waypoints = SimplifyPath(path);
+        Array.Reverse(waypoints);
+        return waypoints;        
     }
 
-    private PathNode GetNode(int x, int y)
+    Vector3[] SimplifyPath(List<Node> path)
     {
-        return grid.GetGridObject(x, y);
-    }
+        List<Vector3> waypoints = new List<Vector3>();
+        Vector2 directionOld = Vector2.zero;
 
-    private List<PathNode> CalculatePath(PathNode endNode)
-    {
-        List<PathNode> path = new List<PathNode>();
-        path.Add(endNode);
-        PathNode currentNode = endNode;
-        while(currentNode.cameFromNode != null)
+        for (int i = 1; i < path.Count; i++)
         {
-            path.Add(currentNode.cameFromNode);
-            currentNode = currentNode.cameFromNode;
-        }
-        path.Reverse();
-        return path;
-    }
-
-    private int CalculateDistanceCost(PathNode a, PathNode b)
-    {
-        int xDistance = Mathf.Abs(a.x - b.x);
-        int yDistance = Mathf.Abs(a.y - b.y);
-        int remaining = Mathf.Abs(xDistance - yDistance);
-        return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining; 
-    }
-
-    private PathNode GetLowestFCostNode(List<PathNode> pathNodeList)
-    {
-        PathNode lowestFCostNode = pathNodeList[0];
-        for (int i = 1; i < pathNodeList.Count; i++)
-        {
-            if(pathNodeList[i].fCost < lowestFCostNode.fCost)
+            Vector2 directionNew = new Vector2(path[i - 1].gridX - path[i].gridX, path[i - 1].gridY - path[i].gridY);
+            if(directionNew != directionOld)
             {
-                lowestFCostNode = pathNodeList[i];
+                waypoints.Add(path[i].worldPosition);
             }
+            directionOld = directionNew;
         }
-        return lowestFCostNode;
+        return waypoints.ToArray();
+    }
+
+    int GetDistance(Node nodeA, Node nodeB)
+    {
+        int distanceX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
+        int distanceY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
+
+        if(distanceX > distanceY)
+        {
+            return DIAGONAL_DISTANCE_COST * distanceY + STRAIGHT_DISTANCE_COST * (distanceX - distanceY);
+        }
+        return DIAGONAL_DISTANCE_COST * distanceX + STRAIGHT_DISTANCE_COST * (distanceY - distanceX);
     }
 }

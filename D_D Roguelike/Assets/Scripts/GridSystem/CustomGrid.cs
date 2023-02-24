@@ -1,136 +1,91 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CodeMonkey.Utils;
-using System;
 
-public class CustomGrid <TGridObject>
+public class CustomGrid : MonoBehaviour
 {
+    [SerializeField] private bool displayGridGizmos;
+    public LayerMask unwalkableMask;
+    public Vector2 gridWorldSize;
+    public float nodeRadius;
+    public float detectionForgivenessRange;
+    private Node[,] grid;
 
-    public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
-    public class OnGridValueChangedEventArgs : EventArgs
+    private float nodeDiameter;
+    private int gridSizeX, gridSizeY;
+
+    public int MaxSize { get { return gridSizeX * gridSizeY; } } 
+
+    private void Awake()
     {
-        public int x;
-        public int y;
+        nodeDiameter = nodeRadius * 2;
+        gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
+        gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
+        CreateGrid();
     }
 
-    private int width;
-    private int height;
-    private float cellSize;
-    private Vector3 originPosition;
-    private TGridObject[,] gridArray;
-
-    public CustomGrid(int width, int height, float cellSize, Vector3 originPosition, Func<CustomGrid<TGridObject>, int, int, TGridObject> createGridObject)
+    private void CreateGrid()
     {
-        this.width = width;
-        this.height = height;
-        this.cellSize = cellSize;
-        this.originPosition = originPosition;
+        grid = new Node[gridSizeX, gridSizeY];
+        Vector3 worldBottomLeft = transform.position - (Vector3.right * gridWorldSize.x / 2) - (Vector3.up * gridWorldSize.y / 2);
 
-        gridArray = new TGridObject[width, height];
-
-        for (int x = 0; x < gridArray.GetLength(0); x++)
+        for (int x = 0; x < gridSizeX; x++)
         {
-            for (int y = 0; y < gridArray.GetLength(1); y++)
+            for (int y = 0; y < gridSizeY; y++)
             {
-                gridArray[x, y] = createGridObject(this, x, y);
+                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.up * (y * nodeDiameter + nodeRadius);
+                bool walkable = !(Physics2D.OverlapCircle(worldPoint, nodeRadius - detectionForgivenessRange, unwalkableMask));
+                grid[x, y] = new Node(walkable, worldPoint, x, y);
             }
         }
+    }
 
-        bool showDebug = true;
-        if (showDebug)
+    public List<Node> GetNeighbours(Node currentNode)
+    {
+        List<Node> neighbours = new List<Node>();
+
+        for (int x = -1; x <= 1; x++)
         {
-            TextMesh[,] debugTextArray = new TextMesh[width, height];
-
-            for (int x = 0; x < gridArray.GetLength(0); x++)
+            for (int y = -1; y <= 1; y++)
             {
-                for (int y = 0; y < gridArray.GetLength(1); y++)
+                if (x == 0 && y == 0) continue;
+
+                int checkX = currentNode.gridX + x;
+                int checkY = currentNode.gridY + y;
+
+                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    //make text in middle of cell
-                    debugTextArray[x, y] = UtilsClass.CreateWorldText(gridArray[x, y]?.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * 0.5f, 20, Color.green, TextAnchor.MiddleCenter);
-                    //draw cell walls
-                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.green, 100f);
-                    Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.green, 100f);
+                    neighbours.Add(grid[checkX, checkY]);
                 }
+
             }
-            Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.green, 100f);
-            Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.green, 100f);
+        }
 
-            OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) =>
+        return neighbours;
+    }
+
+    public Node GetNodeFromWorldPoint(Vector3 worldPosition)
+    {
+        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
+        float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
+        percentX = Mathf.Clamp01(percentX);
+        percentY = Mathf.Clamp01(percentY);
+
+        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
+        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        return grid[x, y];
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, gridWorldSize.y, 1));
+        if (grid != null && displayGridGizmos)
+        {
+            foreach (Node node in grid)
             {
-                debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
-            };
+                Gizmos.color = (node.walkable) ? Color.green : Color.red;
+                Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - 0.01f));
+            }
         }
-    }
-
-    public int GetWidth()
-    {
-        return width;
-    }
-
-    public int GetHeight()
-    {
-        return height;
-    }
-
-    public float GetCellSize()
-    {
-        return cellSize;
-    }
-
-    public Vector3 GetOriginPosition()
-    {
-        return originPosition;
-    }
-
-    private Vector3 GetWorldPosition(int x, int y)
-    {
-        return new Vector3(x, y) * cellSize + originPosition;
-    }
-
-    public void GetXY(Vector3 worldPosition, out int x, out int y)
-    {
-        x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
-        y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
-    }
-
-    public void SetGridObject(int x, int y, TGridObject value)
-    {
-        if (x >= 0 && y >= 0 && x < width && y < height)
-        {
-            gridArray[x, y] = value;
-            OnGridValueChanged?.Invoke(this, new OnGridValueChangedEventArgs { x = x, y = y });
-        }
-    }
-
-    public void TriggerGridObjectChanged(int x, int y)
-    {
-        OnGridValueChanged?.Invoke(this, new OnGridValueChangedEventArgs { x = x, y = y });
-    }
-
-    public void SetGridObject(Vector3 worldPosition, TGridObject value)
-    {
-        int x, y;
-        GetXY(worldPosition, out x, out y);
-        SetGridObject(x, y, value); 
-    }
-
-    public TGridObject GetGridObject(int x, int y)
-    {
-        if (x >= 0 && y >= 0 && x < width && y < height)
-        {
-            return gridArray[x, y];
-        }
-        else
-        {
-            return default(TGridObject);
-        }
-    }
-
-    public TGridObject GetGridObject(Vector3 worldPosition)
-    {
-        int x, y;
-        GetXY(worldPosition, out x, out y);
-        return GetGridObject(x, y);
     }
 }
