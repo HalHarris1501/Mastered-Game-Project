@@ -5,32 +5,27 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [SerializeField] private bool showPathGizmos;
-    public Transform target;
-    public Vector3 targetPosition;
-    public bool useTarget;
+    //[SerializeField] private Transform target;
     float speed = 5;
     private Vector3[] path;
     private int targetIndex;
+    private bool stopped = false;
+    public bool isStopped { get { return stopped; } }
 
-    void Start()
+    public void PathFind(Vector3 targetPosition)
     {
-        InvokeRepeating("PathFind", 0f, 0.5f);
+        PathRequestManager.RequestPath(transform.position, targetPosition, OnPathFound);
     }
 
-    public void PathFind()
-    {        
-        if (useTarget)
-        {
-            PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-        }
-        else
-        {
-            PathRequestManager.RequestPath(transform.position, targetPosition, OnPathFound);
-        }
+    public void PathFind(Transform target)
+    {
+        Vector3 targetPosition = target.position;
+        PathFind(targetPosition);
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
+        Debug.Log(pathSuccessful);
         if(pathSuccessful && newPath.Length > 0)
         {
             path = newPath;
@@ -41,6 +36,7 @@ public class Unit : MonoBehaviour
 
     IEnumerator FollowPath()
     {
+        stopped = false;
         Vector3 currentWaypoint = path[0];
 
         while(true)
@@ -50,6 +46,7 @@ public class Unit : MonoBehaviour
                 targetIndex++;
                 if(targetIndex >= path.Length)
                 {
+                    stopped = true;
                     yield break;
                 }
 

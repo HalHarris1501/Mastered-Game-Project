@@ -249,8 +249,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showPathGizmos: 1
   target: {fileID: 1057317684}
-  targetPosition: {x: 0, y: 0, z: 0}
-  useTarget: 1
 --- !u!212 &367183884
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -397,8 +395,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showPathGizmos: 1
   target: {fileID: 1057317684}
-  targetPosition: {x: 0, y: 0, z: 0}
-  useTarget: 1
 --- !u!212 &518590907
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2213,8 +2209,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showPathGizmos: 1
   target: {fileID: 1057317684}
-  targetPosition: {x: 0, y: 0, z: 0}
-  useTarget: 1
 --- !u!212 &929522508
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2311,7 +2305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b194f4a4346bd42bdc41e7c33037be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayGridGizmos: 0
+  displayGridGizmos: 1
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 128
@@ -2537,8 +2531,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showPathGizmos: 1
   target: {fileID: 1057317684}
-  targetPosition: {x: 0, y: 0, z: 0}
-  useTarget: 1
 --- !u!61 &2016348386
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2667,8 +2659,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showPathGizmos: 1
   target: {fileID: 1057317684}
-  targetPosition: {x: 0, y: 0, z: 0}
-  useTarget: 1
 --- !u!212 &2107507485
 SpriteRenderer:
   m_ObjectHideFlags: 0

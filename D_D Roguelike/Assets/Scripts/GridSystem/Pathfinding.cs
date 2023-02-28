@@ -15,6 +15,7 @@ public class Pathfinding : MonoBehaviour
     {
         requestManager = GetComponent<PathRequestManager>();
         grid = GetComponent<CustomGrid>();
+        grid.MakeGrid();
     }
 
     public void StartFindPath(Vector3 startPosition, Vector3 targetPosition)

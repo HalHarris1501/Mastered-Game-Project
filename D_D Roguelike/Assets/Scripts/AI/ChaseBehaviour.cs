@@ -4,20 +4,35 @@ using UnityEngine;
 
 public class ChaseBehaviour : StateMachineBehaviour
 {
+    private Vector3 previousPlayerPos;
+    private Unit pathfinder;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //animator.GetComponent<EnemyPathfinding>().ChasePlayer();
+        if (!GetPathfinder(animator)) return;
+        previousPlayerPos = Player.Instance.transform.position;
+        pathfinder.PathFind(previousPlayerPos);
+        
+    }
+
+    private bool GetPathfinder(Animator animator)
+    {
+        if (pathfinder == null)
+        {
+            pathfinder = animator.gameObject.GetComponent<Unit>();
+        }
+
+        return pathfinder;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     { 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if(Player.Instance.transform.position != previousPlayerPos)
         {
-            animator.SetBool("canSeeEnemy", false);
-            animator.SetBool("isIdle", true);
+            previousPlayerPos = Player.Instance.transform.position;
+            pathfinder.PathFind(previousPlayerPos);
         }
     }
 

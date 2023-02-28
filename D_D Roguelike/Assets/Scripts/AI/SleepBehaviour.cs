@@ -5,37 +5,39 @@ using UnityEngine;
 public class SleepBehaviour : StateMachineBehaviour
 {
     private SpriteRenderer spriteRenderer = null;
-    //private EnemyPathfinding pathfinder = null;
+    private Unit pathfinder = null;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         //on sleep trun off the sprite renderer and put pathfinder to sleep
         if (!GetSpriteRenderer(animator)) return;
-        //if (!GetPathfinder(animator)) return;
+        if (!GetPathfinder(animator)) return;
 
         animator.SetBool("isIdle", true);
         spriteRenderer.enabled = false;
-        //pathfinder.IsAwake(false);        
+        pathfinder.enabled = false;        
     }
 
     private bool GetSpriteRenderer(Animator animator)
     {
         if(spriteRenderer == null)
         {
+            Debug.Log("renderer found");
             spriteRenderer = animator.gameObject.GetComponent<SpriteRenderer>();
         }
 
         return spriteRenderer;
     }
-    //private bool GetPathfinder(Animator animator)
-    //{
-    //    if (pathfinder == null)
-    //    {
-    //        pathfinder = animator.gameObject.GetComponent<EnemyPathfinding>();
-    //    }
+    private bool GetPathfinder(Animator animator)
+    {
+        if (pathfinder == null)
+        {
+            Debug.Log("pathfinder found");
+            pathfinder = animator.gameObject.GetComponent<Unit>();
+        }
 
-    //    return pathfinder;
-    //}
+        return pathfinder;
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -47,10 +49,10 @@ public class SleepBehaviour : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!GetSpriteRenderer(animator)) return;
-        //if (!GetPathfinder(animator)) return;
+        if (!GetPathfinder(animator)) return;
 
         spriteRenderer.enabled = true;
-        //pathfinder.IsAwake(true);
+        pathfinder.enabled = true;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

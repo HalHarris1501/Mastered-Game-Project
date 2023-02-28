@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CustomProceduralDungeonGenerator : AbstractDuneonGenerator
+public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
 {
     [SerializeField] private Vector2Int maxSize;
     [SerializeField] private Room startRoom, endRoom;

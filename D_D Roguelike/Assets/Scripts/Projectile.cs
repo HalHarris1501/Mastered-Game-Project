@@ -9,11 +9,12 @@ public class Projectile : MonoBehaviour, IPooledObject
     private bool isCollectable = false;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float duration;
-    [SerializeField]  int damage;
+    [SerializeField] int damage;
     [SerializeField] private DamageType damageType;
     [SerializeField] private WeaponType weaponType;
     private Vector2 mousePosition;
     private float spread = 0.3f;
+    private bool isCritical;
 
     // Start is called before the first frame update
     public void OnObjectSpawn()
@@ -28,8 +29,17 @@ public class Projectile : MonoBehaviour, IPooledObject
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Vector2 direction = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y).normalized;
-        //calculate spread for projectile
-        Vector2 pdir = Vector2.Perpendicular(direction);
+
+        Vector2 pdir = new Vector2();
+        if (!isCritical)
+        {
+            //calculate spread for projectile
+            pdir = Vector2.Perpendicular(direction);
+        }
+        else
+        {
+            pdir = Vector2.zero;
+        }
 
         Vector2 newDirection = direction + (pdir * Random.Range(-spread, spread));
 
@@ -45,109 +55,76 @@ public class Projectile : MonoBehaviour, IPooledObject
 
     private void FixedUpdate()
     {
-        if (!isAmmo)
+        MoveProjectile();
+    }
+
+    private void MoveProjectile()
+    {
+        if (duration > 0)
         {
-            if (duration > 0)
-            {
-                transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
-                duration -= Time.fixedDeltaTime;
-            }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
+            duration -= Time.fixedDeltaTime;
         }
         else
         {
-            if (duration > 0)
-            {
-                transform.position += transform.up * moveSpeed * Time.fixedDeltaTime;
-                duration -= Time.fixedDeltaTime;
-            }
-            else
-            {
-                moveSpeed = 0;
-                isCollectable = true;
-            }
+            DeactivateProjectile();
+        }
+    }
+
+    private void DeactivateProjectile()
+    {
+        if (!isAmmo)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            moveSpeed = 0;
+            isCollectable = true;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isAmmo)
+        ManageCollision(collision);
+    }
+
+    private void ManageCollision(Collider2D collision)
+    {
+        if(!isCollectable)
         {
-            if (isFriendly)
-            {
-                if (collision.gameObject.CompareTag("Enemy"))
-                {
-                    collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
-                    gameObject.SetActive(false);
-                }
-
-            }
-            else
-            {
-                if (collision.gameObject.CompareTag("Player"))
-                {
-                    collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
-                    gameObject.SetActive(false);
-                }
-            }
-
-            if (collision.gameObject.CompareTag("Obstacle"))
-            {
-                gameObject.SetActive(false);
-            }
+            DetermineCollisionEffect(collision);
         }
         else
         {
-            if (!isCollectable)
-            {
-                if (isFriendly)
-                {
-                    if (collision.gameObject.CompareTag("Enemy"))
-                    {
-                        collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
-                        moveSpeed = 0;
-                        isCollectable = true;
-                    }
-
-                }
-                else
-                {
-                    if (collision.gameObject.CompareTag("Player"))
-                    {
-                        collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
-                        moveSpeed = 0;
-                        isCollectable = true;
-                    }
-                }
-
-                if (collision.gameObject.CompareTag("Obstacle"))
-                {
-                    moveSpeed = 0;
-                    isCollectable = true;
-                }
-            }
-            else
-            {
-                if (collision.gameObject.CompareTag("Player"))
-                {
-                    WeaponManager.Instance.AlterWeaponCount(weaponType, 1, true);
-                    gameObject.SetActive(false);
-                }
-            }          
+            PickupProjectile(collision);
+        }
+    }
+    
+    private void DetermineCollisionEffect(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && isFriendly)
+        {
+            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+            DeactivateProjectile();
+        }
+        if (collision.gameObject.CompareTag("Player") && !isFriendly)
+        {
+            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+            DeactivateProjectile();
+        }
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            DeactivateProjectile();
         }
     }
 
-    public void SetVariables(bool friendly, float speed, float range, int damageToDo, DamageType damageTyping, float durationLength, WeaponType thisWeaponType)
+    private void PickupProjectile(Collider2D collision)
     {
-        isFriendly = friendly;
-        moveSpeed = speed;
-        duration = range;
-        damage = damageToDo;
-        damageType = damageTyping;
-        duration = durationLength;
-        weaponType = thisWeaponType;
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            WeaponManager.Instance.AlterWeaponCount(weaponType, 1, true);
+            gameObject.SetActive(false);
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class SimpleRandomWalkMapGenerator : AbstractDuneonGenerator
+public class SimpleRandomWalkMapGenerator : AbstractDungeonGenerator
 {
     [SerializeField] protected SimpleRandomWalkData randomWalkParameters;
 

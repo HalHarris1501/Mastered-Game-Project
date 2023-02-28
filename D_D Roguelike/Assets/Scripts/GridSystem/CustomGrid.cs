@@ -5,18 +5,18 @@ using UnityEngine;
 public class CustomGrid : MonoBehaviour
 {
     [SerializeField] private bool displayGridGizmos;
-    public LayerMask unwalkableMask;
-    public Vector2 gridWorldSize;
-    public float nodeRadius;
-    public float detectionForgivenessRange;
+    [SerializeField] private LayerMask unwalkableMask;
+    [SerializeField] private Vector2 gridWorldSize;
+    [SerializeField] private float nodeRadius;
+    [SerializeField] private float detectionForgivenessRange;
     private Node[,] grid;
 
     private float nodeDiameter;
     private int gridSizeX, gridSizeY;
 
-    public int MaxSize { get { return gridSizeX * gridSizeY; } } 
+    public int MaxSize { get { return gridSizeX * gridSizeY; } }
 
-    private void Awake()
+    public void MakeGrid()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -84,7 +84,7 @@ public class CustomGrid : MonoBehaviour
             foreach (Node node in grid)
             {
                 Gizmos.color = (node.walkable) ? Color.green : Color.red;
-                Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - 0.01f));
+                Gizmos.DrawWireCube(node.worldPosition, Vector3.one * (nodeDiameter - 0.01f));
             }
         }
     }
