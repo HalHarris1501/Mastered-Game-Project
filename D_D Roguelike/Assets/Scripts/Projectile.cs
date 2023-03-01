@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour, IPooledObject
     // Start is called before the first frame update
     public void OnObjectSpawn()
     {
-        GetTargetDirection();   
+        GetTargetDirection();
         isCollectable = false;
     }
 
@@ -50,7 +50,7 @@ public class Projectile : MonoBehaviour, IPooledObject
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
@@ -91,7 +91,7 @@ public class Projectile : MonoBehaviour, IPooledObject
 
     private void ManageCollision(Collider2D collision)
     {
-        if(!isCollectable)
+        if (!isCollectable)
         {
             DetermineCollisionEffect(collision);
         }
@@ -100,7 +100,7 @@ public class Projectile : MonoBehaviour, IPooledObject
             PickupProjectile(collision);
         }
     }
-    
+
     private void DetermineCollisionEffect(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy") && isFriendly)
@@ -126,5 +126,19 @@ public class Projectile : MonoBehaviour, IPooledObject
             WeaponManager.Instance.AlterWeaponCount(weaponType, 1, true);
             gameObject.SetActive(false);
         }
+    }
+
+    public void SetVariables(ProjectileDataPack data, bool isCritical, int damage, bool isFriendly)
+    {
+        this.isFriendly = isFriendly;
+        isAmmo = data.isAmmo;
+        moveSpeed = data.moveSpeed;
+        duration = data.duration;
+        this.damage = damage;
+        damageType = data.damageType;
+        weaponType = data.weaponType;
+        spread = data.spread;
+        this.isCritical = isCritical;
+
     }
 }

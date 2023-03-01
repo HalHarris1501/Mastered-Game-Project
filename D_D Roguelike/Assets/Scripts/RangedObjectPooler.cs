@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class RangedObjectPooler : MonoBehaviour
 {
-    [SerializeField] private List<ProjectilePool> pools;
-    private Dictionary<string, Queue<GameObject>> poolDictionary;
-    private ProjectileDataPack currentProjectile;
+    [SerializeField] private ProjectilePool pool;
+    [SerializeField] private bool isFriendly;
+    Queue<GameObject> objectPool;
+    [SerializeField] private ProjectileDataPack currentProjectile;
 
     [System.Serializable]
     public struct ProjectilePool
     {
-        public string tag;
         public GameObject prefab;
         public int size;
     }
@@ -20,30 +20,32 @@ public class RangedObjectPooler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        initialise();
+    }
 
-        foreach (ProjectilePool pool in pools)
+    private void initialise()
+    {
+        objectPool = new Queue<GameObject>();
+
+        for (int i = 0; i < pool.size; i++) //adds all objects wanted to the queue, in an inactive state
         {
-            Queue<GameObject> objectPool = new Queue<GameObject>(); //creates a queue full of objects
-
-            for (int i = 0; i < pool.size; i++) //adds all objects wanted to the queue, in an inactive state
-            {
-                GameObject obj = Instantiate(pool.prefab);
-                obj.SetActive(false);
-                objectPool.Enqueue(obj);
-            }
-
-            poolDictionary.Add(tag, objectPool); //adds the pool to the dictionary
+            GameObject obj = Instantiate(pool.prefab);
+            obj.SetActive(false);
+            objectPool.Enqueue(obj);
         }
     }
 
-    public GameObject SpawnProjectile(Vector2 position, Quaternion rotation)
+    public GameObject SpawnProjectile(Vector2 position, Quaternion rotation, bool isCritical, int damage)
     {
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
-
+        GameObject objectToSpawn = objectPool.Dequeue();
         objectToSpawn.SetActive(true);
+        objectToSpawn.transform.localScale = currentProjectile.transform.localScale;
+        objectToSpawn.GetComponent<SpriteRenderer>().sprite = currentProjectile.sprite;
+
+        objectToSpawn.GetComponent<Projectile>().SetVariables(currentProjectile, isCritical, damage, isFriendly);
+
         objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
+        objectToSpawn.transform.rotation = rotation;      
 
         IPooledObject pooledObj = objectToSpawn.GetComponent<IPooledObject>();
 
@@ -52,7 +54,7 @@ public class RangedObjectPooler : MonoBehaviour
             pooledObj.OnObjectSpawn();
         }
 
-        poolDictionary[tag].Enqueue(objectToSpawn);
+        objectPool.Enqueue(objectToSpawn);
 
         return objectToSpawn;
     }

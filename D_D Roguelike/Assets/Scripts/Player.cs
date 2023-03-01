@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     public Weapon currentWeapon;
     [SerializeField] private WeaponParent weaponParent;
+    [SerializeField] private int critMinRoll = 20;
     [SerializeField] private float startTimeBetweenAttack;
     [SerializeField] private float timeBetweenAttack;
 
@@ -30,8 +31,13 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        InitialisePlayer();
+    }
+
+    private void InitialisePlayer()
+    {
         weaponParent = GetComponentInChildren<WeaponParent>();
-        if(weaponParent is null)
+        if (weaponParent is null)
         {
             Debug.Log("Weapon Parent is missing");
             gameObject.SetActive(false);
@@ -56,7 +62,7 @@ public class Player : MonoBehaviour
         currentWeapon.gameObject.SetActive(true);
         if (weaponParent != null)
         {
-            weaponParent.SetNewWeapon(newWeapon.GetComponent<SpriteRenderer>());
+            weaponParent.SetNewWeapon(newWeapon.GetComponent<SpriteRenderer>(), currentWeapon.projectile);
         }
     }
 
@@ -77,13 +83,13 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                currentWeapon.Attack(0);
+                currentWeapon.Attack(0, AttackRoll());
 
                 timeBetweenAttack = startTimeBetweenAttack;
             }
             else if (Input.GetMouseButton(1))
             {
-                currentWeapon.Attack(1);
+                currentWeapon.Attack(1, AttackRoll());
 
                 timeBetweenAttack = startTimeBetweenAttack;
             }
@@ -92,6 +98,16 @@ public class Player : MonoBehaviour
         {
             timeBetweenAttack -= Time.deltaTime;
         }
+    }
+
+    private bool AttackRoll()
+    {
+        bool isCritical = false;
+
+        int roll = Random.Range(1, 21);
+        if (roll >= critMinRoll) isCritical = true;
+
+        return isCritical;
     }
 
     private void FixedUpdate()

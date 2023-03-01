@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private GameObject projectile;
+    public ProjectileDataPack projectile;
     [SerializeField] private bool offHandEmpty;
     [SerializeField] private WeaponType weaponType;
 
@@ -53,7 +53,7 @@ public class Weapon : MonoBehaviour
         }
     }  
 
-    public void MeleeAttack()
+    public void MeleeAttack(bool isCritical)
     {
         canDealDamage = true;
         weaponCollider.enabled = true;
@@ -74,14 +74,13 @@ public class Weapon : MonoBehaviour
 
     }
 
-    public void RangedAttack()
+    public void RangedAttack(bool isCritical)
     {
         if (WeaponManager.Instance.CheckWeaponCount(weaponType) > 0 || ammo > 0 || infiniteAmmo)
         {
             int damage = calculateDamage();
             
-            GameObject editedProjectile = ObjectPooler.Instance.SpawnFromPool(projectile.name, this.transform.position, Quaternion.identity);                       
-            editedProjectile.GetComponent<Projectile>().SetVariables(true, weaponMoveSpeed, range, damage, damageType, duration, weaponType);
+            GameObject editedProjectile = GetComponentInParent<WeaponParent>().rangedObjectPooler.SpawnProjectile(this.transform.position, Quaternion.identity, isCritical, damage);                       
 
             if(!infiniteAmmo && isThrown)
             {
@@ -94,25 +93,25 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void Attack(int buttonPressed)
+    public void Attack(int buttonPressed, bool isCritical)
     {
         if(isMelee == true)
         {
             if(buttonPressed == 0)
             {
-                MeleeAttack();
+                MeleeAttack(isCritical);
             }
             else if(buttonPressed == 1)
             {
                 if (isThrown == true)
                 {
-                    RangedAttack();
+                    RangedAttack(isCritical);
                 }                
             }
         }
         else
         {
-            RangedAttack();
+            RangedAttack(isCritical);
         }
     }
 

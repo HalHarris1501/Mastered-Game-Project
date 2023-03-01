@@ -5,15 +5,21 @@ using UnityEngine;
 public class WeaponParent : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer characterRenderer, weaponRenderer;
+    public RangedObjectPooler rangedObjectPooler;
 
     private void Start()
     {
+        Initialise();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Initialise()
     {
-        
+        rangedObjectPooler = GetComponentInChildren<RangedObjectPooler>();
+        if (rangedObjectPooler is null)
+        {
+            Debug.Log("Ranged Object Pooler is missing");
+            gameObject.SetActive(false);
+        }
     }
 
     public void FaceMouse()
@@ -45,9 +51,10 @@ public class WeaponParent : MonoBehaviour
         }        
     }
 
-    public void SetNewWeapon(SpriteRenderer newWeaponSprite)
+    public void SetNewWeapon(SpriteRenderer newWeaponSprite, ProjectileDataPack currentProjectile)
     {
         weaponRenderer = newWeaponSprite;
+        if(!(currentProjectile is null)) rangedObjectPooler.SetDataPack(currentProjectile);
     }
 
     private void OnDrawGizmos()
