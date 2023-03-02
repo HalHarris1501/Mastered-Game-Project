@@ -49,6 +49,7 @@ public class CustomGrid : MonoBehaviour
             for (int y = -1; y <= 1; y++)
             {
                 if (x == 0 && y == 0) continue;
+                if (Mathf.Abs(x) == Mathf.Abs(y)) continue;
 
                 int checkX = currentNode.gridX + x;
                 int checkY = currentNode.gridY + y;
