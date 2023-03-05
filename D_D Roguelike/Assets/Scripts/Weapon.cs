@@ -132,11 +132,11 @@ public class Weapon : MonoBehaviour
         int damage;
         if(offHandEmpty == true && versatileDice != 0)
         {
-            damage = Random.Range(1, versatileDice + 1);
+            damage = DiceRoller.DiceRoll(versatileDice);
         }
         else
         {
-            damage = Random.Range(1, damageDice + 1);
+            damage = DiceRoller.DiceRoll(damageDice);
         }
 
         return damage;

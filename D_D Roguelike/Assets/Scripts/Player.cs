@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int critMinRoll = 20;
     [SerializeField] private float startTimeBetweenAttack;
     [SerializeField] private float timeBetweenAttack;
+    [SerializeField] private CreatureAttributes playerAttributes;
 
     private WeaponStruct _currentWeapon;
     private GameObject collectableNearby;
@@ -83,13 +84,13 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                currentWeapon.Attack(0, AttackRoll());
+                AttackRoll(0);
 
                 timeBetweenAttack = startTimeBetweenAttack;
             }
             else if (Input.GetMouseButton(1))
             {
-                currentWeapon.Attack(1, AttackRoll());
+                AttackRoll(1);
 
                 timeBetweenAttack = startTimeBetweenAttack;
             }
@@ -100,14 +101,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    private bool AttackRoll()
+    private void AttackRoll(int attackType)
     {
         bool isCritical = false;
 
-        int roll = Random.Range(1, 21);
+        int roll = DiceRoller.D20Check();
         if (roll >= critMinRoll) isCritical = true;
 
-        return isCritical;
+        currentWeapon.Attack(attackType, isCritical);
     }
 
     private void FixedUpdate()
