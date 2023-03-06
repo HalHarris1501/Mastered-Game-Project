@@ -10,7 +10,6 @@ public class ProjectileDataPack : ScriptableObject
     public bool isAmmo;
     public float moveSpeed;
     public float duration;
-    public DamageType damageType;
     public WeaponType weaponType;
     public float spread = 0.3f;
 }

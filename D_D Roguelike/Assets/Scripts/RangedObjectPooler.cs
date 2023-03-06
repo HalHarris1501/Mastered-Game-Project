@@ -35,7 +35,7 @@ public class RangedObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject SpawnProjectile(Vector2 position, Quaternion rotation, bool isCritical, int damage)
+    public GameObject SpawnProjectile(Vector2 position, Quaternion rotation, bool isCritical, List<DamageStruct> damage)
     {
         GameObject objectToSpawn = objectPool.Dequeue();
         objectToSpawn.SetActive(true);

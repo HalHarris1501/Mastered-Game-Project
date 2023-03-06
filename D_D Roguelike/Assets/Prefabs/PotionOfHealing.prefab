@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -335668845
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 68a106ce7c604d04fbde85857afdb757, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -97,6 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb50c7dadf3282478d38b34d3e65d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  potionEffect:
+  - damageType: 13
+    damageDie: 4
+    numOfDice: 2
+    damageModifier: 4
 --- !u!114 &3416003121952572332
 MonoBehaviour:
   m_ObjectHideFlags: 0

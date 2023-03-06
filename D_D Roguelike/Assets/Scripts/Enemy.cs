@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IPooledObject
 {
     [SerializeField] private float moveSpeed = 3f;
-    //[SerializeField] private GameObject targetObject;
+    [SerializeField] private List<DamageStruct> damage;
     [SerializeField] private float damageTimer;
     [SerializeField] private float startDamageTimer = 1f;
     [SerializeField] private float challengeRating;
@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour, IPooledObject
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, DamageType.Piercing);
+                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, false);
                 damageTimer = startDamageTimer;
             }
         }
@@ -71,7 +71,7 @@ public class Enemy : MonoBehaviour, IPooledObject
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(1, DamageType.Piercing);
+                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, false);
                 damageTimer = startDamageTimer;
             }
         }

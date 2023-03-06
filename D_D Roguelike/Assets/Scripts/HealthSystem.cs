@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,32 +37,58 @@ public class HealthSystem : MonoBehaviour
         
     }
 
-    public void TakeDamage(int damageAmount, DamageType damageType)
+    public void TakeDamage(List<DamageStruct> damages, bool isCrit)
     {
-        DamageIndicator indicator = ObjectPooler.Instance.SpawnFromPool("Damage Indicator", transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
-        health -= CalculateDamage(damageAmount, damageType, indicator);
+        CalculateDamage(damages, isCrit);
 
-        if(health > maxHealth)
+        ManageDamage();             
+    }
+
+    private void ManageDamage()
+    {
+        if (health > maxHealth)
         {
             health = maxHealth;
         }
 
-        if (this.gameObject.CompareTag("Player"))
+        if (GetComponent<Player>())
         {
             uiManager.UpdateHealth(maxHealth, health);
-            if (health <= 0 && !unkillable)
-            {
-                this.gameObject.SetActive(false);
-            }
+            CheckPlayerDead();
         }
 
         if (health <= 0 && !unkillable)
         {
             this.GetComponent<Enemy>().Death();
-        }            
+        }
     }
 
-    private int CalculateDamage(int damageAmount, DamageType damageType, DamageIndicator indicator)
+    private void CheckPlayerDead()
+    {
+        if (health <= 0 && !unkillable)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
+    private void CalculateDamage(List<DamageStruct> damages, bool isCrit)
+    {
+        foreach (DamageStruct damageStruct in damages)
+        {
+            DamageIndicator indicator = ObjectPooler.Instance.SpawnFromPool("Damage Indicator", transform.position, Quaternion.identity).GetComponent<DamageIndicator>();
+            int damageAmount = DiceRoller.RollMultiple(damageStruct.damageDie, damageStruct.numOfDice);
+            if(isCrit)
+            {
+                damageAmount += DiceRoller.RollMultiple(damageStruct.damageDie, damageStruct.numOfDice);
+            }
+            damageAmount += damageStruct.damageModifier;
+            DamageType damageType = damageStruct.damageType;
+            damageAmount = CheckResistances(damageAmount, damageType, indicator, isCrit);
+
+            health -= damageAmount;
+        }        
+    }
+
+    private int CheckResistances(int damageAmount, DamageType damageType, DamageIndicator indicator, bool isCrit)
     {
         if (immunities.Contains(damageType))
         {
@@ -86,6 +113,11 @@ public class HealthSystem : MonoBehaviour
         else
         {
             indicator.SetDamageText(damageAmount, Color.red);
+        }
+
+        if (isCrit)
+        {
+            indicator.SetDamageText(damageAmount, Color.yellow);
         }
         return damageAmount;
     }

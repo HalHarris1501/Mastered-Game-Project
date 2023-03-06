@@ -9,8 +9,7 @@ public class Projectile : MonoBehaviour, IPooledObject
     private bool isCollectable = false;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float duration;
-    [SerializeField] int damage;
-    [SerializeField] private DamageType damageType;
+    [SerializeField] List<DamageStruct> damage;
     [SerializeField] private WeaponType weaponType;
     private Vector2 mousePosition;
     private float spread = 0.3f;
@@ -105,12 +104,12 @@ public class Projectile : MonoBehaviour, IPooledObject
     {
         if (collision.gameObject.CompareTag("Enemy") && isFriendly)
         {
-            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, isCritical);
             DeactivateProjectile();
         }
         if (collision.gameObject.CompareTag("Player") && !isFriendly)
         {
-            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+            collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, isCritical);
             DeactivateProjectile();
         }
         if (collision.gameObject.CompareTag("Obstacle"))
@@ -128,14 +127,13 @@ public class Projectile : MonoBehaviour, IPooledObject
         }
     }
 
-    public void SetVariables(ProjectileDataPack data, bool isCritical, int damage, bool isFriendly)
+    public void SetVariables(ProjectileDataPack data, bool isCritical, List<DamageStruct> damage, bool isFriendly)
     {
         this.isFriendly = isFriendly;
         isAmmo = data.isAmmo;
         moveSpeed = data.moveSpeed;
         duration = data.duration;
         this.damage = damage;
-        damageType = data.damageType;
         weaponType = data.weaponType;
         spread = data.spread;
         this.isCritical = isCritical;

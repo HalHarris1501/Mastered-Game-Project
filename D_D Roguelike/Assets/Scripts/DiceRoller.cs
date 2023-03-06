@@ -10,6 +10,18 @@ public static class DiceRoller
         return rollResult;
     }
 
+    public static int RollMultiple(int diceMax, int numOfDice)
+    {
+        int rollResult = 0;
+
+        for (int i = 0; i < numOfDice; i++)
+        {
+            rollResult += DiceRoll(diceMax);
+        }
+
+        return rollResult;
+    }
+
     public static int D20Check()
     {
         int rollResult = DiceRoll(20);

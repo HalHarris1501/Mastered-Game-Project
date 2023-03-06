@@ -9,8 +9,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private WeaponType weaponType;
 
     [SerializeField] private bool isMelee;
-    [SerializeField] private int damageDice, versatileDice;
-    [SerializeField] private DamageType damageType;
+    [SerializeField] private List<DamageStruct> damage;
+    [SerializeField] private DamageStruct versatileDamage;
     [SerializeField] private float range;
     [SerializeField] private float weaponMoveSpeed;
     [SerializeField] private string[] properties = new string[0];
@@ -19,6 +19,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private bool infiniteAmmo = false;
     [SerializeField] private int ammo;
     private bool canDealDamage;
+    private bool isCrit;
+    private DamageStruct baseDamage;
 
     [SerializeField] private Collider2D weaponCollider;
 
@@ -35,83 +37,119 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         weaponCollider.enabled = false;
+        baseDamage = damage[0];
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckIsThrown();
+    } 
+
+    private void CheckIsThrown()
+    {
         if (isThrown)
         {
-            if (WeaponManager.Instance.CheckWeaponCount(weaponType) <= 0)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            }
-            else
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().enabled = true;             
-            }
+            CheckWeaponCount();
         }
-    }  
+    }
 
-    public void MeleeAttack(bool isCritical)
+    private void CheckWeaponCount()
+    {
+        if (WeaponManager.Instance.CheckWeaponCount(weaponType) <= 0)
+        {
+            this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+        else
+        {
+            this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        }
+    }
+
+    private void SetIsAttacking()
+    {
+        if (WeaponManager.Instance.CheckWeaponCount(weaponType) > 0)
+        {
+            animator.SetTrigger("Attack");
+            isAttacking = true;
+        }        
+    }
+
+    public void MeleeAttack()
     {
         canDealDamage = true;
         weaponCollider.enabled = true;
 
+        CheckForVersatile();
+
         if (isThrown)
         {
-            if (WeaponManager.Instance.CheckWeaponCount(weaponType) > 0)
-            {                
-                animator.SetTrigger("Attack");
-                isAttacking = true;
-            }
+            SetIsAttacking();
         }
         else
         {
             animator.SetTrigger("Attack");
             isAttacking = true;
         }
-
     }
 
-    public void RangedAttack(bool isCritical)
+    private void CheckForVersatile()
     {
-        if (WeaponManager.Instance.CheckWeaponCount(weaponType) > 0 || ammo > 0 || infiniteAmmo)
+        for (int i = 0; i < damage.Count; i++)
         {
-            int damage = calculateDamage();
-            
-            GameObject editedProjectile = GetComponentInParent<WeaponParent>().rangedObjectPooler.SpawnProjectile(this.transform.position, Quaternion.identity, isCritical, damage);                       
-
-            if(!infiniteAmmo && isThrown)
+            if (damage[i].damageType == versatileDamage.damageType && offHandEmpty)
             {
-                WeaponManager.Instance.AlterWeaponCount(weaponType, 1, false);
+                damage[i] = versatileDamage;
             }
             else
             {
-                ammo--;
+                damage[i] = baseDamage;
             }
+        }
+    }
+
+    public void RangedAttack()
+    {
+        if (WeaponManager.Instance.CheckWeaponCount(weaponType) > 0 || ammo > 0 || infiniteAmmo)
+        {
+            SpawnProjectile();
+        }
+    }
+
+    private void SpawnProjectile()
+    {
+        GameObject editedProjectile = GetComponentInParent<WeaponParent>().rangedObjectPooler.SpawnProjectile(this.transform.position, Quaternion.identity, isCrit, damage);
+
+        if (!infiniteAmmo && isThrown)
+        {
+            WeaponManager.Instance.AlterWeaponCount(weaponType, 1, false);
+        }
+        else
+        {
+            ammo--;
         }
     }
 
     public void Attack(int buttonPressed, bool isCritical)
     {
+        isCrit = isCritical;
         if(isMelee == true)
         {
             if(buttonPressed == 0)
             {
-                MeleeAttack(isCritical);
+                MeleeAttack();
             }
             else if(buttonPressed == 1)
             {
                 if (isThrown == true)
                 {
-                    RangedAttack(isCritical);
+                    RangedAttack();
                 }                
             }
         }
         else
         {
-            RangedAttack(isCritical);
+            RangedAttack();
         }
     }
 
@@ -127,29 +165,13 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private int calculateDamage()
-    {
-        int damage;
-        if(offHandEmpty == true && versatileDice != 0)
-        {
-            damage = DiceRoller.DiceRoll(versatileDice);
-        }
-        else
-        {
-            damage = DiceRoller.DiceRoll(damageDice);
-        }
-
-        return damage;
-    }
-
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(isAttacking && canDealDamage)
         {
-            int damage = calculateDamage();
             if (collision.gameObject.CompareTag("Enemy"))
             {
-                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, damageType);
+                collision.gameObject.GetComponent<HealthSystem>().TakeDamage(damage, isCrit);
                 canDealDamage = false;
             }
         }

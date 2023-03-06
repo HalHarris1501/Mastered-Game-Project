@@ -149,9 +149,16 @@ MonoBehaviour:
   offHandEmpty: 0
   weaponType: 3
   isMelee: 1
-  damageDice: 4
-  versatileDice: 0
-  damageType: 7
+  damage:
+  - damageType: 7
+    damageDie: 4
+    numOfDice: 1
+    damageModifier: 0
+  versatileDamage:
+    damageType: 7
+    damageDie: 0
+    numOfDice: 0
+    damageModifier: 0
   range: 1
   weaponMoveSpeed: 20
   properties:
