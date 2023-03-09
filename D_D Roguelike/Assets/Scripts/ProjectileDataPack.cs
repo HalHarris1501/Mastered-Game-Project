@@ -12,4 +12,5 @@ public class ProjectileDataPack : ScriptableObject
     public float duration;
     public WeaponType weaponType;
     public float spread = 0.3f;
+    public Collider2D collider;
 }

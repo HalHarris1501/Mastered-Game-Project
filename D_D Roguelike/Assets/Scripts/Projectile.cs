@@ -137,6 +137,5 @@ public class Projectile : MonoBehaviour, IPooledObject
         weaponType = data.weaponType;
         spread = data.spread;
         this.isCritical = isCritical;
-
     }
 }

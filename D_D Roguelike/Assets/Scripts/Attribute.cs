@@ -13,4 +13,10 @@ public struct Attribute
         int modifier = Mathf.FloorToInt((attributeScore - 10) / 2);
         return modifier;
     }
+
+    public Attribute(AttributeType type, int attributeScore = 0)
+    {
+        attributeType = type;
+        this.attributeScore = attributeScore;
+    }
 }

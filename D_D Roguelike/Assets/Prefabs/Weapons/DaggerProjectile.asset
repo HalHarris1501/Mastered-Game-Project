@@ -17,6 +17,6 @@ MonoBehaviour:
   isAmmo: 1
   moveSpeed: 20
   duration: 1
-  damageType: 7
   weaponType: 3
   spread: 0.3
+  collider: {fileID: 9087722271643507331, guid: 4ad9a8947bd865c419b05afd75da0f84, type: 3}

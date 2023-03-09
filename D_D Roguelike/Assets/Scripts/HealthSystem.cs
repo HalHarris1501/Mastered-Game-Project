@@ -14,6 +14,7 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private List<DamageType> immunities;
     [SerializeField] private List<DamageType> resistances;
     [SerializeField] private List<DamageType> vulnerabilities;
+    [SerializeField] private bool compoundIndicators;
 
     // Start is called before the first frame update
     void Start()
@@ -85,7 +86,7 @@ public class HealthSystem : MonoBehaviour
             damageAmount = CheckResistances(damageAmount, damageType, indicator, isCrit);
 
             health -= damageAmount;
-        }        
+        }
     }
 
     private int CheckResistances(int damageAmount, DamageType damageType, DamageIndicator indicator, bool isCrit)

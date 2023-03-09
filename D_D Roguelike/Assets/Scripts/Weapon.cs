@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IWeapon
 {
     public ProjectileDataPack projectile;
     [SerializeField] private bool offHandEmpty;
@@ -26,6 +26,8 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] private Animator animator;
     public bool isAttacking { get; private set; }
+    ProjectileDataPack IWeapon.projectile { get { return projectile; } }
+    GameObject IWeapon.gameObject { get { return this.gameObject; } }
 
     public void ResetIsAttacking()
     {
@@ -75,7 +77,7 @@ public class Weapon : MonoBehaviour
         }        
     }
 
-    public void MeleeAttack()
+    private void MeleeAttack()
     {
         canDealDamage = true;
         weaponCollider.enabled = true;
@@ -101,14 +103,14 @@ public class Weapon : MonoBehaviour
             {
                 damage[i] = versatileDamage;
             }
-            else
+            else if(damage[i].damageType == versatileDamage.damageType)
             {
                 damage[i] = baseDamage;
             }
         }
     }
 
-    public void RangedAttack()
+    private void RangedAttack()
     {
         if (WeaponManager.Instance.CheckWeaponCount(weaponType) > 0 || ammo > 0 || infiniteAmmo)
         {

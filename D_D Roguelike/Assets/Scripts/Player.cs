@@ -57,13 +57,16 @@ public class Player : MonoBehaviour
 
     public void SetWeapon(GameObject newWeapon)
     {
-        if (currentWeapon.gameObject == newWeapon) return;
+        Debug.Log("checkin weapon is new");
+        //if (currentWeapon.gameObject == newWeapon) return;
+        Debug.Log("is new weapon");
         currentWeapon.gameObject.SetActive(false);
         currentWeapon = newWeapon.GetComponent<Weapon>();
         currentWeapon.gameObject.SetActive(true);
         if (weaponParent != null)
         {
             weaponParent.SetNewWeapon(newWeapon.GetComponent<SpriteRenderer>(), currentWeapon.projectile);
+            Debug.Log("new weapon set");
         }
     }
 
@@ -118,6 +121,7 @@ public class Player : MonoBehaviour
 
     public void SetStartingWeapon(WeaponType weaponType)
     {
+        Debug.Log("setting starting weapon");
         _currentWeapon = new WeaponStruct();
         _currentWeapon.Type = weaponType;
         _currentWeapon.WeaponObject = WeaponsLocker.Instance.GetWeaponObject(_currentWeapon.Type);
@@ -147,8 +151,8 @@ public class Player : MonoBehaviour
     {
         if(collision.CompareTag("Collectable"))
         {
-            WeaponCollectable weaponCollectable = collision.GetComponent<WeaponCollectable>();
-            PotionCollectable potionCollectable = collision.GetComponent<PotionCollectable>();
+            ICollectable<WeaponType> weaponCollectable = collision.GetComponent<ICollectable<WeaponType>>();
+            ICollectable<PotionEnum> potionCollectable = collision.GetComponent<ICollectable<PotionEnum>>();
             if (weaponCollectable != null)
             {
                 collectableNearby = weaponCollectable.gameObject;                
