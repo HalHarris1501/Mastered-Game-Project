@@ -6,4 +6,7 @@ using UnityEngine;
 public class WeaponDataPack : ScriptableObject
 {
     public Animation animation;
+    [SerializeField] private WeaponType weaponType;
+    [SerializeField] private List<DamageStruct> damage;
+    [SerializeField] private string[] properties = new string[0];
 }
