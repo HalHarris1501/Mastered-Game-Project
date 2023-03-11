@@ -457,7 +457,7 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
         }
         AddToOffset(roomPositions, borderTiles);
 
-        Room newRoom = room;
+        Room newRoom = Instantiate(room);
         newRoom.SetRoomCoordinates(roomPositionsList);
         newRoom.SetDoorCoordinates(doorPositionsList);
         roomsList.Add(newRoom);

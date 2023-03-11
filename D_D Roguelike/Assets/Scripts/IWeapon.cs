@@ -5,7 +5,9 @@ using UnityEngine;
 public interface IWeapon 
 {
     ProjectileDataPack projectile { get; }
-    GameObject gameObject { get;  }
+
+    WeaponDataPack weaponData { get; }
     public bool isAttacking { get; }
+    public bool isCrit { get; set; }
     public void Attack(int attackType, bool isCritical);
 }
