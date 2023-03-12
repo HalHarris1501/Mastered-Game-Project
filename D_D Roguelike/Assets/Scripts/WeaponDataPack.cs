@@ -7,6 +7,6 @@ public class WeaponDataPack : ScriptableObject
 {
     public Animation animation;
     [SerializeField] private WeaponType weaponType;
-    [SerializeField] private List<DamageStruct> damage;
+    [SerializeField] private List<DamageStruct> baseDamage;
     [SerializeField] private string[] properties = new string[0];
 }

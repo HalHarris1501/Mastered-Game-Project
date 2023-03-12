@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-struct WeaponStruct 
+public struct WeaponStruct 
 {
     public WeaponType Type;
-    public GameObject WeaponObject;
+    public IWeapon weapon;
+    public Sprite weaponSprite;
 }

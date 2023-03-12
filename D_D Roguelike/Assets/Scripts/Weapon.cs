@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour, IWeapon
 {
-    [SerializeField] private ProjectileDataPack projectile;
-    [SerializeField] private WeaponDataPack weaponData;
+    [SerializeField] private ProjectileDataPack _projectile;
+    [SerializeField] private WeaponDataPack _weaponData;
     [SerializeField] private bool offHandEmpty;
     [SerializeField] private WeaponType weaponType;
 
@@ -20,15 +20,15 @@ public class Weapon : MonoBehaviour, IWeapon
     [SerializeField] private bool infiniteAmmo = false;
     [SerializeField] private int ammo;
     private bool canDealDamage;
-    public bool isCrit { get; set; }
     private DamageStruct baseDamage;
+    public bool isCrit { get; set; }
 
     [SerializeField] private Collider2D weaponCollider;
 
     [SerializeField] private Animator animator;
     public bool isAttacking { get; private set; }
-    ProjectileDataPack IWeapon.projectile { get { return projectile; } }
-    WeaponDataPack IWeapon.weaponData { get {return weaponData; } }
+    public ProjectileDataPack projectile  { get { return _projectile; } set { ProjectileDataPack projectileDataPack = _projectile; } }
+    public WeaponDataPack weaponData { get {return _weaponData; } set { WeaponDataPack weaponDataPack = _weaponData; } }
 
     public void ResetIsAttacking()
     {

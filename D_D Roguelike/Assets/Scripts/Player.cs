@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody;
     public Vector2 movement;
 
-    public Weapon currentWeapon;
+    public GameObject currentWeapon;
     [SerializeField] private WeaponParent weaponParent;
     [SerializeField] private int critMinRoll = 20;
     [SerializeField] private float startTimeBetweenAttack;
@@ -49,25 +49,15 @@ public class Player : MonoBehaviour
     void Update()
     {
         GetInput();
-        if (!currentWeapon.isAttacking)
+        if (!currentWeapon.GetComponent<IWeapon>().isAttacking)
         {
             weaponParent.FaceMouse();
         }
     }
 
-    public void SetWeapon(GameObject newWeapon)
+    public void SetWeapon(IWeapon newWeapon)
     {
-        Debug.Log("checkin weapon is new");
-        //if (currentWeapon.gameObject == newWeapon) return;
-        Debug.Log("is new weapon");
-        currentWeapon.gameObject.SetActive(false);
-        currentWeapon = newWeapon.GetComponent<Weapon>();
-        currentWeapon.gameObject.SetActive(true);
-        if (weaponParent != null)
-        {
-            weaponParent.SetNewWeapon(newWeapon.GetComponent<SpriteRenderer>(), currentWeapon.projectile);
-            Debug.Log("new weapon set");
-        }
+        currentWeapon.GetComponent<IWeapon>() = newWeapon;
     }
 
     private void GetInput()
@@ -98,7 +88,7 @@ public class Player : MonoBehaviour
                 timeBetweenAttack = startTimeBetweenAttack;
             }
         }
-        else if (!currentWeapon.isAttacking)
+        else if (!currentWeapon.GetComponent<IWeapon>().isAttacking)
         {
             timeBetweenAttack -= Time.deltaTime;
         }
@@ -111,7 +101,7 @@ public class Player : MonoBehaviour
         int roll = DiceRoller.D20Check();
         if (roll >= critMinRoll) isCritical = true;
 
-        currentWeapon.Attack(attackType, isCritical);
+        currentWeapon.GetComponent<IWeapon>().Attack(attackType, isCritical);
     }
 
     private void FixedUpdate()
@@ -124,9 +114,9 @@ public class Player : MonoBehaviour
         Debug.Log("setting starting weapon");
         _currentWeapon = new WeaponStruct();
         _currentWeapon.Type = weaponType;
-        _currentWeapon.WeaponObject = WeaponsLocker.Instance.GetWeaponObject(_currentWeapon.Type);
-        WeaponManager.Instance.AddWeaponToInventory(_currentWeapon.Type, _currentWeapon.WeaponObject);
-        SetWeapon(_currentWeapon.WeaponObject);  
+        _currentWeapon.weapon = WeaponsLocker.Instance.GetWeaponObject(_currentWeapon.Type);
+        WeaponManager.Instance.AddWeaponToInventory(_currentWeapon.Type, _currentWeapon.weapon);
+        SetWeapon(_currentWeapon.weapon);  
     }
 
     public void PickupCollectable()
@@ -135,8 +125,8 @@ public class Player : MonoBehaviour
         {
             WeaponStruct newWeapon = new WeaponStruct();
             newWeapon.Type = collectableNearby.GetComponent<ICollectable<WeaponType>>().Pickup();
-            newWeapon.WeaponObject = WeaponsLocker.Instance.GetWeaponObject(newWeapon.Type);
-            WeaponManager.Instance.AddWeaponToInventory(newWeapon.Type, newWeapon.WeaponObject);
+            newWeapon.weapon = WeaponsLocker.Instance.GetWeaponObject(newWeapon.Type);
+            WeaponManager.Instance.AddWeaponToInventory(newWeapon.Type, newWeapon.weapon);
         }
         else if(collectableNearby.GetComponent<ICollectable<PotionEnum>>() != null)
         {
