@@ -21,9 +21,10 @@ public class Weapon : MonoBehaviour, IWeapon
     [SerializeField] private int ammo;
     private bool canDealDamage;
     private DamageStruct baseDamage;
+    [SerializeField] private SpriteRenderer weaponRenderer;
     public bool isCrit { get; set; }
 
-    [SerializeField] private Collider2D weaponCollider;
+    [SerializeField] private BoxCollider2D weaponCollider;
 
     [SerializeField] private Animator animator;
     public bool isAttacking { get; private set; }
@@ -181,5 +182,21 @@ public class Weapon : MonoBehaviour, IWeapon
                 canDealDamage = false;
             }
         }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        AttemptDamage(collision);
+    }
+
+    public void SetVariables(WeaponDataPack weaponData)
+    {
+        this.weaponData = weaponData;
+        weaponType = weaponData.weaponType;
+        animator.runtimeAnimatorController = weaponData.animation;
+        damage = weaponData.baseDamage;
+        properties = weaponData.properties;
+        weaponCollider.size = weaponData.weaponCollider.size;
+        projectile = weaponData.projectile;
     }
 }
