@@ -22,3 +22,4 @@ MonoBehaviour:
   properties: []
   weaponCollider: {fileID: 897426209432629836, guid: c07076a23ac249c419d519ad0765a429, type: 3}
   weaponSprite: {fileID: 21300000, guid: 834e39876f442bd49b033afbdc316d8c, type: 3}
+  projectile: {fileID: 11400000, guid: 59dd7df09602a6c46a4988dfcdccd79e, type: 2}

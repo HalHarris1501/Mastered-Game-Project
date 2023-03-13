@@ -11,4 +11,5 @@ public class WeaponDataPack : ScriptableObject
     public string[] properties = new string[0];
     public BoxCollider2D weaponCollider;
     public Sprite weaponSprite;
+    public ProjectileDataPack projectile;
 }

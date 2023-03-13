@@ -7,6 +7,6 @@ using UnityEngine;
 public struct WeaponStruct 
 {
     public WeaponType Type;
-    public GameObject weaponObject;
+    public WeaponDataPack weaponObject;
     public Sprite weaponSprite;
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour, ISubject<WeaponType>
 {
-    private Dictionary<WeaponType, IWeapon> _weapons = new Dictionary<WeaponType, IWeapon>();
+    private Dictionary<WeaponType, WeaponDataPack> _weapons = new Dictionary<WeaponType, WeaponDataPack>();
     private Dictionary<WeaponType, int> _weaponCount = new Dictionary<WeaponType, int>();
     private List<IObserver<WeaponType>> _observers = new List<IObserver<WeaponType>>();
     private bool addingWeapon;
@@ -74,7 +74,7 @@ public class WeaponManager : MonoBehaviour, ISubject<WeaponType>
     }
 
     //called when the player picks up a weapon so the weapon manager can notify the observers
-    public void AddWeaponToInventory(WeaponType weaponType, IWeapon weaponObject)
+    public void AddWeaponToInventory(WeaponType weaponType, WeaponDataPack weaponObject)
     {
         if (_weapons.ContainsKey(weaponType))
         {
@@ -118,7 +118,7 @@ public class WeaponManager : MonoBehaviour, ISubject<WeaponType>
         }
     }
 
-    public IWeapon GetWeapon(WeaponType weaponType)
+    public WeaponDataPack GetWeapon(WeaponType weaponType)
     {
         if(!_weapons.ContainsKey(weaponType)) //check that player still has weapon in inventory
         {

@@ -55,9 +55,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetWeapon(IWeapon newWeapon)
+    public void SetWeapon(WeaponDataPack newWeapon)
     {
-        
+        playerWeapon.SetVariables(newWeapon);
     }
 
     private void GetInput()
@@ -115,8 +115,8 @@ public class Player : MonoBehaviour
         _currentWeapon = new WeaponStruct();
         _currentWeapon.Type = weaponType;
         _currentWeapon.weaponObject = WeaponsLocker.Instance.GetWeaponObject(_currentWeapon.Type);
-        WeaponManager.Instance.AddWeaponToInventory(_currentWeapon.Type, _currentWeapon.weaponObject.GetComponent<IWeapon>());
-        SetWeapon(_currentWeapon.weaponObject.GetComponent<IWeapon>());  
+        WeaponManager.Instance.AddWeaponToInventory(_currentWeapon.Type, _currentWeapon.weaponObject);
+        SetWeapon(_currentWeapon.weaponObject);  
     }
 
     public void PickupCollectable()
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
             WeaponStruct newWeapon = new WeaponStruct();
             newWeapon.Type = collectableNearby.GetComponent<ICollectable<WeaponType>>().Pickup();
             newWeapon.weaponObject = WeaponsLocker.Instance.GetWeaponObject(newWeapon.Type);
-            WeaponManager.Instance.AddWeaponToInventory(newWeapon.Type, newWeapon.weaponObject.GetComponent<IWeapon>());
+            WeaponManager.Instance.AddWeaponToInventory(newWeapon.Type, newWeapon.weaponObject);
         }
         else if(collectableNearby.GetComponent<ICollectable<PotionEnum>>() != null)
         {

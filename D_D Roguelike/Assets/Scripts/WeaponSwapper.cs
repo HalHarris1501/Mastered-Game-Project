@@ -55,7 +55,7 @@ public class WeaponSwapper : MonoBehaviour, IObserver<WeaponType>
     void OnWeaponSelected(WeaponType weaponType)
     {
         //gets the weapon from the weapon manager
-        IWeapon weaponObject = WeaponManager.Instance.GetWeapon(weaponType);
+        WeaponDataPack weaponObject = WeaponManager.Instance.GetWeapon(weaponType);
         //Equips the weapon
         Player.Instance.SetWeapon(weaponObject);
         _currentWeaponImage.sprite = WeaponsLocker.Instance.GetWeaponIcon(weaponType);
