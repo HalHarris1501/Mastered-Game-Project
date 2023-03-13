@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 15845702330412399}
   - component: {fileID: 897426209432629836}
   - component: {fileID: 4692747588545643059}
-  - component: {fileID: 2198719784136431399}
   - component: {fileID: 6798191953775834920}
+  - component: {fileID: 3561018067689518957}
   m_Layer: 0
   m_Name: Dagger
   m_TagString: Untagged
@@ -133,43 +133,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &2198719784136431399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 846235640355527804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d1a829014b3f31459be3146a0100396, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectile: {fileID: 11400000, guid: 59dd7df09602a6c46a4988dfcdccd79e, type: 2}
-  offHandEmpty: 0
-  weaponType: 3
-  isMelee: 1
-  damage:
-  - damageType: 7
-    damageDie: 4
-    numOfDice: 1
-    damageModifier: 0
-  versatileDamage:
-    damageType: 7
-    damageDie: 0
-    numOfDice: 0
-    damageModifier: 0
-  range: 1
-  weaponMoveSpeed: 20
-  properties:
-  - Finesse
-  - Light
-  isThrown: 1
-  duration: 1
-  infiniteAmmo: 0
-  ammo: 0
-  weaponCollider: {fileID: 897426209432629836}
-  animator: {fileID: 6798191953775834920}
 --- !u!95 &6798191953775834920
 Animator:
   serializedVersion: 3
@@ -189,3 +152,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3561018067689518957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846235640355527804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d1a829014b3f31459be3146a0100396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectile: {fileID: 11400000, guid: 59dd7df09602a6c46a4988dfcdccd79e, type: 2}
+  _weaponData: {fileID: 0}
+  offHandEmpty: 0
+  weaponType: 3
+  isMelee: 1
+  damage: []
+  versatileDamage:
+    damageType: 7
+    damageDie: 4
+    numOfDice: 1
+    damageModifier: 0
+  range: 0
+  weaponMoveSpeed: 0
+  properties: []
+  isThrown: 1
+  duration: 0
+  infiniteAmmo: 0
+  ammo: 0
+  weaponCollider: {fileID: 0}
+  animator: {fileID: 0}

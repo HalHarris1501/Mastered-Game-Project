@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb8c8fad05cf9e34a86a82f747933092, type: 3}
+  m_Name: Dagger
+  m_EditorClassIdentifier: 
+  animation: {fileID: 9100000, guid: a486529aab3a76442a638ddbc5fcae19, type: 2}
+  weaponType: 3
+  baseDamage:
+  - damageType: 7
+    damageDie: 4
+    numOfDice: 1
+    damageModifier: 0
+  properties: []
+  weaponCollider: {fileID: 897426209432629836, guid: c07076a23ac249c419d519ad0765a429, type: 3}
+  weaponSprite: {fileID: 21300000, guid: 834e39876f442bd49b033afbdc316d8c, type: 3}

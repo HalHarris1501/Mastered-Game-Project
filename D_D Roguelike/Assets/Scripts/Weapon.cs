@@ -36,11 +36,14 @@ public class Weapon : MonoBehaviour, IWeapon
         weaponCollider.enabled = false;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        Activate();
+    }
+
+    public void Activate()
+    { 
         weaponCollider.enabled = false;
-        baseDamage = damage[0];
     }
 
     // Update is called once per frame
@@ -168,7 +171,7 @@ public class Weapon : MonoBehaviour, IWeapon
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    public void AttemptDamage(Collider2D collision)
     {
         if(isAttacking && canDealDamage)
         {

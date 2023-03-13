@@ -19,4 +19,4 @@ MonoBehaviour:
   duration: 1
   weaponType: 3
   spread: 0.3
-  collider: {fileID: 9087722271643507331, guid: 4ad9a8947bd865c419b05afd75da0f84, type: 3}
+  collider: {fileID: 897426209432629836, guid: c07076a23ac249c419d519ad0765a429, type: 3}

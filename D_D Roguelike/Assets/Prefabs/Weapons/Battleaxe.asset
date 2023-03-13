@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb8c8fad05cf9e34a86a82f747933092, type: 3}
+  m_Name: Battleaxe
+  m_EditorClassIdentifier: 
+  animation: {fileID: 9100000, guid: aa3346e321266184d9357cfa8dc4f825, type: 2}
+  weaponType: 0
+  baseDamage:
+  - damageType: 11
+    damageDie: 8
+    numOfDice: 1
+    damageModifier: 0
+  properties: []
+  weaponCollider: {fileID: 8771904521392881469, guid: 7ab381a7878f5ef4f91af878cc828284, type: 3}
+  weaponSprite: {fileID: 6063359866685732961, guid: 7825e5137be6b4f469ca39eb1f70bf36, type: 3}

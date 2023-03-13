@@ -145,7 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d1a829014b3f31459be3146a0100396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 0}
+  _projectile: {fileID: 0}
+  _weaponData: {fileID: 11400000, guid: d8c3f333bc0053b4cbdc141ad6e126ab, type: 2}
   offHandEmpty: 0
   weaponType: 0
   isMelee: 1

@@ -64,13 +64,13 @@ public class WeaponsLocker : MonoBehaviour
         return null;        
     }
 
-    public IWeapon GetWeaponObject(WeaponType weaponType)
+    public GameObject GetWeaponObject(WeaponType weaponType)
     {
         for(int i = 0; i < _weapons.Length; i++)
         {
             if(_weapons[i].Type == weaponType)
             {
-                return _weapons[i].weapon;
+                return _weapons[i].weaponObject;
             }
         }
         Debug.LogError("Weapon not in locker");
