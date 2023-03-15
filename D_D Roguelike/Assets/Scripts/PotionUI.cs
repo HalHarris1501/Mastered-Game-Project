@@ -53,4 +53,9 @@ public class PotionUI : MonoBehaviour, IObserver<PotionEnum>
     {
         PotionManager.Instance.UsePotion(potionType);
     }
+
+    public void ItemCountAltered(PotionEnum type, int count)
+    {
+        //throw new System.NotImplementedException();
+    }
 }

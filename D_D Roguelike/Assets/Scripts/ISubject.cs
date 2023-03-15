@@ -7,6 +7,12 @@ public interface ISubject<T>
 {
     void RegisterObserver(IObserver<T> o);
     void RemoveObserver(IObserver<T> o);
-    void NotifyObservers(T type);
+    void NotifyObservers(T type, NotificationType notificationType);
 
+    public enum NotificationType
+    {
+        Added,
+        Removed,
+        Changed
+    }
 }

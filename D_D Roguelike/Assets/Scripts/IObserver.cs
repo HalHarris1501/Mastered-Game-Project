@@ -8,4 +8,6 @@ public interface IObserver<in T>
     void NewItemAdded(T type);
 
     void ItemRemoved(T type);
+
+    void ItemCountAltered(T type, int count);
 }

@@ -30,16 +30,16 @@ public class WeaponParent : MonoBehaviour
 
         transform.right = direction;
 
-        Vector2 scale = transform.localScale;
-        if (direction.x < 0)
-        {
-            scale.y = -1;
-        }
-        else if(direction.x > 0)
-        {
-            scale.y = 1;
-        }
-        transform.localScale = scale;
+        //Vector2 scale = transform.localScale;
+        //if (direction.x < 0)
+        //{
+        //    scale.y = -1;
+        //}
+        //else if(direction.x > 0)
+        //{
+        //    scale.y = 1;
+        //}
+        //transform.localScale = scale;
         
         if (transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180) //makes the weapon sprite go to a lower layer when held above the player's head 
         {
@@ -75,6 +75,6 @@ public class WeaponParent : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, (new Vector2( transform.position.x, transform.position.y) + minDirection));
-        Gizmos.DrawLine(transform.position, (new Vector2(transform.position.x, transform.position.y) + maxDirection));
+        Gizmos.DrawLine(transform.position, (new Vector2(transform.position.x, transform.position.y) + maxDirection));        
     }
 }

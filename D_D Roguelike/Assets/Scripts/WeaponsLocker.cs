@@ -64,7 +64,7 @@ public class WeaponsLocker : MonoBehaviour
         return null;        
     }
 
-    public WeaponDataPack GetWeaponObject(WeaponType weaponType)
+    public BaseWeapon GetWeaponObject(WeaponType weaponType)
     {
         for(int i = 0; i < _weapons.Length; i++)
         {

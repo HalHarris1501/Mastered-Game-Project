@@ -7,7 +7,6 @@ public class PotionManager : MonoBehaviour, ISubject<PotionEnum>
     private List<IObserver<PotionEnum>> _observers = new List<IObserver<PotionEnum>>();
     private Dictionary<PotionEnum, GameObject> _potions = new Dictionary<PotionEnum, GameObject>();
     private Dictionary<PotionEnum, int> _potionsCount = new Dictionary<PotionEnum, int>();
-    private bool addingPotion;
 
     //Singleton pattern
     #region Singleton
@@ -57,18 +56,22 @@ public class PotionManager : MonoBehaviour, ISubject<PotionEnum>
         _observers.Remove(o);
     }
 
-    public void NotifyObservers(PotionEnum potionType)
+    public void NotifyObservers(PotionEnum potionType, ISubject<PotionEnum>.NotificationType notificationType)
     {
         //notify all observers that a new weapon has been added
         foreach (var observer in _observers)
         {
-            if (addingPotion)
+            if (notificationType == ISubject<PotionEnum>.NotificationType.Added)
             {
                 observer.NewItemAdded(potionType);
             }
-            else
+            else if (notificationType == ISubject<PotionEnum>.NotificationType.Removed)
             {
                 observer.ItemRemoved(potionType);
+            }
+            else if (notificationType == ISubject<PotionEnum>.NotificationType.Changed)
+            {
+                observer.ItemCountAltered(potionType, _potionsCount[potionType]);
             }
         }
     }
@@ -84,8 +87,7 @@ public class PotionManager : MonoBehaviour, ISubject<PotionEnum>
         {
             _potionsCount.Add(potionType, 1);
             _potions.Add(potionType, potion);
-            addingPotion = true;
-            NotifyObservers(potionType);
+            NotifyObservers(potionType, ISubject<PotionEnum>.NotificationType.Added);
         }
     }
 
@@ -94,8 +96,7 @@ public class PotionManager : MonoBehaviour, ISubject<PotionEnum>
         if (!_potions.ContainsKey(potionType)) return;
         _potionsCount.Remove(potionType);
         _potions.Remove(potionType);
-        addingPotion = false;
-        NotifyObservers(potionType);
+        NotifyObservers(potionType, ISubject<PotionEnum>.NotificationType.Removed);
     }
 
     public void AlterPotionCount(PotionEnum potionType, int numToAlterBy, bool increasingCount)
@@ -116,6 +117,8 @@ public class PotionManager : MonoBehaviour, ISubject<PotionEnum>
         {
             _potionsCount[potionType] += numToAlterBy;
         }
+
+        NotifyObservers(potionType, ISubject<PotionEnum>.NotificationType.Changed);
     }
 
     public GameObject GetPotion(PotionEnum potionType)

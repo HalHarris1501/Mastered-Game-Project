@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D rigidBody;
     public Vector2 movement;
 
-    public Weapon playerWeapon;
+    public WeaponHolder playerWeapon;
     [SerializeField] private WeaponParent weaponParent;
     [SerializeField] private int critMinRoll = 20;
     [SerializeField] private float startTimeBetweenAttack;
@@ -49,13 +49,13 @@ public class Player : MonoBehaviour
     void Update()
     {
         GetInput();
-        if (!playerWeapon.isAttacking)
+        if (playerWeapon.state != WeaponHolder.State.Attacking)
         {
             weaponParent.FaceMouse();
         }
     }
 
-    public void SetWeapon(WeaponDataPack newWeapon)
+    public void SetWeapon(BaseWeapon newWeapon)
     {
         playerWeapon.SetVariables(newWeapon);
     }
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
                 timeBetweenAttack = startTimeBetweenAttack;
             }
         }
-        else if (!playerWeapon.isAttacking)
+        else if (playerWeapon.state != WeaponHolder.State.Attacking)
         {
             timeBetweenAttack -= Time.deltaTime;
         }
@@ -174,5 +174,17 @@ public class Player : MonoBehaviour
     public void SetTimeBetweenAttack(float timeToSet)
     {
         timeBetweenAttack = timeToSet;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (playerWeapon.currentWeapon != null)
+        {            
+            Matrix4x4 rotationMatrix = Matrix4x4.TRS(transform.position, weaponParent.transform.rotation, transform.localScale);
+            Gizmos.matrix = rotationMatrix;
+            Gizmos.color = Color.red;
+            Vector2 inverseBox = new Vector2(playerWeapon.currentWeapon.damageBox.y, playerWeapon.currentWeapon.damageBox.x);
+            Gizmos.DrawWireCube(new Vector3(0.455f, 0.02f, 0f), inverseBox);
+        }
     }
 }

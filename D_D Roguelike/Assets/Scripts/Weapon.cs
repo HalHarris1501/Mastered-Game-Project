@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour, IWeapon
+public class Weapon : MonoBehaviour
 {
     [SerializeField] private ProjectileDataPack _projectile;
     [SerializeField] private WeaponDataPack _weaponData;
@@ -197,6 +197,5 @@ public class Weapon : MonoBehaviour, IWeapon
         damage = weaponData.baseDamage;
         properties = weaponData.properties;
         weaponCollider.size = weaponData.weaponCollider.size;
-        projectile = weaponData.projectile;
     }
 }

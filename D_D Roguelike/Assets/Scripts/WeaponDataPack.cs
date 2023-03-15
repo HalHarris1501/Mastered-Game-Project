@@ -10,6 +10,4 @@ public class WeaponDataPack : ScriptableObject
     public List<DamageStruct> baseDamage;
     public string[] properties = new string[0];
     public BoxCollider2D weaponCollider;
-    public Sprite weaponSprite;
-    public ProjectileDataPack projectile;
 }
