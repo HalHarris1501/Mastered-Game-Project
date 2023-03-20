@@ -43,13 +43,13 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
     }
 
     private void CreateRooms(HashSet<Vector2Int> dungeonArea)
-    {
-        
+    {        
         HashSet<Vector2Int> borderTiles = new HashSet<Vector2Int>();
         List<Room> roomsInDungeon = new List<Room>();
+        List<Room> hostileRooms = new List<Room>();
 
         HashSet<Vector2Int> floor = CreateStartAndEndRooms(dungeonArea, borderTiles, roomsInDungeon);
-        floor.UnionWith(AttemptOtherRooms(dungeonArea, floor, borderTiles, roomsInDungeon));
+        floor.UnionWith(AttemptOtherRooms(dungeonArea, floor, borderTiles, roomsInDungeon, hostileRooms));
 
         HashSet<Vector2Int> corridors = ConnectRooms(dungeonArea, floor, borderTiles, roomsInDungeon);
         floor.UnionWith(corridors);
@@ -355,26 +355,7 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
         }
     }
 
-    private Vector2Int FindClosestPointTo(Vector2Int startPoint, List<Room> rooms)
-    {
-        Vector2Int closestPoint = Vector2Int.zero;
-        float distance = float.MaxValue;
-        foreach (var room in rooms)
-        {
-            foreach (var door in room.GetDoorCoordinates())
-            {
-                float currentDistance = Vector2.Distance(door, startPoint);
-                if (currentDistance < distance)
-                {
-                    distance = currentDistance;
-                    closestPoint = door;
-                }
-            }
-        }
-        return closestPoint;
-    }
-
-    private HashSet<Vector2Int> AttemptOtherRooms(HashSet<Vector2Int> dungeonArea, HashSet<Vector2Int> currentFloor, HashSet<Vector2Int> borderTiles, List<Room> roomsList)
+    private HashSet<Vector2Int> AttemptOtherRooms(HashSet<Vector2Int> dungeonArea, HashSet<Vector2Int> currentFloor, HashSet<Vector2Int> borderTiles, List<Room> roomsList, List<Room> hostileRooms)
     {
         HashSet<Vector2Int> roomsSet = currentFloor;
         for (int i = 0; i < roomGenerationAttemps; i++)
@@ -392,7 +373,7 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
             }
             if (placeable)
             {
-                roomsSet.UnionWith(AddRoom(rooms[random], originAttempt, borderTiles, roomsList));
+                roomsSet.UnionWith(AddRoom(rooms[random], originAttempt, borderTiles, roomsList, hostileRooms));
             }
         }
         return roomsSet;
@@ -461,6 +442,32 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
         newRoom.SetRoomCoordinates(roomPositionsList);
         newRoom.SetDoorCoordinates(doorPositionsList);
         roomsList.Add(newRoom);
+
+        return roomPositions;
+    }
+
+    private HashSet<Vector2Int> AddRoom(Room room, Vector2Int originPoint, HashSet<Vector2Int> borderTiles, List<Room> roomsList, List<Room> hostileRooms)
+    {
+        HashSet<Vector2Int> roomPositions = new HashSet<Vector2Int>();
+        List<Vector2Int> roomPositionsList = new List<Vector2Int>();
+        List<Vector2Int> doorPositionsList = new List<Vector2Int>();
+
+        foreach (var position in room.GetRoomCoordinates())
+        {
+            roomPositions.Add(originPoint + position);
+            roomPositionsList.Add(originPoint + position);
+            if (room.GetDoorCoordinates().Contains(position))
+            {
+                doorPositionsList.Add(originPoint + position);
+            }
+        }
+        AddToOffset(roomPositions, borderTiles);
+
+        Room newRoom = Instantiate(room);
+        newRoom.SetRoomCoordinates(roomPositionsList);
+        newRoom.SetDoorCoordinates(doorPositionsList);
+        roomsList.Add(newRoom);
+        hostileRooms.Add(newRoom);
 
         return roomPositions;
     }
