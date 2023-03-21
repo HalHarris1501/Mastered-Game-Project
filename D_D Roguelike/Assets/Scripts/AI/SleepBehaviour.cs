@@ -21,9 +21,9 @@ public class SleepBehaviour : StateMachineBehaviour
     private bool GetSpriteRenderer(Animator animator)
     {
         if(spriteRenderer == null)
-        {
-            Debug.Log("renderer found");
+        {            
             spriteRenderer = animator.gameObject.GetComponent<SpriteRenderer>();
+            Debug.Log("renderer found");
         }
 
         return spriteRenderer;
@@ -31,9 +31,9 @@ public class SleepBehaviour : StateMachineBehaviour
     private bool GetPathfinder(Animator animator)
     {
         if (pathfinder == null)
-        {
-            Debug.Log("pathfinder found");
+        {            
             pathfinder = animator.gameObject.GetComponent<Unit>();
+            Debug.Log("pathfinder found");
         }
 
         return pathfinder;

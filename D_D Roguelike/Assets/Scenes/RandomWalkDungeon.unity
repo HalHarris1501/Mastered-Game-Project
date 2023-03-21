@@ -533,7 +533,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 546863377}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1975057833}
@@ -2666,6 +2666,7 @@ MonoBehaviour:
   wallTilemap: {fileID: 1953974226}
   floorTile: {fileID: 11400000, guid: d3e1ad18d4856ef41b9868b2222d3724, type: 2}
   wallTile: {fileID: 11400000, guid: a66946aeffd9076498da29adb817e7c1, type: 2}
+  grid: {fileID: 1172196437}
 --- !u!4 &1471367634
 Transform:
   m_ObjectHideFlags: 0
@@ -3834,7 +3835,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 0
+  m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0

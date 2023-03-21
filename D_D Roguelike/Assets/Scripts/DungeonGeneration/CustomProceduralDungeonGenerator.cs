@@ -61,8 +61,8 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
         HashSet<Vector2Int> floorBottoms = AddBottomToRooms(floor);
         floor.UnionWith(floorBottoms);
         tilemapVisualizer.PaintFloorTiles(floor);
-        grid.MakeGrid();
         dungeonFiller.FillDungeon(playerPosition, hostileRooms, 10);
+        grid.MakeGrid();
     }
 
     private HashSet<Vector2Int> AddBottomToRooms(HashSet<Vector2Int> floor)

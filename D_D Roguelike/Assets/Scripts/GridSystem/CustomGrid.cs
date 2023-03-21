@@ -18,6 +18,7 @@ public class CustomGrid : MonoBehaviour
 
     public void MakeGrid()
     {
+        Debug.Log("making grid");
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
