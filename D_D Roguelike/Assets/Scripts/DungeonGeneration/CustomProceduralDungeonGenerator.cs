@@ -12,6 +12,9 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
     [SerializeField] [Min(0)] private int roomOffset;
     [SerializeField] private int roomGenerationAttemps;
     private List<Vector2Int> borders = new List<Vector2Int>();
+    [SerializeField] private DungeonFiller dungeonFiller;
+    [SerializeField] private CustomGrid grid;
+    private Vector2Int playerPosition;
 
     protected override void RunProceduralGeneration()
     {
@@ -58,6 +61,8 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
         HashSet<Vector2Int> floorBottoms = AddBottomToRooms(floor);
         floor.UnionWith(floorBottoms);
         tilemapVisualizer.PaintFloorTiles(floor);
+        grid.MakeGrid();
+        dungeonFiller.FillDungeon(playerPosition, hostileRooms, 10);
     }
 
     private HashSet<Vector2Int> AddBottomToRooms(HashSet<Vector2Int> floor)
@@ -397,6 +402,7 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
             if(placeable)
             {
                 startAndEndRooms = AddRoom(startRoom, originAttempt, borderTiles, roomsList);
+                playerPosition = originAttempt + (startRoom.maxPosition / 2);
                 startPlaced = true;
             }
         }

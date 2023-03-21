@@ -121,6 +121,7 @@ public class Enemy : MonoBehaviour, IPooledObject
 
     public void AwakenEnemy()
     {
+        Debug.Log("Wake me up");
         sleepTimer = 5f;
         myAnimator.SetBool("isAsleep", false);        
     }

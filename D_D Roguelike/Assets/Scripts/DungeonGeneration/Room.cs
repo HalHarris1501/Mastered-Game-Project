@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    [SerializeField] private Vector2Int minPosition, maxPosition;
+    public Vector2Int minPosition, maxPosition;
     [SerializeField] private List<Vector2Int> roomCoordinates = new List<Vector2Int>();
     [SerializeField] private List<Vector2Int> doorCoordinates = new List<Vector2Int>();
     
@@ -18,7 +18,6 @@ public class Room : MonoBehaviour
     {
         if (roomCoordinates.Count == 0)
         {
-
             roomCoordinates.Clear();
             int counter = 0;
             for (int x = minPosition.x; x < maxPosition.x; x++)
