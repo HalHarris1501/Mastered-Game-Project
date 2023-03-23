@@ -15,6 +15,7 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
     [SerializeField] private DungeonFiller dungeonFiller;
     [SerializeField] private CustomGrid grid;
     private Vector2Int playerPosition;
+    [SerializeField] [Min(1)] private int enemiesToSpawn;
 
     protected override void RunProceduralGeneration()
     {
@@ -61,8 +62,7 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
         HashSet<Vector2Int> floorBottoms = AddBottomToRooms(floor);
         floor.UnionWith(floorBottoms);
         tilemapVisualizer.PaintFloorTiles(floor);
-        dungeonFiller.FillDungeon(playerPosition, hostileRooms, 10);
-        grid.MakeGrid();
+        dungeonFiller.FillDungeon(playerPosition, hostileRooms, enemiesToSpawn);
     }
 
     private HashSet<Vector2Int> AddBottomToRooms(HashSet<Vector2Int> floor)
@@ -433,6 +433,10 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
         List<Vector2Int> roomPositionsList = new List<Vector2Int>();
         List<Vector2Int> doorPositionsList = new List<Vector2Int>();
 
+        foreach (var position in room.GetWallCoordinates())
+        {
+            borderTiles.Add(originPoint + position);
+        }
         foreach (var position in room.GetRoomCoordinates())
         {
             roomPositions.Add(originPoint + position);
@@ -440,9 +444,10 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
             if(room.GetDoorCoordinates().Contains(position))
             {
                 doorPositionsList.Add(originPoint + position);
+                borderTiles.Remove(originPoint + position);
             }
-        }
-        AddToOffset(roomPositions, borderTiles);
+        }        
+        //AddToOffset(roomPositions, borderTiles);
 
         Room newRoom = Instantiate(room);
         newRoom.SetRoomCoordinates(roomPositionsList);
@@ -467,7 +472,11 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
                 doorPositionsList.Add(originPoint + position);
             }
         }
-        AddToOffset(roomPositions, borderTiles);
+        foreach (var position in room.GetWallCoordinates())
+        {
+            borderTiles.Add(originPoint + position);
+        }
+        //AddToOffset(roomPositions, borderTiles);
 
         Room newRoom = Instantiate(room);
         newRoom.SetRoomCoordinates(roomPositionsList);

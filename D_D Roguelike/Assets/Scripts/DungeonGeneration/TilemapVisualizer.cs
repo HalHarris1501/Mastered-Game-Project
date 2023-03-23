@@ -14,11 +14,9 @@ public class TilemapVisualizer : MonoBehaviour
     [SerializeField] private RuleTile wallTile;
     [SerializeField] private CustomGrid grid;
 
-
     public void PaintFloorTiles(IEnumerable<Vector2Int> floorPositions)
     {
         PaintTiles(floorPositions, floorTilemap, floorTile);
-        grid.MakeGrid();
     }
 
     private void PaintTiles(IEnumerable<Vector2Int> positions, Tilemap tilemap, TileBase tile)

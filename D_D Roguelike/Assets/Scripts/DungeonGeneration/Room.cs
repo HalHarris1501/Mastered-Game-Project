@@ -6,12 +6,19 @@ public class Room : MonoBehaviour
 {
     public Vector2Int minPosition, maxPosition;
     [SerializeField] private List<Vector2Int> roomCoordinates = new List<Vector2Int>();
+    [SerializeField] private List<Vector2Int> roomWalls = new List<Vector2Int>();
     [SerializeField] private List<Vector2Int> doorCoordinates = new List<Vector2Int>();
     
     public void SetRoomCoordinates(List<Vector2Int> positions)
     {
         roomCoordinates.Clear();
         roomCoordinates = positions;
+    }
+
+    public void SetWallCoordinates(List<Vector2Int> positions)
+    {
+        roomWalls.Clear();
+        roomWalls = positions;
     }
 
     public List<Vector2Int> GetRoomCoordinates()
@@ -32,6 +39,26 @@ public class Room : MonoBehaviour
         }
         return roomCoordinates;     
     }
+
+    public List<Vector2Int> GetWallCoordinates()
+    {
+        if (roomWalls.Count == 0)
+        {
+            roomWalls.Clear();
+            int counter = 0;
+            for (int x = minPosition.x; x < maxPosition.x; x++)
+            {
+                for (int y = minPosition.y; y < maxPosition.y; y++)
+                {
+                    Vector2Int position = new Vector2Int(x, y);
+                    roomWalls.Add(position);
+                    counter++;
+                }
+            }
+        }
+        return roomWalls;
+    }
+
 
     public void SetDoorCoordinates(List<Vector2Int> doorPositions)
     {

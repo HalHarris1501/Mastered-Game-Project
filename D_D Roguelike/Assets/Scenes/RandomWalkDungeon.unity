@@ -871,13 +871,12 @@ MonoBehaviour:
   startRoom: {fileID: 810752164468802991, guid: fb2cf4a12e63221439ba647142130e26, type: 3}
   endRoom: {fileID: 6015855101258502146, guid: 05268ccc4488aa1488a74288bbab0054, type: 3}
   rooms:
-  - {fileID: 7655389912907860605, guid: 6ce68f39834f99443b8258dc54c4bc70, type: 3}
-  - {fileID: 5694883502106619521, guid: 2b444d51d919e624a88df0b06b38235c, type: 3}
-  - {fileID: 662906278471493758, guid: a7cfe340c446f0c4c81d83265621007d, type: 3}
+  - {fileID: 6378388426391737827, guid: e01037cf0f12cba469a6d5e5bf3287ca, type: 3}
   roomOffset: 2
   roomGenerationAttemps: 10
   dungeonFiller: {fileID: 287457296}
   grid: {fileID: 1172196437}
+  enemiesToSpawn: 25
 --- !u!4 &658219783
 Transform:
   m_ObjectHideFlags: 0

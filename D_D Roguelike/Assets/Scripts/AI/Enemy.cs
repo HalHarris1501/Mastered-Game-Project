@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour, IPooledObject
         myAnimator = GetComponent<Animator>();
     }
 
-    private void Start()
+    private void Awake()
     {
         //targetObject = Player.Instance.gameObject;
         damageTimer = startDamageTimer;
