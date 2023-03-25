@@ -55,12 +55,10 @@ public class CustomProceduralDungeonGenerator : AbstractDungeonGenerator
         HashSet<Vector2Int> floor = CreateStartAndEndRooms(dungeonArea, borderTiles, roomsInDungeon);
         floor.UnionWith(AttemptOtherRooms(dungeonArea, floor, borderTiles, roomsInDungeon, hostileRooms));
 
-        HashSet<Vector2Int> corridors = ConnectRooms(dungeonArea, floor, borderTiles, roomsInDungeon);
-        floor.UnionWith(corridors);
+        //HashSet<Vector2Int> corridors = ConnectRooms(dungeonArea, floor, borderTiles, roomsInDungeon);
+        //floor.UnionWith(corridors);
         
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
-        HashSet<Vector2Int> floorBottoms = AddBottomToRooms(floor);
-        floor.UnionWith(floorBottoms);
         tilemapVisualizer.PaintFloorTiles(floor);
         dungeonFiller.FillDungeon(playerPosition, hostileRooms, enemiesToSpawn);
     }
