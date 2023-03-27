@@ -71,7 +71,7 @@ public class WeaponManager : MonoBehaviour, ISubject<WeaponType>
             }
             else if (notificationType == ISubject<WeaponType>.NotificationType.Changed)
             {
-                observer.ItemCountAltered(weaponType, _weaponCount[weaponType]);
+                observer.ItemAltered(weaponType, _weaponCount[weaponType]);
             }
         }
     }

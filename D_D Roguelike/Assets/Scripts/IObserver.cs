@@ -9,5 +9,5 @@ public interface IObserver<in T>
 
     void ItemRemoved(T type);
 
-    void ItemCountAltered(T type, int count);
+    void ItemAltered(T type, int count);
 }

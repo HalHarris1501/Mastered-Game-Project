@@ -71,7 +71,7 @@ public class PotionManager : MonoBehaviour, ISubject<PotionEnum>
             }
             else if (notificationType == ISubject<PotionEnum>.NotificationType.Changed)
             {
-                observer.ItemCountAltered(potionType, _potionsCount[potionType]);
+                observer.ItemAltered(potionType, _potionsCount[potionType]);
             }
         }
     }

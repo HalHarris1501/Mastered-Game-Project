@@ -41,7 +41,7 @@ public class WeaponHolder : MonoBehaviour, IObserver<WeaponType>
         //throw new System.NotImplementedException();
     }
 
-    public void ItemCountAltered(WeaponType type, int count)
+    public void ItemAltered(WeaponType type, int count)
     {
         if (type != currentWeapon.weaponData.weaponType) return;
 

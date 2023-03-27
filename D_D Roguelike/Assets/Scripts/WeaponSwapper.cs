@@ -61,7 +61,7 @@ public class WeaponSwapper : MonoBehaviour, IObserver<WeaponType>
         _currentWeaponImage.sprite = WeaponsLocker.Instance.GetWeaponIcon(weaponType);
     }
 
-    public void ItemCountAltered(WeaponType type, int count)
+    public void ItemAltered(WeaponType type, int count)
     {
         //throw new System.NotImplementedException();
     }
