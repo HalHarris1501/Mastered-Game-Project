@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public Vector2Int minPosition, maxPosition;
+    public Vector2Int minPosition, maxPosition, midPosition;
     [SerializeField] private List<Vector2Int> roomCoordinates = new List<Vector2Int>();
     [SerializeField] private List<Vector2Int> roomWalls = new List<Vector2Int>();
     [SerializeField] private List<Vector2Int> doorCoordinates = new List<Vector2Int>();

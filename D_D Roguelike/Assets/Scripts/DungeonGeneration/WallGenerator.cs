@@ -74,7 +74,7 @@ public static class WallGenerator
         }
     }
 
-    private static void CreateBasicWalls(TilemapVisualizer tilemapVisualizer, HashSet<Vector2Int> basicWallPositions)
+    public static void CreateBasicWalls(TilemapVisualizer tilemapVisualizer, HashSet<Vector2Int> basicWallPositions)
     {
         foreach (var position in basicWallPositions)
         {            
@@ -109,6 +109,7 @@ public static class WallGenerator
                 if(!floorPositions.Contains(new Vector2Int(i, j)))
                 {
                     wallPositions.Add(new Vector2Int(i, j));
+                    wallPositions.Add(new Vector2Int(i, j + 1));
                 }
             }
         }

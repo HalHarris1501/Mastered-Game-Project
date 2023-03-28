@@ -12,26 +12,15 @@ public class RoomMaker : MonoBehaviour
     [SerializeField] private List<Vector2Int> roomCoordinates = new List<Vector2Int>();
     [SerializeField] private List<Vector2Int> roomWalls = new List<Vector2Int>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void MakeRoom()
     {
         roomCoordinates.Clear();
         floorMap.CompressBounds();
-        Vector2Int maxPosition = new Vector2Int(floorMap.size.x - 1, floorMap.size.y - 1);
-        for (int x = 0; x <= maxPosition.x; x++)
+        Vector2Int maxPosition = new Vector2Int(Mathf.FloorToInt(floorMap.cellBounds.xMax), Mathf.FloorToInt(floorMap.cellBounds.yMax));
+        Vector2Int minPosition = new Vector2Int(Mathf.FloorToInt(floorMap.cellBounds.xMin), Mathf.FloorToInt(floorMap.cellBounds.yMin));
+        for (int x = minPosition.x; x <= maxPosition.x; x++)
         {
-            for (int y = 0; y <= maxPosition.y; y++)
+            for (int y = minPosition.y; y <= maxPosition.y; y++)
             {
                 TileBase tileCheck = floorMap.GetTile(new Vector3Int(x, y, 0));
                 if (tileCheck != null)
@@ -40,7 +29,9 @@ public class RoomMaker : MonoBehaviour
                 }
             }
         }
+        room.minPosition = minPosition;
         room.maxPosition = maxPosition;
+        room.midPosition = (maxPosition + minPosition) / 2;
         room.SetRoomCoordinates(roomCoordinates);
         MakeWalls();
     }
@@ -49,10 +40,11 @@ public class RoomMaker : MonoBehaviour
     {
         roomWalls.Clear();
         wallMap.CompressBounds();
-        Vector2Int maxPosition = new Vector2Int(wallMap.size.x - 1, wallMap.size.y - 1);
-        for (int x = 0; x <= maxPosition.x; x++)
+        Vector2Int maxPosition = new Vector2Int(Mathf.FloorToInt(floorMap.cellBounds.xMax), Mathf.FloorToInt(floorMap.cellBounds.yMax));
+        Vector2Int minPosition = new Vector2Int(Mathf.FloorToInt(floorMap.cellBounds.xMin), Mathf.FloorToInt(floorMap.cellBounds.yMin));
+        for (int x = minPosition.x; x <= maxPosition.x; x++)
         {
-            for (int y = 0; y <= maxPosition.y; y++)
+            for (int y = minPosition.y; y <= maxPosition.y; y++)
             {
                 TileBase tileCheck = wallMap.GetTile(new Vector3Int(x, y, 0));
                 if (tileCheck != null)
@@ -61,7 +53,6 @@ public class RoomMaker : MonoBehaviour
                 }
             }
         }
-        room.maxPosition = maxPosition;
         room.SetWallCoordinates(roomWalls);
     }
 }

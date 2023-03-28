@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6015855101258502145
+--- !u!1 &5962536815990329575
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6015855101258502147}
-  - component: {fileID: 6015855101258502146}
+  - component: {fileID: 3493928357510143529}
+  - component: {fileID: 3087068383738805638}
   m_Layer: 0
   m_Name: EndRoom
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6015855101258502147
+--- !u!4 &3493928357510143529
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6015855101258502145}
+  m_GameObject: {fileID: 5962536815990329575}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,20 +31,231 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6015855101258502146
+--- !u!114 &3087068383738805638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6015855101258502145}
+  m_GameObject: {fileID: 5962536815990329575}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1270ada5307b6604692dfca8277b3569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minPosition: {x: 0, y: 0}
-  maxPosition: {x: 10, y: 10}
-  roomCoordinates: []
-  doorCoordinates:
-  - {x: 0, y: 5}
+  minPosition: {x: -9, y: -4}
+  maxPosition: {x: 10, y: 5}
+  midPosition: {x: 0, y: 0}
+  roomCoordinates:
+  - {x: -9, y: -4}
+  - {x: -9, y: -3}
+  - {x: -9, y: -2}
+  - {x: -9, y: -1}
+  - {x: -9, y: 0}
+  - {x: -9, y: 1}
+  - {x: -9, y: 2}
+  - {x: -9, y: 3}
+  - {x: -9, y: 4}
+  - {x: -8, y: -4}
+  - {x: -8, y: -3}
+  - {x: -8, y: -2}
+  - {x: -8, y: -1}
+  - {x: -8, y: 0}
+  - {x: -8, y: 1}
+  - {x: -8, y: 2}
+  - {x: -8, y: 3}
+  - {x: -8, y: 4}
+  - {x: -7, y: -4}
+  - {x: -7, y: -3}
+  - {x: -7, y: -2}
+  - {x: -7, y: -1}
+  - {x: -7, y: 0}
+  - {x: -7, y: 1}
+  - {x: -7, y: 2}
+  - {x: -7, y: 3}
+  - {x: -7, y: 4}
+  - {x: -6, y: -4}
+  - {x: -6, y: -3}
+  - {x: -6, y: -2}
+  - {x: -6, y: -1}
+  - {x: -6, y: 0}
+  - {x: -6, y: 1}
+  - {x: -6, y: 2}
+  - {x: -6, y: 3}
+  - {x: -6, y: 4}
+  - {x: -5, y: -4}
+  - {x: -5, y: -3}
+  - {x: -5, y: -2}
+  - {x: -5, y: -1}
+  - {x: -5, y: 0}
+  - {x: -5, y: 1}
+  - {x: -5, y: 2}
+  - {x: -5, y: 3}
+  - {x: -5, y: 4}
+  - {x: -4, y: -4}
+  - {x: -4, y: -3}
+  - {x: -4, y: -2}
+  - {x: -4, y: -1}
+  - {x: -4, y: 0}
+  - {x: -4, y: 1}
+  - {x: -4, y: 2}
+  - {x: -4, y: 3}
+  - {x: -4, y: 4}
+  - {x: -3, y: -4}
+  - {x: -3, y: -3}
+  - {x: -3, y: -2}
+  - {x: -3, y: -1}
+  - {x: -3, y: 0}
+  - {x: -3, y: 1}
+  - {x: -3, y: 2}
+  - {x: -3, y: 3}
+  - {x: -3, y: 4}
+  - {x: -2, y: -4}
+  - {x: -2, y: -3}
+  - {x: -2, y: -2}
+  - {x: -2, y: -1}
+  - {x: -2, y: 0}
+  - {x: -2, y: 1}
+  - {x: -2, y: 2}
+  - {x: -2, y: 3}
+  - {x: -2, y: 4}
+  - {x: -1, y: -4}
+  - {x: -1, y: -3}
+  - {x: -1, y: -2}
+  - {x: -1, y: -1}
+  - {x: -1, y: 0}
+  - {x: -1, y: 1}
+  - {x: -1, y: 2}
+  - {x: -1, y: 3}
+  - {x: -1, y: 4}
+  - {x: 0, y: -4}
+  - {x: 0, y: -3}
+  - {x: 0, y: -2}
+  - {x: 0, y: -1}
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}
+  - {x: 0, y: 4}
+  - {x: 1, y: -4}
+  - {x: 1, y: -3}
+  - {x: 1, y: -2}
+  - {x: 1, y: -1}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  - {x: 1, y: 2}
+  - {x: 1, y: 3}
+  - {x: 1, y: 4}
+  - {x: 2, y: -4}
+  - {x: 2, y: -3}
+  - {x: 2, y: -2}
+  - {x: 2, y: -1}
+  - {x: 2, y: 0}
+  - {x: 2, y: 1}
+  - {x: 2, y: 2}
+  - {x: 2, y: 3}
+  - {x: 2, y: 4}
+  - {x: 3, y: -4}
+  - {x: 3, y: -3}
+  - {x: 3, y: -2}
+  - {x: 3, y: -1}
+  - {x: 3, y: 0}
+  - {x: 3, y: 1}
+  - {x: 3, y: 2}
+  - {x: 3, y: 3}
+  - {x: 3, y: 4}
+  - {x: 4, y: -4}
+  - {x: 4, y: -3}
+  - {x: 4, y: -2}
+  - {x: 4, y: -1}
+  - {x: 4, y: 0}
+  - {x: 4, y: 1}
+  - {x: 4, y: 2}
+  - {x: 4, y: 3}
+  - {x: 4, y: 4}
+  - {x: 5, y: -4}
+  - {x: 5, y: -3}
+  - {x: 5, y: -2}
+  - {x: 5, y: -1}
+  - {x: 5, y: 0}
+  - {x: 5, y: 1}
+  - {x: 5, y: 2}
+  - {x: 5, y: 3}
+  - {x: 5, y: 4}
+  - {x: 6, y: -4}
+  - {x: 6, y: -3}
+  - {x: 6, y: -2}
+  - {x: 6, y: -1}
+  - {x: 6, y: 0}
+  - {x: 6, y: 1}
+  - {x: 6, y: 2}
+  - {x: 6, y: 3}
+  - {x: 6, y: 4}
+  - {x: 7, y: -4}
+  - {x: 7, y: -3}
+  - {x: 7, y: -2}
+  - {x: 7, y: -1}
+  - {x: 7, y: 0}
+  - {x: 7, y: 1}
+  - {x: 7, y: 2}
+  - {x: 7, y: 3}
+  - {x: 7, y: 4}
+  - {x: 8, y: -4}
+  - {x: 8, y: -3}
+  - {x: 8, y: -2}
+  - {x: 8, y: -1}
+  - {x: 8, y: 0}
+  - {x: 8, y: 1}
+  - {x: 8, y: 2}
+  - {x: 8, y: 3}
+  - {x: 8, y: 4}
+  - {x: 9, y: -4}
+  - {x: 9, y: -3}
+  - {x: 9, y: -2}
+  - {x: 9, y: -1}
+  - {x: 9, y: 0}
+  - {x: 9, y: 1}
+  - {x: 9, y: 2}
+  - {x: 9, y: 3}
+  - {x: 9, y: 4}
+  roomWalls:
+  - {x: -7, y: -2}
+  - {x: -7, y: -1}
+  - {x: -7, y: 0}
+  - {x: -7, y: 1}
+  - {x: -7, y: 2}
+  - {x: -6, y: -2}
+  - {x: -6, y: 0}
+  - {x: -6, y: 2}
+  - {x: -5, y: -2}
+  - {x: -5, y: 0}
+  - {x: -5, y: 2}
+  - {x: -4, y: -2}
+  - {x: -4, y: 0}
+  - {x: -4, y: 2}
+  - {x: -2, y: -2}
+  - {x: -2, y: -1}
+  - {x: -2, y: 0}
+  - {x: -2, y: 1}
+  - {x: -2, y: 2}
+  - {x: -1, y: 1}
+  - {x: 0, y: 0}
+  - {x: 1, y: -1}
+  - {x: 2, y: -2}
+  - {x: 2, y: -1}
+  - {x: 2, y: 0}
+  - {x: 2, y: 1}
+  - {x: 2, y: 2}
+  - {x: 4, y: -2}
+  - {x: 4, y: -1}
+  - {x: 4, y: 0}
+  - {x: 4, y: 1}
+  - {x: 4, y: 2}
+  - {x: 5, y: -2}
+  - {x: 5, y: 2}
+  - {x: 6, y: -2}
+  - {x: 6, y: 2}
+  - {x: 7, y: -1}
+  - {x: 7, y: 0}
+  - {x: 7, y: 1}
+  doorCoordinates: []

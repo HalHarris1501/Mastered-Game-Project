@@ -6,11 +6,24 @@ using Random = UnityEngine.Random;
 
 public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
 {
-    [SerializeField] private int minRoomWidth = 4, minRoomHeight = 4;
+    [SerializeField] private int minRoomWidth, minRoomHeight;
     [SerializeField] private int dungeonWidth = 20, dungeonHeight = 20;
     [SerializeField] [Range(0, 10)] private int offset = 1;
     [SerializeField] [Range(1, 5)]private int corridorWidth = 1;
-    [SerializeField] private bool randomWalkRooms = false;
+    [SerializeField] private RoomType roomType = RoomType.Simple;
+
+    [SerializeField] private Room startRoom;
+    [SerializeField] private List<Room> midRooms;
+    [SerializeField] private Room endRoom;
+    [SerializeField] private Room corridorRoom;
+
+
+    private enum RoomType
+    {
+        Random,
+        Simple,
+        Custom
+    }
 
     protected override void RunProceduralGeneration()
     {
@@ -22,15 +35,8 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         var roomsList = ProceduralGenerationAlgorithms.BinarySpacePartitioning(new BoundsInt((Vector3Int)startPosition, new Vector3Int(dungeonWidth, dungeonHeight, 0)), minRoomWidth, minRoomHeight);
 
         HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
-        if (randomWalkRooms)
-        {
-            floor = CreateRoomsRandomly(roomsList);
-        }
-        else
-        {
-            floor = CreateSimpleRooms(roomsList);
-        }
-        // get copy of floor
+        HashSet<Vector2Int> walls = new HashSet<Vector2Int>();
+
         List<Vector2Int> roomCenters = new List<Vector2Int>();
         foreach (var room in roomsList)
         {
@@ -38,13 +44,88 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         }
         HashSet<Vector2Int> corridors = ConnectRooms(roomCenters);
         floor.UnionWith(corridors);
-        // add random elements to rooms using floor copy
 
-        
+        if (roomType == RoomType.Random)
+        {
+            floor.UnionWith(CreateRoomsRandomly(roomsList));
+        }
+        else if (roomType == RoomType.Simple)
+        {
+            floor.UnionWith(CreateSimpleRooms(roomsList));
+        }
+        else
+        {
+            floor.UnionWith(CreateCustomRooms(roomsList, walls, floor));
+        }      
+
         WallGenerator.CreateWalls(floor, tilemapVisualizer);
-        HashSet<Vector2Int> floorBottoms = AddBottomToRooms(floor);
-        floor.UnionWith(floorBottoms);
+        WallGenerator.CreateBasicWalls(tilemapVisualizer, walls);
         tilemapVisualizer.PaintFloorTiles(floor);
+    }
+
+    private HashSet<Vector2Int> CreateCustomRooms(List<BoundsInt> roomsList, HashSet<Vector2Int> walls, HashSet<Vector2Int> currentFloor)
+    {
+        HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
+        floor.UnionWith(CreateStartAndEndRoom(roomsList, walls, currentFloor));
+
+        foreach(var room in roomsList)
+        {
+            Vector2Int roomCenter = new Vector2Int(Mathf.CeilToInt(room.center.x), Mathf.CeilToInt(room.center.y));
+            Room currentRoom = midRooms[Random.Range(0, midRooms.Count)];
+            foreach (var position in currentRoom.GetWallCoordinates())
+            {
+                walls.Add(roomCenter + (position - currentRoom.midPosition));
+                if(currentFloor.Contains(roomCenter + (position - currentRoom.midPosition)))
+                {
+                    currentFloor.Remove(roomCenter + (position - currentRoom.midPosition));
+                }
+            }
+            foreach (var position in currentRoom.GetRoomCoordinates())
+            {
+                floor.Add(roomCenter + (position - currentRoom.midPosition));
+            }
+            
+        }
+        return floor;
+    }
+
+    private HashSet<Vector2Int> CreateStartAndEndRoom(List<BoundsInt> roomsList, HashSet<Vector2Int> walls, HashSet<Vector2Int> currentFloor)
+    {
+        HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
+
+        Vector2Int roomCenter = new Vector2Int(Mathf.CeilToInt(roomsList[0].center.x), Mathf.CeilToInt(roomsList[0].center.y));
+        Room currentRoom = startRoom;
+        foreach (var position in currentRoom.GetWallCoordinates())
+        {
+            walls.Add(roomCenter + (position - currentRoom.midPosition));
+            if (currentFloor.Contains(roomCenter + (position - currentRoom.midPosition)))
+            {
+                currentFloor.Remove(roomCenter + (position - currentRoom.midPosition));
+            }
+        }
+        foreach (var position in currentRoom.GetRoomCoordinates())
+        {
+            floor.Add(roomCenter + (position - currentRoom.midPosition));
+        }
+        roomsList.RemoveAt(0);
+
+        roomCenter = new Vector2Int(Mathf.CeilToInt(roomsList[roomsList.Count - 1].center.x), Mathf.CeilToInt(roomsList[roomsList.Count - 1].center.y));
+        currentRoom = endRoom;
+        foreach (var position in currentRoom.GetWallCoordinates())
+        {
+            walls.Add(roomCenter + (position - currentRoom.midPosition));
+            if (currentFloor.Contains(roomCenter + (position - currentRoom.midPosition)))
+            {
+                currentFloor.Remove(roomCenter + (position - currentRoom.midPosition));
+            }
+        }
+        foreach (var position in currentRoom.GetRoomCoordinates())
+        {
+            floor.Add(roomCenter + (position - currentRoom.midPosition));
+        }
+        roomsList.RemoveAt(roomsList.Count - 1);
+
+        return floor;
     }
 
     private HashSet<Vector2Int> AddBottomToRooms(HashSet<Vector2Int> floor)
@@ -99,10 +180,8 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
         var position = currentRoomCenter;
         corridor.Add(position);
-        bool yBuild = false;
         while (position.y != destination.y)
         {
-            yBuild = true;
             if (destination.y > position.y)
             {
                 position += Vector2Int.up;
@@ -110,31 +189,11 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
             else if (destination.y < position.y)
             {
                 position += Vector2Int.down;
-            }
-            for (int i = 1; i < corridorWidth; i++)
+            }          
+
+            foreach (var floorPosition in corridorRoom.GetRoomCoordinates())
             {
-                var width = position + (Vector2Int.left * i);
-                corridor.Add(width);
-            }
-            corridor.Add(position);
-        }
-        // build a corner for going left/right after going up/down
-        if(yBuild)
-        {
-            for (int i = 1; i < corridorWidth; i++)
-            {
-                var leftDown = position + (Vector2Int.left * i) + (Vector2Int.down * i);
-                if (i < corridorWidth)
-                {
-                    for (int j = 1; j < corridorWidth; j++)
-                    {
-                        var left = leftDown + (Vector2Int.up * j);
-                        var down = leftDown + (Vector2Int.right * j);
-                        corridor.Add(left);
-                        corridor.Add(down);
-                    }
-                }
-                corridor.Add(leftDown);               
+                corridor.Add(position + (floorPosition));
             }
         }
         while (position.x != destination.x)
@@ -147,12 +206,11 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
             {
                 position += Vector2Int.left;
             }
-            for (int i = 1; i < corridorWidth; i++)
+            
+            foreach (var floorPosition in corridorRoom.GetRoomCoordinates())
             {
-                var width = position + (Vector2Int.down * i);
-                corridor.Add(width);
+                corridor.Add(position + (floorPosition));
             }
-            corridor.Add(position);
         }
         return corridor;
     }

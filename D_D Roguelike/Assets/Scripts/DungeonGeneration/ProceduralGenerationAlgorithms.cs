@@ -51,7 +51,7 @@ public static class ProceduralGenerationAlgorithms
                     if(room.size.y >= minimumHeight * 2) //check if 2 rooms fit if split horizontally
                     {
                         SplitHorizontally(minimumHeight, roomsQueue, room);
-                    } else if(room.size.x >= minimumWidth * 2) // otherwise, check if 2 rooms fit if split vertically
+                    } else if(room.size.x >= minimumWidth * 2 && room.size.y >= minimumHeight * 2) // otherwise, check if 2 rooms fit if split vertically
                     {
                         SplitVertically(minimumWidth, roomsQueue, room);
                     } else if (room.size.x >= minimumWidth && room.size.y >= minimumHeight) //otherwise, check if the area is big enough to fit a room
@@ -63,7 +63,7 @@ public static class ProceduralGenerationAlgorithms
                     if (room.size.x >= minimumWidth * 2) //check if 2 rooms fit if split vertically
                     {
                         SplitVertically(minimumWidth, roomsQueue, room);
-                    } else if (room.size.y >= minimumHeight * 2) //otherwise, check if 2 rooms fit if split horizontally
+                    } else if (room.size.y >= minimumHeight * 2 && room.size.x >= minimumWidth * 2) //otherwise, check if 2 rooms fit if split horizontally
                     {
                         SplitHorizontally(minimumHeight, roomsQueue, room);
                     } else if (room.size.x >= minimumWidth && room.size.y >= minimumHeight) //otherwise, check if the area is big enough to fit a room
