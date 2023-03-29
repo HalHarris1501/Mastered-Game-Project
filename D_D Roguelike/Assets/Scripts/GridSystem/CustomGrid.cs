@@ -16,9 +16,13 @@ public class CustomGrid : MonoBehaviour
 
     public int MaxSize { get { return gridSizeX * gridSizeY; } }
 
+    private void Start()
+    {
+        MakeGrid();
+    }
+
     public void MakeGrid()
     {
-        Debug.Log("making grid");
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);

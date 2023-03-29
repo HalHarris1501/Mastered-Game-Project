@@ -9,14 +9,12 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
     [SerializeField] private int minRoomWidth, minRoomHeight;
     [SerializeField] private int dungeonWidth = 20, dungeonHeight = 20;
     [SerializeField] [Range(0, 10)] private int offset = 1;
-    [SerializeField] [Range(1, 5)]private int corridorWidth = 1;
     [SerializeField] private RoomType roomType = RoomType.Simple;
 
     [SerializeField] private Room startRoom;
     [SerializeField] private List<Room> midRooms;
     [SerializeField] private Room endRoom;
     [SerializeField] private Room corridorRoom;
-
 
     private enum RoomType
     {
@@ -160,8 +158,15 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
     private HashSet<Vector2Int> ConnectRooms(List<Vector2Int> roomCenters)
     {
         HashSet<Vector2Int> corridors = new HashSet<Vector2Int>();
-        int randomNum = Random.Range(0, roomCenters.Count);
-        var currentRoomCenter = roomCenters[randomNum];
+        //connect end room first
+        var endRoomCentre = roomCenters[roomCenters.Count - 1];
+        roomCenters.RemoveAt(roomCenters.Count - 1);
+        Vector2Int closestToEnd = FindClosestPointTo(endRoomCentre, roomCenters);
+        HashSet<Vector2Int> endCorridor = CreateCorridor(endRoomCentre, closestToEnd);
+        corridors.UnionWith(endCorridor);
+        
+        //int randomNum = Random.Range(0, roomCenters.Count);
+        var currentRoomCenter = roomCenters[0];
         roomCenters.Remove(currentRoomCenter);
 
         while (roomCenters.Count > 0)
@@ -171,7 +176,8 @@ public class RoomFirstDungeonGenerator : SimpleRandomWalkMapGenerator
             HashSet<Vector2Int> newCorridor = CreateCorridor(currentRoomCenter, closestPoint);
             currentRoomCenter = closestPoint;
             corridors.UnionWith(newCorridor);
-        }
+        }       
+
         return corridors;
     }
 
